@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MusicFind - 音乐搜索</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f2f6fa;color:#333;min-height:100vh}
+.header{background:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8edf2;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#3a7bd5;letter-spacing:1px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#6db3f2,#3a7bd5);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.main{max-width:780px;margin:0 auto;padding:28px 20px 40px}
+.hero{text-align:center;margin-bottom:32px}
+.hero h1{font-size:32px;font-weight:700;color:#3a7bd5;margin-bottom:6px}
+.hero p{color:#999;font-size:13px}
+.search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:#fff;border-radius:10px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid #dce6f0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.mode-btn{padding:10px 28px;border:none;background:transparent;color:#999;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
+.mode-btn.active{background:#3a7bd5;color:#fff;font-weight:600}
+.mode-btn:not(.active):hover{color:#3a7bd5;background:#f0f5fb}
+.search-box{display:flex;gap:8px;margin-bottom:28px;background:#fff;border-radius:12px;padding:5px;border:2px solid #dce6f0;transition:border-color .3s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.search-box:focus-within{border-color:#3a7bd5;box-shadow:0 2px 12px rgba(58,123,213,.12)}
+.search-input{flex:1;background:transparent;border:none;outline:none;color:#333;font-size:15px;padding:13px 16px}
+.search-input::placeholder{color:#bbb}
+.search-btn{background:linear-gradient(135deg,#6db3f2,#3a7bd5);border:none;color:#fff;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
+.search-btn:hover{background:linear-gradient(135deg,#5da3e8,#2d6dc4);transform:translateY(-1px);box-shadow:0 6px 20px rgba(58,123,213,.3)}
+.search-btn:active{transform:scale(.97)}
+.hint{text-align:center;color:#bbb;font-size:13px;margin-bottom:24px}
+.hint span{color:#3a7bd5;font-weight:600;cursor:pointer;transition:opacity .2s}
+.hint span:hover{opacity:.7}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.results-count{font-size:13px;color:#999}
+.results-count strong{color:#3a7bd5;font-size:15px}
+.song-list{display:flex;flex-direction:column;gap:6px}
+.song-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:12px 16px;transition:all .25s;border:1px solid #eef3f8;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.song-card:hover{background:#fbfdff;border-color:#d4e2f2;transform:translateX(3px);box-shadow:0 2px 10px rgba(58,123,213,.08)}
+.song-index{width:30px;height:30px;border-radius:50%;background:#f0f4f8;display:flex;align-items:center;justify-content:center;font-size:12px;color:#aaa;flex-shrink:0;font-weight:500}
+.song-card:nth-child(1) .song-index{background:rgba(58,123,213,.12);color:#3a7bd5;font-weight:700}
+.song-card:nth-child(2) .song-index{background:rgba(58,123,213,.08);color:#5b9bd5}
+.song-card:nth-child(3) .song-index{background:rgba(58,123,213,.05);color:#6db3f2}
+.song-cover{width:44px;height:44px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#e8f0f8,#dce6f0);display:flex;align-items:center;justify-content:center;font-size:22px}
+.song-info{flex:1;min-width:0}
+.song-name{font-size:15px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.song-singer{font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.download-btn{flex-shrink:0;width:38px;height:38px;border-radius:9px;background:rgba(58,123,213,.06);border:1px solid rgba(58,123,213,.18);color:#3a7bd5;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative}
+.download-btn:hover{background:#3a7bd5;color:#fff;box-shadow:0 4px 14px rgba(58,123,213,.35);transform:scale(1.08)}
+.download-btn:active{transform:scale(.93)}
+.download-btn svg{width:18px;height:18px}
+.download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#555;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.download-btn:hover .tooltip{opacity:1}
+.empty-state{text-align:center;padding:60px 20px;color:#bbb}
+.empty-state .empty-icon{font-size:64px;margin-bottom:14px;opacity:.35}
+.empty-state p{font-size:14px}
+.loading-wrap{text-align:center;padding:40px}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid #e8edf2;border-top-color:#3a7bd5;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(58,123,213,.3)}
+.toast.show{opacity:1}
+@media(max-width:600px){
+.hero h1{font-size:24px}
+.mode-btn{padding:9px 16px;font-size:13px}
+.search-input{font-size:14px;padding:11px 12px}
+.search-btn{padding:11px 18px;font-size:14px}
+.song-card{padding:10px 12px;gap:10px}
+.song-cover{width:38px;height:38px;font-size:18px}
+.song-name{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<main class="main">
+  <div class="hero">
+    <h1>发现你的音乐</h1>
+    <p>歌手搜索 &middot; 歌名搜索</p>
+  </div>
+
+  <div class="search-mode">
+    <button class="mode-btn active" data-mode="singer" onclick="switchMode(&#x27;singer&#x27;)">&#x1F3A4; 歌手搜索</button>
+    <button class="mode-btn" data-mode="song" onclick="switchMode(&#x27;song&#x27;)">&#x1F3B5; 歌名搜索</button>
+  </div>
+
+  <div class="search-box">
+    <input type="text" class="search-input" id="searchInput"
+      placeholder="输入歌手名，如：周杰伦、林俊杰、Taylor Swift..."
+      autocomplete="off"
+      onkeydown="if(event.key===&#x27;Enter&#x27;) doSearch()" />
+    <button class="search-btn" onclick="doSearch()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      搜索
+    </button>
+  </div>
+
+  <p class="hint">
+    &#x1F4A1; 试试搜索
+    <span onclick="quickSearch(&#x27;周杰伦&#x27;)">周杰伦</span> &middot;
+    <span onclick="quickSearch(&#x27;林俊杰&#x27;)">林俊杰</span> &middot;
+    <span onclick="quickSearch(&#x27;邓紫棋&#x27;)">邓紫棋</span> &middot;
+    <span onclick="quickSearch(&#x27;陈奕迅&#x27;)">陈奕迅</span> &middot;
+    <span onclick="quickSearch(&#x27;周笔畅&#x27;)">周笔畅</span>
+  </p>
+
+  <div id="resultsContainer"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+var currentMode = 'singer';
+
+var songDB = {
+  '周杰伦': [
+    { name: '七里香', cover: '&#x1F3B5;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '晴天', cover: '&#x2600;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '夜曲', cover: '&#x1F319;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '稻香', cover: '&#x1F33E;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '青花瓷', cover: '&#x1F3FA;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '简单爱', cover: '&#x1F495;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '东风破', cover: '&#x1F342;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '发如雪', cover: '&#x2744;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '听妈妈的话', cover: '&#x1F469;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '千里之外', cover: '&#x1F309;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '菊花台', cover: '&#x1F33C;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '不能说的秘密', cover: '&#x1F92B;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ],
+  '周笔畅': [
+    { name: 'Adore You(Endless Remix)', cover: '🎵', quark: 'https://pan.quark.cn/s/51bbd816db61' },
+    { name: 'TENDER (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/40f375f20309' },
+    { name: '谈情说爱(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/41a5300672bc' },
+    { name: '海阔天空(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/e9e3dbbe9239' },
+    { name: 'i', cover: '🎵', quark: 'https://pan.quark.cn/s/b3e06cafc0b5' },
+    { name: 'maobing', cover: '🎵', quark: 'https://pan.quark.cn/s/e91d0e026edb' },
+    { name: 'stupid', cover: '🎵', quark: 'https://pan.quark.cn/s/c051ce42bf04' },
+    { name: '予心(伴奏)', cover: '🎵', quark: 'https://pan.quark.cn/s/50ea4bb6902a' },
+    { name: '予心', cover: '🎵', quark: 'https://pan.quark.cn/s/469ab4b3162f' },
+    { name: '今天只做一件事 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/a0693221513b' },
+    { name: '傻瓜的天才', cover: '🎵', quark: 'https://pan.quark.cn/s/b16b169dae8c' },
+    { name: '关于我们', cover: '🎵', quark: 'https://pan.quark.cn/s/0291f9705dfe' },
+    { name: '坏了 falling', cover: '🎵', quark: 'https://pan.quark.cn/s/adcbc8b2d47d' },
+    { name: '孤独音乐家(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/710ebd5ea50c' },
+    { name: '少年(粤语版)', cover: '🎵', quark: 'https://pan.quark.cn/s/8edd6f12d0db' },
+    { name: '平凡身份(伴奏)', cover: '🎵', quark: 'https://pan.quark.cn/s/85a1fd2cd3d8' },
+    { name: '平凡身份', cover: '🎵', quark: 'https://pan.quark.cn/s/693f64bd05ab' },
+    { name: '心向远方', cover: '🎵', quark: 'https://pan.quark.cn/s/27bb2824b90f' },
+    { name: '提笔', cover: '🎵', quark: 'https://pan.quark.cn/s/b4530dbde6ce' },
+    { name: '毒蘑菇', cover: '🎵', quark: 'https://pan.quark.cn/s/055af1ab68ab' },
+    { name: '毛毛雨 cheers', cover: '🎵', quark: 'https://pan.quark.cn/s/a9bfeab5a2ce' },
+    { name: '沉默的真相', cover: '🎵', quark: 'https://pan.quark.cn/s/cba6996e828a' },
+    { name: '涂鸦 what a mess', cover: '🎵', quark: 'https://pan.quark.cn/s/10309888e18a' },
+    { name: '爱在蓝(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/bec7fd4123be' },
+    { name: '特伦斯梦游仙境 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/485aa825b7a3' },
+    { name: '聊你个头 see you never', cover: '🎵', quark: 'https://pan.quark.cn/s/82f9dd8e895b' },
+    { name: '菌落(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/5cb9a26c181d' },
+    { name: '孤独音乐家 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/3fb15d918928' },
+    { name: '幸福之歌 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/7e10e3ea3628' },
+    { name: '我们之间', cover: '🎵', quark: 'https://pan.quark.cn/s/f99f646d4420' },
+    { name: '高山低谷', cover: '🎵', quark: 'https://pan.quark.cn/s/b6dc7ab02fad' },
+    { name: '最后你还是走了(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/4b2e9704c877' },
+    { name: '我爱你不问归期(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/dc9acc21169d' },
+    { name: '等一个回音(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/272005710825' },
+    { name: '大家一起喜羊羊', cover: '🎵', quark: 'https://pan.quark.cn/s/5471b7257d62' },
+    { name: '最美的期待', cover: '🎵', quark: 'https://pan.quark.cn/s/ef1c2fc19adb' },
+    { name: '谁动了我的琴弦', cover: '🎵', quark: 'https://pan.quark.cn/s/42d150cda1c2' },
+    { name: '飞女正传 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/731784f50601' },
+    { name: '分手总要在雨天 (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/470cd3fee663' },
+    { name: '活着VIVA (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/d8269dc2c165' },
+    { name: '雨一直下(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/5434167a5260' },
+    { name: 'K歌之王(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/2043a42ec011' },
+    { name: '下一站天后(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/ee10c10a822d' },
+    { name: '好歌献给你(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/7c76af2b79ac' },
+    { name: '不再犹豫(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/fee52a756c15' },
+    { name: '世间始终你好(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/c3acf6fc89fc' },
+    { name: '我和我的祖国(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/8a0c8fe2d920' },
+    { name: '前程锦绣(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/2736c513d512' },
+    { name: '理想', cover: '🎵', quark: 'https://pan.quark.cn/s/2f3aee8f8a5a' },
+    { name: 'The Way You Make Me Feel (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/78ed2fca3f9c' },
+    { name: '中国人(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/403194aa871e' },
+    { name: '非常夏日(Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/fc7ad96a8290' },
+    { name: 'Together (Live)', cover: '🎵', quark: 'https://pan.quark.cn/s/bc9f3fec53be' }
+  ],
+  '林俊杰': [
+    { name: '江南', cover: '&#x1F327;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '一千年以后', cover: '&#x23F3;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '曹操', cover: '&#x2694;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '修炼爱情', cover: '&#x1F494;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '不为谁而作的歌', cover: '&#x1F3B6;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '她说', cover: '&#x1F4AC;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '可惜没如果', cover: '&#x1F614;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '背对背拥抱', cover: '&#x1F917;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ],
+  '邓紫棋': [
+    { name: '光年之外', cover: '&#x2728;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '泡沫', cover: '&#x1F9E7;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '喜欢你', cover: '&#x1F497;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '倒数', cover: '&#x23F0;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '来自天堂的魔鬼', cover: '&#x1F608;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '句号', cover: '&#x2B55;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ],
+  'Taylor Swift': [
+    { name: 'Love Story', cover: '&#x1F498;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: 'Shake It Off', cover: '&#x1F483;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: 'Blank Space', cover: '&#x1F4DD;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: 'Cruel Summer', cover: '&#x2600;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: 'Anti-Hero', cover: '&#x1F9B8;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: 'Cardigan', cover: '&#x1F9E5;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ],
+  '陈奕迅': [
+    { name: '十年', cover: '&#x1F4C5;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '富士山下', cover: '&#x1F5FB;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '浮夸', cover: '&#x1F3AD;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '好久不见', cover: '&#x1F44B;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '爱情转移', cover: '&#x1F49E;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '孤独患者', cover: '&#x1F636;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ],
+  '薛之谦': [
+    { name: '演员', cover: '&#x1F3AC;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '丑八怪', cover: '&#x1F921;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '认真的雪', cover: '&#x2744;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '绅士', cover: '&#x1F3A9;', quark: 'https://pan.quark.cn/s/YOUR_LINK' },
+    { name: '你还要我怎样', cover: '&#x1F61E;', quark: 'https://pan.quark.cn/s/YOUR_LINK' }
+  ]
+};
+
+function switchMode(mode) {
+  currentMode = mode;
+  var btns = document.querySelectorAll('.mode-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  document.querySelector('[data-mode="' + mode + '"]').classList.add('active');
+  var input = document.getElementById('searchInput');
+  input.placeholder = mode === 'singer'
+    ? '输入歌手名，如：周杰伦、林俊杰、Taylor Swift...'
+    : '输入歌曲名，如：七里香、晴天、江南...';
+  input.value = '';
+  input.focus();
+}
+
+function quickSearch(name) {
+  document.getElementById('searchInput').value = name;
+  switchMode('singer');
+  doSearch();
+}
+
+function doSearch() {
+  var query = document.getElementById('searchInput').value.trim();
+  if (!query) { showToast('请输入歌手名或歌曲名'); return; }
+  var container = document.getElementById('resultsContainer');
+  container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div></div>';
+  setTimeout(function() {
+    var results = [];
+    if (currentMode === 'singer') {
+      var singers = Object.keys(songDB);
+      for (var i = 0; i < singers.length; i++) {
+        if (singers[i].toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+          var songs = songDB[singers[i]];
+          for (var j = 0; j < songs.length; j++) {
+            results.push({ name: songs[j].name, cover: songs[j].cover, quark: songs[j].quark, singer: singers[i] });
+          }
+          break;
+        }
+      }
+    } else {
+      var q = query.toLowerCase();
+      var singerKeys = Object.keys(songDB);
+      for (var i = 0; i < singerKeys.length; i++) {
+        var singer = singerKeys[i];
+        var songs = songDB[singer];
+        for (var j = 0; j < songs.length; j++) {
+          if (songs[j].name.toLowerCase().indexOf(q) !== -1) {
+            results.push({ name: songs[j].name, cover: songs[j].cover, quark: songs[j].quark, singer: singer });
+          }
+        }
+      }
+    }
+    renderResults(results, query);
+  }, 350);
+}
+
+function renderResults(results, query) {
+  var container = document.getElementById('resultsContainer');
+  if (results.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-icon">&#x1F50D;</div>' +
+        '<p>未找到「' + escHtml(query) + '」的相关歌曲</p>' +
+        '<p style="font-size:12px;color:#444;margin-top:5px;">试试其他关键词吧</p>' +
+      '</div>';
+    return;
+  }
+  var modeLabel = currentMode === 'singer'
+    ? '&#x1F3A4; 歌手「' + escHtml(results[0].singer) + '」'
+    : '&#x1F3B5; 搜索「' + escHtml(query) + '」';
+  var html =
+    '<div class="results-header">' +
+      '<span class="results-count">' + modeLabel + ' &middot; 共 <strong>' + results.length + '</strong> 首</span>' +
+    '</div>' +
+    '<div class="song-list">';
+  for (var i = 0; i < results.length; i++) {
+    var song = results[i];
+    var num = i < 9 ? '0' + (i + 1) : '' + (i + 1);
+    html +=
+      '<div class="song-card">' +
+        '<div class="song-index">' + num + '</div>' +
+        '<div class="song-cover">' + song.cover + '</div>' +
+        '<div class="song-info">' +
+          '<div class="song-name">' + escHtml(song.name) + '</div>' +
+          '<div class="song-singer">' + escHtml(song.singer) + '</div>' +
+        '</div>' +
+        '<button class="download-btn" onclick="doDownload(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\')">' +
+          '<span class="tooltip">夸克网盘下载</span>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">' +
+            '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>' +
+            '<polyline points="7 10 12 15 17 10"/>' +
+            '<line x1="12" y1="15" x2="12" y2="3"/>' +
+          '</svg>' +
+        '</button>' +
+      '</div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function doDownload(name, singer, link) {
+  window.open(link, '_blank');
+  showToast('&#x1F3A7; 正在跳转夸克网盘：' + singer + ' - ' + name);
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+function escHtml(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function escAttr(s) {
+  return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+</script>
+
+</body>
+</html>

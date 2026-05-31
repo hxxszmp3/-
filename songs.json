@@ -1,0 +1,21 @@
+[
+  {
+    "rid": "1",
+    "name": "歌曲名称示例",
+    "artist": "歌手名",
+    "pic": "https://img.qqmp3.vip/image/20240831/20240831224759_3873.webp",
+    "downurl": [
+      "MP3下载$$https://pan.quark.cn/s/你的分享链接1",
+      "FLAC下载$$https://pan.quark.cn/s/你的分享链接2"
+    ]
+  },
+  {
+    "rid": "2",
+    "name": "第二首歌",
+    "artist": "另一位歌手",
+    "pic": "https://img.qqmp3.vip/image/20240831/20240831151039_9199.webp",
+    "downurl": [
+      "MP3下载$$https://pan.quark.cn/s/你的分享链接3"
+    ]
+  }
+]
