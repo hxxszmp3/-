@@ -75,14 +75,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <p>歌手搜索 &middot; 歌名搜索</p>
   </div>
 
-  <div class="search-mode">
-    <button class="mode-btn active" data-mode="singer" onclick="switchMode(&#x27;singer&#x27;)">&#x1F3A4; 歌手搜索</button>
-    <button class="mode-btn" data-mode="song" onclick="switchMode(&#x27;song&#x27;)">&#x1F3B5; 歌名搜索</button>
-  </div>
 
   <div class="search-box">
     <input type="text" class="search-input" id="searchInput"
-      placeholder="输入歌手名，如：周杰伦、林俊杰、Taylor Swift..."
+      placeholder="输入歌手名或歌曲名，如：周杰伦、孤勇者..."
       autocomplete="off"
       onkeydown="if(event.key===&#x27;Enter&#x27;) doSearch()" />
     <button class="search-btn" onclick="doSearch()">
@@ -124,8 +120,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 <div class="toast" id="toast"></div>
 
 <script>
-var currentMode = 'singer';
-
 var songDB = {
   'BEAST': [
     { name: '12시 30분 (12 30)', cover: '🎵', quark: 'https://pan.quark.cn/s/dc6faf74d941' },
@@ -8203,22 +8197,8 @@ var songDB = {
   ],
 };
 
-function switchMode(mode) {
-  currentMode = mode;
-  var btns = document.querySelectorAll('.mode-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-  document.querySelector('[data-mode="' + mode + '"]').classList.add('active');
-  var input = document.getElementById('searchInput');
-  input.placeholder = mode === 'singer'
-    ? '输入歌手名，如：周杰伦、林俊杰、Taylor Swift...'
-    : '输入歌曲名，如：七里香、晴天、江南...';
-  input.value = '';
-  input.focus();
-}
-
 function quickSearch(name) {
   document.getElementById('searchInput').value = name;
-  switchMode('singer');
   doSearch();
 }
 
@@ -8229,25 +8209,21 @@ function doSearch() {
   container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div></div>';
   setTimeout(function() {
     var results = [];
-    if (currentMode === 'singer') {
-      var singers = Object.keys(songDB);
-      for (var i = 0; i < singers.length; i++) {
-        if (singers[i].toLowerCase().indexOf(query.toLowerCase()) !== -1) {
-          var songs = songDB[singers[i]];
-          for (var j = 0; j < songs.length; j++) {
-            results.push({ name: songs[j].name, cover: songs[j].cover, quark: songs[j].quark, singer: singers[i] });
-          }
-          break;
-        }
-      }
-    } else {
-      var q = query.toLowerCase();
-      var singerKeys = Object.keys(songDB);
-      for (var i = 0; i < singerKeys.length; i++) {
-        var singer = singerKeys[i];
-        var songs = songDB[singer];
-        for (var j = 0; j < songs.length; j++) {
-          if (songs[j].name.toLowerCase().indexOf(q) !== -1) {
+    var q = query.toLowerCase();
+    var singerKeys = Object.keys(songDB);
+    var seen = {};
+
+    for (var i = 0; i < singerKeys.length; i++) {
+      var singer = singerKeys[i];
+      var songs = songDB[singer];
+      var singerMatch = singer.toLowerCase().indexOf(q) !== -1;
+
+      for (var j = 0; j < songs.length; j++) {
+        var songMatch = songs[j].name.toLowerCase().indexOf(q) !== -1;
+        if (singerMatch || songMatch) {
+          var key = singer + '||' + songs[j].name;
+          if (!seen[key]) {
+            seen[key] = true;
             results.push({ name: songs[j].name, cover: songs[j].cover, quark: songs[j].quark, singer: singer });
           }
         }
@@ -8268,9 +8244,7 @@ function renderResults(results, query) {
       '</div>';
     return;
   }
-  var modeLabel = currentMode === 'singer'
-    ? '&#x1F3A4; 歌手「' + escHtml(results[0].singer) + '」'
-    : '&#x1F3B5; 搜索「' + escHtml(query) + '」';
+  var modeLabel = '&#x1F50E; 搜索「' + escHtml(query) + '」';
   var html =
     '<div class="results-header">' +
       '<span class="results-count">' + modeLabel + ' &middot; 共 <strong>' + results.length + '</strong> 首</span>' +
