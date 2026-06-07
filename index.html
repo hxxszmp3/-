@@ -12930,14 +12930,23 @@ function copyAllLinks(){
     var b=cards[i].querySelector('.download-btn');
     if(b){
       var q=b.getAttribute('data-quark');
-      var n=b.getAttribute('data-name');
-      if(q) links.push({name:n||'',url:q});
+      if(q) links.push(q);
     }
   }
   if(links.length===0){showToast('没有可复制链接');return;}
-  var text='';
-  for(var i=0;i<links.length;i++){text+=links[i].url+'\n';}
-  navigator.clipboard.writeText(text).then(function(){showToast('已复制 '+links.length+' 条链接');}).catch(function(){showToast('复制失败，请重试');});
+  var text=links.join('\n');
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  ta.style.position='fixed';ta.style.left='-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try{
+    document.execCommand('copy');
+    showToast('已复制 '+links.length+' 条链接');
+  }catch(e){
+    showToast('复制失败，请重试');
+  }
+  document.body.removeChild(ta);
 }
 
 function switchTab(tab){
