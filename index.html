@@ -144,7 +144,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <div class="batch-section">
       <div class="batch-title">📋 批量搜索（歌手+歌名精准匹配）</div>
       <div class="batch-row">
-        <textarea class="batch-input" id="batchInput" placeholder="每行一个搜索项&#10;格式：歌手-歌名 或 歌手 歌名&#10;&#10;例如：&#10;周杰伦-七里香&#10;林俊杰 江南&#10;陈奕迅 孤勇者" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();batchSearch()}"></textarea>
+        <textarea class="batch-input" id="batchInput" placeholder="每行一个搜索项，回车换行&#10;格式灵活：晴天-周杰伦 / 晴天 周杰伦 / 晴天周杰伦&#10;&#10;例如：&#10;七里香-周杰伦&#10;林俊杰 江南&#10;孤勇者陈奕迅" onkeydown=""></textarea>
         <button class="batch-btn" onclick="batchSearch()">批量搜索</button>
       </div>
       <div class="batch-results" id="batchResults"></div>
@@ -12855,29 +12855,38 @@ function batchSearch(){
   var lines=raw.split('\n').filter(function(n){return n.trim().length>0});
   var container=document.getElementById('batchResults');
   if(lines.length===0){container.innerHTML='';return;}
-  var queries=[];
-  for(var i=0;i<lines.length;i++){
-    var line=lines[i].trim();
-    var songName=line;
-    var singerFilter=null;
-    var dashIdx=line.indexOf('-');
-    if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+1).trim();}
-    queries.push({song:songName,singer:singerFilter,original:line});
-  }
   var foundSongs=[],notFound=[];
   var singerKeys=Object.keys(songDB);
-  for(var i=0;i<queries.length;i++){
-    var q=queries[i].song.toLowerCase(),sf=queries[i].singer,matched=false;
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim(); if(!line)continue;
+    var songName=line,singerFilter=null;
+    var dashIdx=line.indexOf('-');
+    if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+1).trim();}
+    else{var sp=line.split(/\s+/);if(sp.length>=2){songName=sp.slice(0,-1).join(' ');singerFilter=sp[sp.length-1];}}
+    var q=songName.toLowerCase(),sf=singerFilter?singerFilter.toLowerCase():null,matched=false;
+    // Method 1: parse-based search
     for(var j=0;j<singerKeys.length;j++){
-      if(sf&&singerKeys[j].toLowerCase().indexOf(sf.toLowerCase())===-1)continue;
+      if(sf&&singerKeys[j].toLowerCase().indexOf(sf)===-1)continue;
       var songs=songDB[singerKeys[j]];
       for(var k=0;k<songs.length;k++){
         if(songs[k].name.toLowerCase().indexOf(q)!==-1){
-          foundSongs.push({name:songs[k].name,quark:songs[k].quark,singer:singerKeys[j],query:queries[i].original});matched=true;
+          foundSongs.push({name:songs[k].name,quark:songs[k].quark,singer:singerKeys[j],query:line});matched=true;
         }
       }
     }
-    if(!matched)notFound.push(queries[i].original);
+    // Method 2: smart match - query contains both song name and singer name
+    if(!matched){
+      for(var j=0;j<singerKeys.length;j++){
+        if(line.toLowerCase().indexOf(singerKeys[j].toLowerCase())===-1)continue;
+        var songs=songDB[singerKeys[j]];
+        for(var k=0;k<songs.length;k++){
+          if(line.toLowerCase().indexOf(songs[k].name.toLowerCase())!==-1){
+            foundSongs.push({name:songs[k].name,quark:songs[k].quark,singer:singerKeys[j],query:line});matched=true;
+          }
+        }
+      }
+    }
+    if(!matched)notFound.push(line);
   }
   var seen={},unique=[];
   for(var i=0;i<foundSongs.length;i++){
