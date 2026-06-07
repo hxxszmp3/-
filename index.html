@@ -12934,11 +12934,54 @@ function copyAllLinks(){
       if(q) links.push({name:n||'',url:q});
     }
   }
-  if(links.length===0){showToast('没有可复制的链接');return;}
+  if(links.length===0){showToast('没有可复制链接');return;}
   var text='';
   for(var i=0;i<links.length;i++){text+=links[i].name+'  '+links[i].url+'\n';}
-  navigator.clipboard.writeText(text).then(function(){showToast('已复制 '+links.length+' 条链接到剪贴板');}).catch(function(){showToast('复制失败，请手动复制');});
+  // Try clipboard API
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){showToast('已复制 '+links.length+' 条链接');}).catch(function(){fallbackCopy(text,links.length);});
+  }else{
+    fallbackCopy(text,links.length);
+  }
 }
+function fallbackCopy(text,count){
+  var overlay=document.createElement('div');
+  overlay.id='copyOverlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center';
+  overlay.onclick=function(){document.body.removeChild(overlay);};
+  var box=document.createElement('div');
+  box.style.cssText='background:#fff;border-radius:12px;padding:20px;max-width:90%;max-height:80%;overflow:auto;width:400px';
+  box.onclick=function(e){e.stopPropagation();};
+  var title=document.createElement('div');
+  title.style.cssText='font-weight:700;margin-bottom:10px;color:#3a7bd5';
+  title.textContent='📋 共 '+count+' 条链接';
+  box.appendChild(title);
+  var ta=document.createElement('textarea');
+  ta.id='copyArea';
+  ta.style.cssText='width:100%;height:200px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12px';
+  ta.readOnly=true;
+  ta.value=text;
+  box.appendChild(ta);
+  var btn=document.createElement('button');
+  btn.style.cssText='margin-top:10px;width:100%;padding:10px;background:#3a7bd5;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer';
+  btn.textContent='📋 点击复制全部链接';
+  btn.onclick=function(){
+    var t=document.getElementById('copyArea');
+    t.select();
+    navigator.clipboard.writeText(t.value);
+    this.textContent='已复制!';
+  };
+  box.appendChild(btn);
+  var close=document.createElement('button');
+  close.style.cssText='margin-top:6px;width:100%;padding:10px;background:#eee;color:#666;border:none;border-radius:8px;font-size:14px;cursor:pointer';
+  close.textContent='关闭';
+  close.onclick=function(){document.body.removeChild(overlay);};
+  box.appendChild(close);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+
 function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
