@@ -61,6 +61,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(58,123,213,.3)}
 .toast.show{opacity:1}
+.update-bar{background:#fff;border-bottom:1px solid #e8edf2;overflow:hidden;padding:6px 0;white-space:nowrap;font-size:12px;color:#888}
+.update-track{display:inline-block;animation:scroll-left 50s linear infinite}
+.update-sep{color:#ddd;margin:0 8px}
+.update-item{margin:0 4px}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e74c3c;margin-right:4px;animation:blink 1.5s ease-in-out infinite;vertical-align:middle;opacity:.7}
+@keyframes scroll-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:.9}}
 /* 批量搜索 */
 .batch-section{margin-bottom:28px;background:#fff;border-radius:12px;padding:18px;border:1px solid #eef3f8;box-shadow:0 1px 3px rgba(0,0,0,.03)}
 .batch-title{font-size:15px;font-weight:700;color:#3a7bd5;margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -92,6 +99,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tab-btn{padding:8px 20px;border-radius:20px;border:2px solid #dce6f0;background:#fff;color:#888;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .tab-btn:hover{border-color:#3a7bd5;color:#3a7bd5}
 .tab-btn.active{background:#3a7bd5;color:#fff;border-color:#3a7bd5}
+.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
+.singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
+.singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
+.singer-block-list{display:flex;flex-wrap:wrap;gap:2px 14px}
+.singer-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:#3a7bd5;text-decoration:none;padding:2px 0}
+.singer-link:hover{color:#c0392b}
+.singer-link-dot{font-size:10px;flex-shrink:0}
+.singer-block-foot{text-align:right;font-size:11px;color:#ccaaaa;margin-top:8px;font-style:italic}
 .tab-btn.report-btn{background:#e74c3c!important;color:#fff!important;border-color:#e74c3c!important}
 .copy-all-btn{padding:5px 14px;border-radius:8px;border:1px solid #3a7bd5;background:rgba(58,123,213,.06);color:#3a7bd5;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
 .copy-all-btn:hover{background:#3a7bd5;color:#fff}
@@ -115,11 +130,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <p>歌手搜索 &middot; 歌名搜索</p>
   </div>
 
+  <div class="update-bar"><span class="live-dot"></span>
+    <div class="update-track" id="updateTrack">
+      <span class="update-item">2026-06-09 新增歌手合集223位</span><span class="update-sep">|</span>
+      <span class="update-item">2026-06-08 新增周杰伦194首曲库</span><span class="update-sep">|</span>
+      <span class="update-item">2026-06-08 歌单新增：2026抖音热歌合集</span><span class="update-sep">|</span>
+      <span class="update-item">2026-06-07 批量新增41个曲库1369首</span><span class="update-sep">|</span>
+      <span class="update-item">持续更新中 · www.hxxsz666.vip</span>
+    </div>
+  </div>
+
   <!-- 三个Tab切换按钮 -->
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('single')">🔍 单曲搜索</button>
     <button class="tab-btn" onclick="switchTab('batch')">📋 批量搜索</button>
     <button class="tab-btn" onclick="switchTab('playlist')">📀 歌单大厅</button>
+    <button class="tab-btn" onclick="switchTab('singer')">🎤 歌手合集</button>
   </div>
 
   <!-- Tab 1: 单曲搜索 -->
@@ -157,6 +183,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <div class="playlist-title">📀 精选歌单（共<span id="plCount">0</span>个）</div>
       <div id="playlistContainer"></div>
     </div>
+  </div>
+
+  <div class="tab-panel" id="tab-singer" style="display:none">
+    <div class="singer-grid" id="singerGrid"></div>
   </div>
 
 </main>
@@ -14985,12 +15015,267 @@ function copyAllLinks(){
   },200);
 }
 
-function switchTab(tab){
+var singerCollection = {
+  'A-LIN': 'https://pan.quark.cn/s/7cd70307f1c6',
+  'BEAST': 'https://pan.quark.cn/s/36d512f31c25',
+  'BY2': 'https://pan.quark.cn/s/925f175d3213',
+  'Beyond': 'https://pan.quark.cn/s/93db19cb4bb5',
+  'EXO': 'https://pan.quark.cn/s/c95ab78a9b2e',
+  'Ella陈嘉桦': 'https://pan.quark.cn/s/9535c840cb8c',
+  'GAI周延': 'https://pan.quark.cn/s/a726b9bc877f',
+  'gareth.t': 'https://pan.quark.cn/s/34a679415cf5',
+  '丁世光': 'https://pan.quark.cn/s/94ed1c78156e',
+  '丁当': 'https://pan.quark.cn/s/7db0e8ffaa8a',
+  '丁薇': 'https://pan.quark.cn/s/ad59c044dd93',
+  '丢火车乐队': 'https://pan.quark.cn/s/964bac3056a0',
+  '二手玫瑰': 'https://pan.quark.cn/s/c25b5e4cfa07',
+  '于冬然': 'https://pan.quark.cn/s/d6d99f568832',
+  '于适': 'https://pan.quark.cn/s/a2260398bf23',
+  '五月天': 'https://pan.quark.cn/s/07b58dd34305',
+  '付豪': 'https://pan.quark.cn/s/e00f6fe9eaef',
+  '低苦艾乐队': 'https://pan.quark.cn/s/f092ef5f4814',
+  '何炅': 'https://pan.quark.cn/s/ab2e878ce8ea',
+  '侃侃': 'https://pan.quark.cn/s/e79bce6c2ba3',
+  '侯泽润': 'https://pan.quark.cn/s/84275b739ac3',
+  '光良': 'https://pan.quark.cn/s/e44d6a646354',
+  '六哲': 'https://pan.quark.cn/s/48810b44e447',
+  '关喆': 'https://pan.quark.cn/s/11e44f69d7c9',
+  '冯提莫': 'https://pan.quark.cn/s/17a80c3a423f',
+  '凤凰传奇': 'https://pan.quark.cn/s/a2a794461cf5',
+  '刀郎': 'https://pan.quark.cn/s/c756e5a430ec',
+  '刘耀文': 'https://pan.quark.cn/s/fd4d0152e14a',
+  '刺猬乐队': 'https://pan.quark.cn/s/868ddc76250e',
+  '动力火车': 'https://pan.quark.cn/s/f41ba800b82a',
+  '十个勤天': 'https://pan.quark.cn/s/006dc1209d8d',
+  '半吨兄弟': 'https://pan.quark.cn/s/6c0e45e91b59',
+  '华晨宇': 'https://pan.quark.cn/s/5691043ed74b',
+  '卓依婷': 'https://pan.quark.cn/s/e9cc89de0ab0',
+  '单依纯': 'https://pan.quark.cn/s/4d7cb8501a2a',
+  '古巨基': 'https://pan.quark.cn/s/45475f0b48ab',
+  '叶炫清': 'https://pan.quark.cn/s/82a816a81dce',
+  '吉克隽逸': 'https://pan.quark.cn/s/f561ccd87f87',
+  '后弦': 'https://pan.quark.cn/s/271c2a9709d6',
+  '吴青峰': 'https://pan.quark.cn/s/a9b8ee1fb53f',
+  '呆呆破': 'https://pan.quark.cn/s/6de6d03bff7e',
+  '周传雄': 'https://pan.quark.cn/s/32bf5f2e2fd1',
+  '周华健': 'https://pan.quark.cn/s/15b9d3e9136b',
+  '周华键': 'https://pan.quark.cn/s/4fba9462497b',
+  '周慧敏': 'https://pan.quark.cn/s/dfa89ca4785f',
+  '周杰伦': 'https://pan.quark.cn/s/6c0be3a5c4da',
+  '周林枫': 'https://pan.quark.cn/s/e63e99536454',
+  '周深': 'https://pan.quark.cn/s/d249fd3958bc',
+  '周笔畅': 'https://pan.quark.cn/s/7d72a50323ba',
+  '周蕙': 'https://pan.quark.cn/s/5f470024ef28',
+  '周迅': 'https://pan.quark.cn/s/8ed6b6ff9123',
+  '大张伟': 'https://pan.quark.cn/s/437bce8a1ced',
+  '好妹妹乐队': 'https://pan.quark.cn/s/b21cdcfecc17',
+  '孙子涵': 'https://pan.quark.cn/s/c5cfa656d60e',
+  '孙燕姿': 'https://pan.quark.cn/s/9d7ccfeb3cb8',
+  '安儿成': 'https://pan.quark.cn/s/7a6349c9bcc4',
+  '安又琪': 'https://pan.quark.cn/s/2cb240ec08c1',
+  '安琥': 'https://pan.quark.cn/s/5f796a6f43e8',
+  '宋冬野': 'https://pan.quark.cn/s/49aa72753c61',
+  '宝石gem': 'https://pan.quark.cn/s/cc96e5636ba1',
+  '小虎队': 'https://pan.quark.cn/s/7b4b9887d158',
+  '小贱': 'https://pan.quark.cn/s/d55fe228cee5',
+  '崔健': 'https://pan.quark.cn/s/c13e6cba7e1c',
+  '崔子格': 'https://pan.quark.cn/s/4b251af9cebd',
+  '布衣乐队': 'https://pan.quark.cn/s/20202de060df',
+  '常石磊': 'https://pan.quark.cn/s/661dff5616da',
+  '常超凡': 'https://pan.quark.cn/s/f2e3e1201f31',
+  '庄心妍': 'https://pan.quark.cn/s/84459520bd62',
+  '张也': 'https://pan.quark.cn/s/138d7ccb26ea',
+  '张信哲': 'https://pan.quark.cn/s/7dbeaf1d0098',
+  '张含韵': 'https://pan.quark.cn/s/e48bf3b84f15',
+  '张学友': 'https://pan.quark.cn/s/8fef1c59cf4a',
+  '张宇': 'https://pan.quark.cn/s/5427301d2bea',
+  '张悬': 'https://pan.quark.cn/s/d1603aa5a7d9',
+  '张惠妹': 'https://pan.quark.cn/s/08dea26da82c',
+  '张敬轩': 'https://pan.quark.cn/s/8dcbaa9350ba',
+  '张杰': 'https://pan.quark.cn/s/bcae0dd1aefe',
+  '张碧晨': 'https://pan.quark.cn/s/2392cd6be85c',
+  '张艺兴': 'https://pan.quark.cn/s/188342c84968',
+  '张远': 'https://pan.quark.cn/s/bd85f8f6457e',
+  '张雨生': 'https://pan.quark.cn/s/ab0ceb79dc15',
+  '张靓颖': 'https://pan.quark.cn/s/f235bcc549c8',
+  '张韶涵': 'https://pan.quark.cn/s/7bcd171d0b62',
+  '弦子': 'https://pan.quark.cn/s/708703d04336',
+  '徐良': 'https://pan.quark.cn/s/95e17f9ad5a5',
+  '成龙': 'https://pan.quark.cn/s/87b5479d4aeb',
+  '戴佩妮': 'https://pan.quark.cn/s/0984b4d7462b',
+  '房东的猫': 'https://pan.quark.cn/s/136270bf494d',
+  '打扰一下乐团': 'https://pan.quark.cn/s/cbb4ac689f40',
+  '指南针乐队': 'https://pan.quark.cn/s/f34f928e9e2e',
+  '方大同': 'https://pan.quark.cn/s/5a4aa0f72043',
+  '曹格': 'https://pan.quark.cn/s/7830ea301b9e',
+  '曹轩宾': 'https://pan.quark.cn/s/c995f5f7cd0d',
+  '本兮': 'https://pan.quark.cn/s/8b394347a64a',
+  '朱明瑛': 'https://pan.quark.cn/s/8dbb802568ea',
+  '李荣浩': 'https://pan.quark.cn/s/0eb14a7e473a',
+  '杜德伟': 'https://pan.quark.cn/s/eca980aca5f9',
+  '林俊杰': 'https://pan.quark.cn/s/6f4c17aebbef',
+  '柯柯柯啊': 'https://pan.quark.cn/s/75f43d1d67dc',
+  '格子兮': 'https://pan.quark.cn/s/0b9d296ff7f5',
+  '梁博': 'https://pan.quark.cn/s/18809ff2b17f',
+  '梁咏琪': 'https://pan.quark.cn/s/ade419c51d58',
+  '欢子': 'https://pan.quark.cn/s/cca483abec3c',
+  '段千寻': 'https://pan.quark.cn/s/b5892b467589',
+  '段奥娟': 'https://pan.quark.cn/s/95d4cdb0b2f0',
+  '毕夏': 'https://pan.quark.cn/s/bf6c84dcb4a4',
+  '毛不易': 'https://pan.quark.cn/s/f34eef6cd271',
+  '汪晨蕊': 'https://pan.quark.cn/s/d7b19fe736db',
+  '汪苏泷': 'https://pan.quark.cn/s/ff4632f61f63',
+  '河图': 'https://pan.quark.cn/s/c255f3016913',
+  '海伦': 'https://pan.quark.cn/s/66e0bd7f832c',
+  '海明威': 'https://pan.quark.cn/s/6333befefc0b',
+  '海来阿木': 'https://pan.quark.cn/s/5a6cc9f61dd5',
+  '温岚': 'https://pan.quark.cn/s/62665f22c7fa',
+  '炎亚伦': 'https://pan.quark.cn/s/d1bb1cb1601b',
+  '牛奶咖啡': 'https://pan.quark.cn/s/4cebb1fa2a94',
+  '王力宏': 'https://pan.quark.cn/s/3b6e49679d41',
+  '王嘉尔': 'https://pan.quark.cn/s/58e531ed074e',
+  '王心凌': 'https://pan.quark.cn/s/42e28fe8e17c',
+  '王睿卓': 'https://pan.quark.cn/s/59f27202dde2',
+  '王菲': 'https://pan.quark.cn/s/018dde3f6107',
+  '王识贤': 'https://pan.quark.cn/s/cb9156cbf3c3',
+  '王铮亮': 'https://pan.quark.cn/s/a4d4bdb701f2',
+  '王靖雯': 'https://pan.quark.cn/s/aa554aa7770d',
+  '玖月奇迹': 'https://pan.quark.cn/s/a13935df7a3d',
+  '甄妮': 'https://pan.quark.cn/s/b07a6fa4934c',
+  '田馥甄': 'https://pan.quark.cn/s/51270bf770e1',
+  '白举纲': 'https://pan.quark.cn/s/1e74e707cbe4',
+  '白安': 'https://pan.quark.cn/s/d8ce381a7c1c',
+  '白鹿': 'https://pan.quark.cn/s/5b13703af59e',
+  '秦海清': 'https://pan.quark.cn/s/f9d3f21fa050',
+  '程响': 'https://pan.quark.cn/s/d2d776bc3a3f',
+  '程璧': 'https://pan.quark.cn/s/0f324385869f',
+  '窦唯': 'https://pan.quark.cn/s/7564dec63a85',
+  '窦靖童': 'https://pan.quark.cn/s/36dbfa8db4f9',
+  '等什么君': 'https://pan.quark.cn/s/5cf246290fd0',
+  '筷子兄弟': 'https://pan.quark.cn/s/7e7992a5e27c',
+  '纵贯线': 'https://pan.quark.cn/s/1f2ed2b0828d',
+  '胡夏': 'https://pan.quark.cn/s/e61380b1b996',
+  '胡彦斌': 'https://pan.quark.cn/s/4bb2e67e118d',
+  '臧天朔': 'https://pan.quark.cn/s/8f3733fec689',
+  '至上励合': 'https://pan.quark.cn/s/31e9ae0b69c2',
+  '艾怡良': 'https://pan.quark.cn/s/0588eba0f121',
+  '艾热': 'https://pan.quark.cn/s/6109060e6163',
+  '艾福杰尼': 'https://pan.quark.cn/s/e8d4a4c62a26',
+  '艾辰': 'https://pan.quark.cn/s/4d9b41a7c470',
+  '苍狼': 'https://pan.quark.cn/s/ef087be55cf7',
+  '苏晗': 'https://pan.quark.cn/s/c34bbcd1cfbd',
+  '范玮琪': 'https://pan.quark.cn/s/80b117222780',
+  '草东没有派对': 'https://pan.quark.cn/s/e5f8139c9fdf',
+  '莫文蔚': 'https://pan.quark.cn/s/f1988143d942',
+  '葛东琪': 'https://pan.quark.cn/s/f9431385b66c',
+  '蒋雪儿': 'https://pan.quark.cn/s/9cbb3129b961',
+  '蔡依林': 'https://pan.quark.cn/s/77497e57d781',
+  '蔡健雅': 'https://pan.quark.cn/s/300121449008',
+  '蔡国庆': 'https://pan.quark.cn/s/153f5726e4af',
+  '蔡徐坤': 'https://pan.quark.cn/s/69a22dcf43a2',
+  '蔡淳佳': 'https://pan.quark.cn/s/9516e12c0e81',
+  '蔡琴': 'https://pan.quark.cn/s/bfb0ec6259f0',
+  '薛之谦': 'https://pan.quark.cn/s/fb8cdb206f26',
+  '虎二': 'https://pan.quark.cn/s/84053b182ada',
+  '蛋堡': 'https://pan.quark.cn/s/97a26cadb85d',
+  '补歌': 'https://pan.quark.cn/s/e04a0a831c86',
+  '袁娅维': 'https://pan.quark.cn/s/4d006f5201ef',
+  '许嵩': 'https://pan.quark.cn/s/5b4c89a6e57a',
+  '谢安琪': 'https://pan.quark.cn/s/79b780cbba10',
+  '费玉清': 'https://pan.quark.cn/s/2fb47268e753',
+  '赵传': 'https://pan.quark.cn/s/ad55df4674aa',
+  '赵雷': 'https://pan.quark.cn/s/1d89cc7776e7',
+  '迟志强': 'https://pan.quark.cn/s/9e9f4ae311d8',
+  '迪克牛仔': 'https://pan.quark.cn/s/0ff562284f9d',
+  '邓丽君': 'https://pan.quark.cn/s/f3c05936b5a3',
+  '邓紫棋': 'https://pan.quark.cn/s/3a4e2128d8f8',
+  '郑中基': 'https://pan.quark.cn/s/5bdd4a6c8691',
+  '郑源': 'https://pan.quark.cn/s/98144e611cd2',
+  '郑钧': 'https://pan.quark.cn/s/2eeb2788d999',
+  '郭富城': 'https://pan.quark.cn/s/79b8ebf3f56f',
+  '郭峰': 'https://pan.quark.cn/s/623d834c6a6b',
+  '郭静': 'https://pan.quark.cn/s/20c97220ccb8',
+  '郭顶': 'https://pan.quark.cn/s/eca58fa71625',
+  '金海心': 'https://pan.quark.cn/s/23ff2e957ddb',
+  '金润吉': 'https://pan.quark.cn/s/59f138330ddc',
+  '金莎': 'https://pan.quark.cn/s/4532b82b95fe',
+  '钟镇涛': 'https://pan.quark.cn/s/2f97f7298d15',
+  '阚立文': 'https://pan.quark.cn/s/964898acbdd7',
+  '阿YueYue': 'https://pan.quark.cn/s/f8996372c310',
+  '阿兰': 'https://pan.quark.cn/s/a716cccf73d8',
+  '阿冗': 'https://pan.quark.cn/s/c05b52de1fac',
+  '阿宝': 'https://pan.quark.cn/s/fedd0297b65e',
+  '阿悠悠': 'https://pan.quark.cn/s/6be04aa3363e',
+  '阿木': 'https://pan.quark.cn/s/9948b9925d35',
+  '阿朵': 'https://pan.quark.cn/s/392ef252f4cc',
+  '阿杜': 'https://pan.quark.cn/s/2abff510469f',
+  '阿桑': 'https://pan.quark.cn/s/3bb224146006',
+  '阿梨粤': 'https://pan.quark.cn/s/6ea9fcd4d34d',
+  '阿肆': 'https://pan.quark.cn/s/afcf1f28849c',
+  '陆虎': 'https://pan.quark.cn/s/e624aa4abaf3',
+  '陈奕迅': 'https://pan.quark.cn/s/81519915d764',
+  '陈小春': 'https://pan.quark.cn/s/2cd839e12803',
+  '陈慧娴': 'https://pan.quark.cn/s/efec7f810e91',
+  '陈慧琳': 'https://pan.quark.cn/s/b14aa2ecd6f8',
+  '陈柏宇': 'https://pan.quark.cn/s/6893be72c35f',
+  '陈楚生': 'https://pan.quark.cn/s/ab9b34611cfe',
+  '陈淑桦': 'https://pan.quark.cn/s/4431dc5f312c',
+  '陈百强': 'https://pan.quark.cn/s/5aab0ebe8b18',
+  '陈粒': 'https://pan.quark.cn/s/30af91b7fe7d',
+  '陈绮贞': 'https://pan.quark.cn/s/fb2899f99cf5',
+  '陈雪凝': 'https://pan.quark.cn/s/2b9afd0bb146',
+  '陈鸿宇': 'https://pan.quark.cn/s/1d9b01a4a973',
+  '隔壁老樊': 'https://pan.quark.cn/s/940546054066',
+  '鞠靳祎': 'https://pan.quark.cn/s/139e8663bf79',
+  '韩宝仪': 'https://pan.quark.cn/s/61f0f8296183',
+  '韩庚': 'https://pan.quark.cn/s/1ff2554b08c3',
+  '韩红': 'https://pan.quark.cn/s/02695d67ca95',
+  '颜人中': 'https://pan.quark.cn/s/3db3af277c47',
+  '飞儿乐团': 'https://pan.quark.cn/s/68a477175abe',
+  '飞轮海': 'https://pan.quark.cn/s/a5d9da506583',
+  '高胜美': 'https://pan.quark.cn/s/5ceffca4c715',
+  '黄霄雲': 'https://pan.quark.cn/s/9314bcc0a7f2',
+  '黄静美': 'https://pan.quark.cn/s/70ddc43c2dd6',
+  '龙飘飘': 'https://pan.quark.cn/s/dc5e3e72557d',
+  '龚玥': 'https://pan.quark.cn/s/df7701074fea',
+  '龚玲娜': 'https://pan.quark.cn/s/503789831eef'
+};
+
+function renderSingerCollection(){
+  var singers=Object.keys(singerCollection);
+  if(singers.length===0){
+    document.getElementById('singerGrid').innerHTML='<div style="color:#999;text-align:center;padding:40px">暂无歌手合集</div>';
+    return;
+  }
+  singers.sort(function(a,b){var fa=getFL(a),fb=getFL(b);if(fa!==fb)return fa.localeCompare(fb);return a.localeCompare(b);});
+  var groups={};
+  for(var i=0;i<singers.length;i++){var fl=getFL(singers[i]);if(!groups[fl])groups[fl]=[];groups[fl].push(singers[i]);}
+  var letters=Object.keys(groups).sort(function(a,b){return a.localeCompare(b);});
+  var h='';
+  for(var li=0;li<letters.length;li++){
+    var l=letters[li];
+    h+='<div class="singer-block"><div class="singer-block-title">'+l+'</div><div class="singer-block-list">';
+    for(var si=0;si<groups[l].length;si++){
+      var sn=groups[l][si];
+      h+='<a class="singer-link" href="'+singerCollection[sn].replace(/&/g,'&amp;')+'" target="_blank"><span class="singer-link-dot">🎵</span>'+escHtml(sn)+'</a>';
+    }
+    h+='</div><div class="singer-block-foot">持续更新……</div></div>';
+  }
+  document.getElementById('singerGrid').innerHTML=h;
+}
+function getFL(s){
+  if(!s||!s[0])return'Z';
+  var ch=s[0];
+  var map={'光':'G','丢':'D','二':'E','五':'W','低':'D','侃':'K','六':'L','凤':'F','刀':'D','刺':'C','动':'D','十':'S','半':'B','本':'B','吉':'J','后':'H','呆':'D','大':'D','好':'H','宝':'B','小':'X','布':'B','弦':'X','打':'D','指':'Z','朱':'Z','杜':'D','柯':'K','格':'G','欢':'H','河':'H','海':'H','炎':'Y','玖':'J','窦':'D','等':'D','筷':'K','纵':'Z','臧':'Z','至':'Z','艾':'A','苍':'C','草':'C','虎':'H','蛋':'D','补':'B','费':'F','迪':'D','阚':'K','隔':'G','鞠':'J','飞':'F','阿':'A','白':'B','蔡':'C','邓':'D','范':'F','高':'G','韩':'H','金':'J','李':'L','马':'M','那':'N','欧':'O','潘':'P','齐':'Q','任':'R','孙':'S','田':'T','王':'W','许':'X','杨':'Y','张':'Z','周':'Z','陈':'C','刘':'L','黄':'H','林':'L','吴':'W','徐':'X','赵':'Z','胡':'H','郭':'G','梁':'L','郑':'Z','何':'H','罗':'L','宋':'S','谢':'X','唐':'T','冯':'F','董':'D','于':'Y','袁':'Y','曹':'C','沈':'S','彭':'P','苏':'S','蒋':'J','贾':'J','薛':'X','石':'S','余':'Y','叶':'Y','严':'Y','曾':'Z','崔':'C','戴':'D','夏':'X','韦':'W','程':'C','侯':'H','龙':'L','段':'D','雷':'L','钱':'Q','汤':'T','尹':'Y','易':'Y','常':'C','武':'W','乔':'Q','贺':'H','赖':'L','温':'W','汪':'W','毛':'M','古':'G','方':'F','熊':'X','谭':'T','安':'A','丁':'D','龚':'G','包':'B','单':'S','娄':'L','康':'K','卜':'B','纪':'J','顾':'G','萧':'X','邵':'S','梅':'M','饶':'R','刁':'D','樊':'F','戚':'Q','麦':'M','连':'L','车':'C','凌':'L','翟':'Z','庄':'Z','岳':'Y','谷':'G','关':'G','甄':'Z','解':'X','卓':'Z','姜':'J','毕':'B','聂':'N','牛':'N','焦':'J','詹':'Z','桑':'S','扈':'H','满':'M','柳':'L','项':'X','阮':'R','殷':'Y','葛':'G','钟':'Z','蓝':'L','陶':'T','甘':'G','容':'R','江':'J','莫':'M','姚':'Y','秦':'Q','陆':'L','房':'F','游':'Y','舒':'S','向':'X','廖':'L','颜':'Y','成':'C','涂':'T','童':'T','简':'J','邢':'X','宁':'N','全':'Q','邹':'Z','皮':'P','尤':'Y','平':'P','米':'M','符':'F','伍':'W','元':'Y','兰':'L','储':'C','华':'H','付':'F','代':'D','耿':'G','鲁':'L','苗':'M','祝':'Z','巩':'G','冷':'L','荣':'R','裴':'P','霍':'H','冉':'R','柴':'C','邱':'Q','沙':'S','章':'Z','郎':'L','盛':'S','管':'G','左':'Z','过':'G','席':'X','迟':'C','谈':'T','辛':'X','巴':'B','查':'C','巫':'W','曲':'Q','仲':'Z','洪':'H','A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I','J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R','S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'};
+  if(map[ch])return map[ch];
+  return /[一-鿿]/.test(ch)?'#':ch.toUpperCase();
+}
+function switchTab(tab){window.scrollTo(0,0);
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
   document.getElementById('tab-'+tab).style.display='block';
   document.querySelectorAll('.tab-btn').forEach(function(b){
-    if(b.textContent.indexOf(tab==='single'?'单曲':tab==='batch'?'批量':'歌单')!==-1)b.classList.add('active');
+    if(b.textContent.indexOf(tab==='single'?'单曲':tab==='batch'?'批量':tab==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
   });
 }
 
@@ -15096,7 +15381,7 @@ function escAttr(s) {
   return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
-window.addEventListener('DOMContentLoaded',function(){renderPlaylists();});
+window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSingerCollection();});
 </script>
 
 </body>
