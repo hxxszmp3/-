@@ -157,7 +157,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <div class="tab-panel" id="tab-single">
     <div class="search-box">
       <input type="text" class="search-input" id="searchInput"
-        placeholder="输入歌手名或歌曲名（如：晴汪苏泷、晴-汪苏泷）"
+        placeholder="输入歌手名或歌曲名"
         autocomplete="off"
         oninput="showSuggestions()"
         onkeydown="handleSuggestKey(event)" />
@@ -177,7 +177,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <div class="batch-section">
       <div class="batch-title">📋 批量搜索（歌手+歌名精准匹配）</div>
       <div class="batch-row">
-        <textarea class="batch-input" id="batchInput" placeholder="一行一个，回车换行&#10;例如：&#10;七里香-周杰伦&#10;晴天 林俊杰&#10;孤勇者" onkeydown=""></textarea>
+        <textarea class="batch-input" id="batchInput" placeholder="一行一个，回车换行&#10;" onkeydown=""></textarea>
         <button class="batch-btn" onclick="batchSearch()">批量搜索</button>
       </div>
       <div class="batch-results" id="batchResults"></div>
@@ -15981,7 +15981,7 @@ function switchTab(tab){window.scrollTo(0,0);
 function showSuggestions(){
   var q=document.getElementById('searchInput').value.trim();
   var dd=document.getElementById('suggestDropdown');
-  if(q.length<2){dd.style.display='none';return;}
+  if(q.length<1){dd.style.display='none';return;}
   var matches=[];
   var singerKeys=Object.keys(songDB);
   var ql=q.toLowerCase();
