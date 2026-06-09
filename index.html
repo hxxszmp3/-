@@ -15990,15 +15990,10 @@ function showSuggestions(){
     var songs=songDB[singer];
     for(var j=0;j<songs.length;j++){
       var sn=songs[j].name;
-      var combo1=sn+singer;
-      var combo2=singer+sn;
-      var idx1=combo1.toLowerCase().indexOf(ql);
-      var idx2=combo2.toLowerCase().indexOf(ql);
-      if(idx1>=0) matches.push({display:combo1.substring(idx1,idx1+ql.length+10),start:idx1,song:sn,singer:singer});
-      else if(idx2>=0) matches.push({display:combo2.substring(idx2,idx2+ql.length+10),start:idx2,song:sn,singer:singer});
+      var idx=sn.toLowerCase().indexOf(ql);
+      if(idx>=0) matches.push({song:sn,singer:singer,idx:idx});
     }
   }
-  // Dedup
   var seen={},unique=[];
   for(var i=0;i<matches.length;i++){
     var k=matches[i].song+'||'+matches[i].singer;
@@ -16006,12 +16001,15 @@ function showSuggestions(){
   }
   unique=unique.slice(0,8);
   if(unique.length===0){dd.style.display='none';return;}
-  var h='';
+  var html='';
   for(var i=0;i<unique.length;i++){
-    var d=unique[i].display;
-    h+='<div class="suggest-item" onclick="selectSuggestion('+i+')"><span class="match">'+escHtml(d.substring(0,ql.length))+'</span><span class="rest">'+escHtml(d.substring(ql.length))+'</span><span style="color:#bbb;font-size:11px;margin-left:8px">'+escHtml(unique[i].singer)+' - '+escHtml(unique[i].song)+'</span></div>';
+    var s=unique[i];
+    var pre=s.song.substring(0,s.idx);
+    var match=s.song.substring(s.idx,s.idx+ql.length);
+    var post=s.song.substring(s.idx+ql.length);
+    html+='<div class="suggest-item" onclick="selectSuggestion('+i+')">'+escHtml(pre)+'<span class="match">'+escHtml(match)+'</span>'+escHtml(post)+'</div>';
   }
-  dd.innerHTML=h;
+  dd.innerHTML=html;
   dd.style.display='block';
   window._suggestions=unique;
 }
