@@ -22,7 +22,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .mode-btn{padding:10px 28px;border:none;background:transparent;color:#999;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
 .mode-btn.active{background:#3a7bd5;color:#fff;font-weight:600}
 .mode-btn:not(.active):hover{color:#3a7bd5;background:#f0f5fb}
-.search-box{display:flex;gap:8px;margin-bottom:28px;background:#fff;border-radius:12px;padding:5px;border:2px solid #dce6f0;transition:border-color .3s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.search-box{display:flex;gap:8px;margin-bottom:28px;position:relative;background:#fff;border-radius:12px;padding:5px;border:2px solid #dce6f0;transition:border-color .3s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .search-box:focus-within{border-color:#3a7bd5;box-shadow:0 2px 12px rgba(58,123,213,.12)}
 .search-input{flex:1;background:transparent;border:none;outline:none;color:#333;font-size:15px;padding:13px 16px}
 .search-input::placeholder{color:#bbb}
@@ -76,6 +76,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .batch-input:focus{border-color:#3a7bd5}
 .batch-btn{background:#3a7bd5;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-start}
 .batch-btn:hover{background:#2d6dc4}
+.suggest-dropdown{position:absolute;background:#fff;border:1px solid #dce6f0;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;width:calc(100% - 90px);z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.suggest-item{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f3f7}
+.suggest-item:hover{background:#f0f5fb}
+.suggest-item .match{color:#3a7bd5;font-weight:700}
+.suggest-item .rest{color:#999}
 .batch-results{margin-top:12px}
 .batch-item{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;margin-bottom:4px;font-size:13px}
 .batch-item.found{background:#eafaf1;color:#27ae60}
@@ -162,6 +167,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
         搜索
       </button>
     </div>
+    <div class="suggest-dropdown" id="suggestDropdown" style="display:none"></div>
     <div id="resultsContainer"></div>
   </div>
 
@@ -15970,6 +15976,83 @@ function switchTab(tab){window.scrollTo(0,0);
   });
 }
 
+// ========== 搜索建议 ==========
+function showSuggestions(){
+  var q=document.getElementById('searchInput').value.trim();
+  var dd=document.getElementById('suggestDropdown');
+  if(q.length<2){dd.style.display='none';return;}
+  var matches=[];
+  var singerKeys=Object.keys(songDB);
+  var ql=q.toLowerCase();
+  for(var i=0;i<singerKeys.length;i++){
+    var singer=singerKeys[i];
+    var songs=songDB[singer];
+    for(var j=0;j<songs.length;j++){
+      var sn=songs[j].name;
+      var combo1=sn+singer;
+      var combo2=singer+sn;
+      var idx1=combo1.toLowerCase().indexOf(ql);
+      var idx2=combo2.toLowerCase().indexOf(ql);
+      if(idx1>=0) matches.push({display:combo1.substring(idx1,idx1+ql.length+10),start:idx1,song:sn,singer:singer});
+      else if(idx2>=0) matches.push({display:combo2.substring(idx2,idx2+ql.length+10),start:idx2,song:sn,singer:singer});
+    }
+  }
+  // Dedup
+  var seen={},unique=[];
+  for(var i=0;i<matches.length;i++){
+    var k=matches[i].song+'||'+matches[i].singer;
+    if(!seen[k]){seen[k]=true;unique.push(matches[i]);}
+  }
+  unique=unique.slice(0,8);
+  if(unique.length===0){dd.style.display='none';return;}
+  var h='';
+  for(var i=0;i<unique.length;i++){
+    var d=unique[i].display;
+    h+='<div class="suggest-item" onclick="selectSuggestion('+i+')"><span class="match">'+escHtml(d.substring(0,ql.length))+'</span><span class="rest">'+escHtml(d.substring(ql.length))+'</span><span style="color:#bbb;font-size:11px;margin-left:8px">'+escHtml(unique[i].singer)+' - '+escHtml(unique[i].song)+'</span></div>';
+  }
+  dd.innerHTML=h;
+  dd.style.display='block';
+  window._suggestions=unique;
+}
+function selectSuggestion(idx){
+  var s=window._suggestions[idx];
+  if(s){
+    document.getElementById('searchInput').value=s.singer+' '+s.song;
+    document.getElementById('suggestDropdown').style.display='none';
+    doSearch();
+  }
+}
+function handleSuggestKey(e){
+  var dd=document.getElementById('suggestDropdown');
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    if(dd.style.display==='block'){
+      var items=dd.querySelectorAll('.suggest-item');
+      if(items.length===0)return;
+      window._sugIdx=window._sugIdx||0;
+      items[window._sugIdx].style.background='';
+      if(e.key==='ArrowDown')window._sugIdx=(window._sugIdx+1)%items.length;
+      else window._sugIdx=(window._sugIdx-1+items.length)%items.length;
+      items[window._sugIdx].style.background='#f0f5fb';
+    }
+  }else if(e.key==='Enter'){
+    if(dd.style.display==='block'&&window._sugIdx!==undefined){
+      e.preventDefault();
+      selectSuggestion(window._sugIdx);
+      window._sugIdx=undefined;
+    }else{
+      doSearch();
+    }
+  }else if(e.key==='Escape'){
+    dd.style.display='none';
+  }
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#searchInput')&&!e.target.closest('#suggestDropdown')){
+    document.getElementById('suggestDropdown').style.display='none';
+  }
+});
+
 function quickSearch(name) {
   document.getElementById('searchInput').value = name;
   doSearch();
@@ -15989,11 +16072,20 @@ function doSearch() {
     for (var i = 0; i < singerKeys.length; i++) {
       var singer = singerKeys[i];
       var songs = songDB[singer];
-      var singerMatch = singer.toLowerCase().indexOf(q) !== -1;
+      var singerLower = singer.toLowerCase();
+      var singerMatch = singerLower.indexOf(q) !== -1;
 
       for (var j = 0; j < songs.length; j++) {
-        var songMatch = songs[j].name.toLowerCase().indexOf(q) !== -1;
-        if (singerMatch || songMatch) {
+        var songLower = songs[j].name.toLowerCase();
+        var songMatch = songLower.indexOf(q) !== -1;
+        // Smart match: query might contain both song and singer (e.g., "晴汪苏泷")
+        var combined1 = songLower + singerLower;
+        var combined2 = singerLower + songLower;
+        var smartMatch = combined1.indexOf(q) !== -1 || combined2.indexOf(q) !== -1;
+        // Also check if query contains song name and singer name as substrings
+        var containsBoth = q.indexOf(songLower) !== -1 && q.indexOf(singerLower) !== -1;
+
+        if (singerMatch || songMatch || smartMatch || containsBoth) {
           var key = singer + '||' + songs[j].name;
           if (!seen[key]) {
             seen[key] = true;
@@ -16003,7 +16095,7 @@ function doSearch() {
       }
     }
     renderResults(results, query);
-  }, 350);
+  }, 200);
 }
 
 function renderResults(results, query) {
