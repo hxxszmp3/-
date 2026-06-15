@@ -16703,6 +16703,11 @@ function escAttr(s) {
 
 window.addEventListener('scroll',function(){var b=document.getElementById('backTop');if(b)b.style.display=window.scrollY>400?'block':'none';});
 window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSingerCollection();
+  var now=new Date();
+  var today=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
+  var firstItem=document.querySelector('.update-item');
+  if(firstItem)firstItem.innerHTML='<span class="live-dot"></span>'+today+' 曲库持续更新中，欢迎收藏';
+
   var st=localStorage.getItem('activeTab');
   if(st){
     document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
