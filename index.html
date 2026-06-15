@@ -46,6 +46,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .song-cover svg{width:24px;height:24px}
 .song-info{flex:1;min-width:0}
 .song-name{font-size:15px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.song-name-link{font-size:15px;font-weight:600;color:#2c3e50;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.song-name-link:hover{color:#3a7bd5}
 .song-singer{font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .download-btn{flex-shrink:0;width:38px;height:38px;border-radius:9px;background:rgba(58,123,213,.06);border:1px solid rgba(58,123,213,.18);color:#3a7bd5;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative}
 .download-btn:hover{background:#3a7bd5;color:#fff;box-shadow:0 4px 14px rgba(58,123,213,.35);transform:scale(1.08)}
@@ -101,6 +103,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .suggest-item:hover{background:#f0f5fb}
 .suggest-item .match{color:#3a7bd5;font-weight:700}
 .suggest-item .rest{color:#999}
+.suggest-close{position:absolute;top:6px;right:8px;background:none;border:none;font-size:14px;color:#bbb;cursor:pointer;padding:2px 6px}
+.suggest-close:hover{color:#e74c3c}
 .batch-results{margin-top:12px}
 .batch-item{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;margin-bottom:4px;font-size:13px}
 .batch-item.found{background:#eafaf1;color:#27ae60}
@@ -16093,7 +16097,7 @@ function batchSearch(){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
       var s=unique[i],num=i<9?'0'+(i+1):''+(i+1);
-      html+='<div class="song-card"><div class="song-index">'+num+'</div><div class="song-cover"><svg viewBox="0 0 24 24" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg></div><div class="song-info"><div class="song-name">'+escHtml(s.name)+'</div><div class="song-singer">'+escHtml(s.singer)+'</div></div><button class="download-btn" data-quark="'+escAttr(s.quark)+'" data-name="'+escAttr(s.name)+' - '+escAttr(s.singer)+'" onclick="doDownload(\x27'+escAttr(s.name)+'\x27,\x27'+escAttr(s.singer)+'\x27,\x27'+escAttr(s.quark)+'\x27)"><span class="tooltip">夸克网盘下载</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div>';
+      html+='<div class="song-card"><div class="song-index">'+num+'</div><div class="song-cover"><svg viewBox="0 0 24 24" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg></div><div class="song-info"><a class="song-name-link" href="'+escAttr(s.quark)+'" target="_blank" onclick="event.stopPropagation()">'+escHtml(s.name)+'</a><div class="song-singer">'+escHtml(s.singer)+'</div></div><button class="download-btn" data-quark="'+escAttr(s.quark)+'" data-name="'+escAttr(s.name)+' - '+escAttr(s.singer)+'" onclick="doDownload(\x27'+escAttr(s.name)+'\x27,\x27'+escAttr(s.singer)+'\x27,\x27'+escAttr(s.quark)+'\x27)"><span class="tooltip">夸克网盘下载</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div>';
     }
     html+='</div>';
   }
@@ -16555,7 +16559,7 @@ function showSuggestions(){
     var post=s.song.substring(s.idx+ql.length);
     html+='<div class="suggest-item" onclick="selectSuggestion('+i+')">'+escHtml(pre)+'<span class="match">'+escHtml(match)+'</span>'+escHtml(post)+'</div>';
   }
-  dd.innerHTML=html;
+  dd.innerHTML=html+'<button class="suggest-close" onclick="document.getElementById(\'suggestDropdown\').style.display=\'none\';event.stopPropagation()">✕</button>';
   dd.style.display='block';
   window._suggestions=unique;
 }
