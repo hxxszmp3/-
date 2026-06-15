@@ -61,6 +61,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(58,123,213,.3)}
 .toast.show{opacity:1}
+.back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;color:#fff;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
+.back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
 .site-footer{border-top:1px solid #e8edf2;margin-top:40px;padding:14px 16px 18px;background:transparent}
 .footer-row{max-width:780px;margin:0 auto;display:flex;gap:16px}
 .footer-box{flex:1;padding:8px 12px;border-radius:8px;border:1px solid #eef3f8;cursor:pointer;user-select:none}
@@ -149,7 +151,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <div class="update-bar"><span class="live-dot"></span>
     <div class="update-track" id="updateTrack">
-      <span class="update-item"><span class="live-dot"></span>2026-06-10 新增曲库+歌手合集更新</span><span class="update-sep">|</span>
+      <span class="update-item"><span class="live-dot"></span>2026-06-10 威仔等新歌入库+歌手搜索上线</span><span class="update-sep">|</span>
       <span class="update-item">2026-06-09 新增歌手合集223位</span><span class="update-sep">|</span>
       <span class="update-item">2026-06-08 新增周杰伦194首曲库</span><span class="update-sep">|</span>
       <span class="update-item">2026-06-08 歌单新增：2026抖音热歌合集</span><span class="update-sep">|</span>
@@ -206,7 +208,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   </div>
 
   <div class="tab-panel" id="tab-singer" style="display:none">
-    <input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手，直接跳转夸克..." onkeydown="if(event.key==='Enter')searchSinger()"><button class="singer-search-btn2" onclick="searchSinger()">搜索</button><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
+    <input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()"><button class="singer-search-btn2" onclick="searchSinger()">搜索</button><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
   </div>
 
 </main>
@@ -214,6 +216,75 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
 <script>
 var songDB = {
+  '威仔': [
+    { name: '一首情歌唱到天亮', cover: '🎵', quark: 'https://pan.quark.cn/s/05f9c9f7f04e' },
+    { name: '不再联络', cover: '🎵', quark: 'https://pan.quark.cn/s/7d08360a0e0d' },
+    { name: '不接我电话', cover: '🎵', quark: 'https://pan.quark.cn/s/80ef16ef50d5' },
+    { name: '不明白放不开', cover: '🎵', quark: 'https://pan.quark.cn/s/a43ba8b9f5cd' },
+    { name: '不爱我就不要说爱我', cover: '🎵', quark: 'https://pan.quark.cn/s/a0383b36ea70' },
+    { name: '从不在乎我', cover: '🎵', quark: 'https://pan.quark.cn/s/306f91ae8f55' },
+    { name: '从此以后一个人', cover: '🎵', quark: 'https://pan.quark.cn/s/e16fc9d8720c' },
+    { name: '你不必再假装', cover: '🎵', quark: 'https://pan.quark.cn/s/adcbdeeb0e45' },
+    { name: '你不用多说', cover: '🎵', quark: 'https://pan.quark.cn/s/f0a8da5cc1fc' },
+    { name: '你知道我会难过', cover: '🎵', quark: 'https://pan.quark.cn/s/3641e8e101db' },
+    { name: '你还是选择了他', cover: '🎵', quark: 'https://pan.quark.cn/s/8115a952eecd' },
+    { name: '假装我没有爱过', cover: '🎵', quark: 'https://pan.quark.cn/s/53d06e459ee6' },
+    { name: '傻瓜不准难过', cover: '🎵', quark: 'https://pan.quark.cn/s/be10061f8b31' },
+    { name: '像极了爱情', cover: '🎵', quark: 'https://pan.quark.cn/s/26397de979f6' },
+    { name: '再也不会打扰你', cover: '🎵', quark: 'https://pan.quark.cn/s/83c81da1bf0f' },
+    { name: '再见，时光', cover: '🎵', quark: 'https://pan.quark.cn/s/827f31f09679' },
+    { name: '分开后才发觉', cover: '🎵', quark: 'https://pan.quark.cn/s/98996ec2a405' },
+    { name: '分手不回头', cover: '🎵', quark: 'https://pan.quark.cn/s/3fc67b1fd791' },
+    { name: '别把我丢下', cover: '🎵', quark: 'https://pan.quark.cn/s/8cc913162538' },
+    { name: '别让我忘不掉', cover: '🎵', quark: 'https://pan.quark.cn/s/0b1ae757fa2f' },
+    { name: '别让我放不下', cover: '🎵', quark: 'https://pan.quark.cn/s/23dd20abc09f' },
+    { name: '别说抱歉', cover: '🎵', quark: 'https://pan.quark.cn/s/f043aa17d853' },
+    { name: '只是借过', cover: '🎵', quark: 'https://pan.quark.cn/s/28884e876798' },
+    { name: '各自天涯', cover: '🎵', quark: 'https://pan.quark.cn/s/88f964384c95' },
+    { name: '同样的情话', cover: '🎵', quark: 'https://pan.quark.cn/s/165ab0e043f8' },
+    { name: '后来多想再见他', cover: '🎵', quark: 'https://pan.quark.cn/s/8a108de14181' },
+    { name: '听说你有了新的爱人', cover: '🎵', quark: 'https://pan.quark.cn/s/da047a498fc1' },
+    { name: '地久天长玩笑一场', cover: '🎵', quark: 'https://pan.quark.cn/s/591dc3a069ab' },
+    { name: '多想你能知道', cover: '🎵', quark: 'https://pan.quark.cn/s/383de560c96f' },
+    { name: '太过卑微', cover: '🎵', quark: 'https://pan.quark.cn/s/8b21501c3736' },
+    { name: '奶狗小哥', cover: '🎵', quark: 'https://pan.quark.cn/s/f5fe0bfccf77' },
+    { name: '如果不是你出现', cover: '🎵', quark: 'https://pan.quark.cn/s/1584ed4e3c33' },
+    { name: '如果有天我变得复杂', cover: '🎵', quark: 'https://pan.quark.cn/s/ad21cc6ef8c3' },
+    { name: '孤独的人总喝酒', cover: '🎵', quark: 'https://pan.quark.cn/s/e80104201b29' },
+    { name: '怕爱你太明显', cover: '🎵', quark: 'https://pan.quark.cn/s/5b9ae17bfee8' },
+    { name: '总是不永恒', cover: '🎵', quark: 'https://pan.quark.cn/s/3fbaf21671fd' },
+    { name: '悲伤童话', cover: '🎵', quark: 'https://pan.quark.cn/s/40342a38f5ef' },
+    { name: '情人无泪', cover: '🎵', quark: 'https://pan.quark.cn/s/1baf59e980bc' },
+    { name: '我也憧憬过', cover: '🎵', quark: 'https://pan.quark.cn/s/d00de695ccce' },
+    { name: '我会原谅', cover: '🎵', quark: 'https://pan.quark.cn/s/73cbac7582b9' },
+    { name: '散了就散了', cover: '🎵', quark: 'https://pan.quark.cn/s/d8965779636d' },
+    { name: '明知你不属于我', cover: '🎵', quark: 'https://pan.quark.cn/s/53641a2e46cb' },
+    { name: '星辰落入了眼睛', cover: '🎵', quark: 'https://pan.quark.cn/s/44754c4076f2' },
+    { name: '是我一人放不下', cover: '🎵', quark: 'https://pan.quark.cn/s/cb12561bc73e' },
+    { name: '最后一次分手', cover: '🎵', quark: 'https://pan.quark.cn/s/21af3d4c1866' },
+    { name: '最后决定', cover: '🎵', quark: 'https://pan.quark.cn/s/bc86888b43b5' },
+    { name: '最后没有在一起', cover: '🎵', quark: 'https://pan.quark.cn/s/8656119ee4f7' },
+    { name: '最美情话', cover: '🎵', quark: 'https://pan.quark.cn/s/676d40a202ea' },
+    { name: '最自由的笑', cover: '🎵', quark: 'https://pan.quark.cn/s/797887b64e31' },
+    { name: '渡我不渡她（新版）', cover: '🎵', quark: 'https://pan.quark.cn/s/8b0e79cddd33' },
+    { name: '相爱后还是分开', cover: '🎵', quark: 'https://pan.quark.cn/s/fa7ff6ec5164' },
+    { name: '秋天的主题', cover: '🎵', quark: 'https://pan.quark.cn/s/78716062a8a5' },
+    { name: '终结敷衍', cover: '🎵', quark: 'https://pan.quark.cn/s/c395b8ba2109' },
+    { name: '萌二代', cover: '🎵', quark: 'https://pan.quark.cn/s/16df13d4c6f9' },
+    { name: '触碰不到的痛', cover: '🎵', quark: 'https://pan.quark.cn/s/132581319f38' },
+    { name: '说好不分离', cover: '🎵', quark: 'https://pan.quark.cn/s/41a6fd439667' },
+    { name: '过去式童话', cover: '🎵', quark: 'https://pan.quark.cn/s/a7b885e7bbf2' },
+    { name: '还是很遗憾', cover: '🎵', quark: 'https://pan.quark.cn/s/c5e9335c907e' },
+    { name: '还是忘不了她', cover: '🎵', quark: 'https://pan.quark.cn/s/43afaf8bfaa8' },
+    { name: '还是散了', cover: '🎵', quark: 'https://pan.quark.cn/s/3358f4655199' },
+    { name: '还给你自由', cover: '🎵', quark: 'https://pan.quark.cn/s/74673cda3d8b' },
+    { name: '这个夏天我们离别', cover: '🎵', quark: 'https://pan.quark.cn/s/a1e879b50071' },
+    { name: '这么多年了', cover: '🎵', quark: 'https://pan.quark.cn/s/d357d7073f59' },
+    { name: '遗失的青春', cover: '🎵', quark: 'https://pan.quark.cn/s/a91aaf26a1a3' },
+    { name: '重复的伤', cover: '🎵', quark: 'https://pan.quark.cn/s/a54c467f4772' },
+    { name: '错过便是永久', cover: '🎵', quark: 'https://pan.quark.cn/s/d727dddbdfbe' },
+    { name: '青丝已泛白', cover: '🎵', quark: 'https://pan.quark.cn/s/f195336c20fb' }
+  ],
   'avril lavigne': [
     { name: 'bad girl', cover: '🎵', quark: 'https://pan.quark.cn/s/11c3f177b465' }
   ],
@@ -16370,7 +16441,7 @@ function searchSinger(){
     r.textContent='未找到该歌手，持续更新中';
   }
 }
-function switchTab(tab){window.scrollTo(0,0);
+function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,0);
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
   document.getElementById('tab-'+tab).style.display='block';
@@ -16565,7 +16636,9 @@ function escAttr(s) {
   return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
-window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSingerCollection();});
+window.addEventListener('scroll',function(){var b=document.getElementById('backTop');if(b)b.style.display=window.scrollY>400?'block':'none';});
+window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSingerCollection();
+  var st=localStorage.getItem('activeTab');if(st)switchTab(st);});
 </script>
 
 <div class="site-footer">
@@ -16587,5 +16660,6 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
       </div>
     </div>
   </div>
-</div></body>
+</div><button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
+</body>
 </html>
