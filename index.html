@@ -16442,13 +16442,8 @@ function searchSinger(){
   }
   if(found){
     r.textContent='';
-    var a=document.createElement('a');
-    a.href=singerCollection[found];
-    a.target='_blank';
-    a.style.display='none';
-    document.body.appendChild(a);
-    a.click();addHistory(found,'singer');
-    document.body.removeChild(a);
+    window.open(singerCollection[found],'_blank');
+    addHistory(found,'singer');
   }else{
     r.textContent='未找到该歌手，持续更新中';
   }
