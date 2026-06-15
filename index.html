@@ -16442,14 +16442,83 @@ function searchSinger(){
   }
   if(found){
     r.textContent='';
-    window.open(singerCollection[found],'_blank');
-    addHistory(found,'singer');
+    var a=document.createElement('a');
+    a.href=singerCollection[found];
+    a.target='_blank';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();addHistory(found,'singer');
+    document.body.removeChild(a);
   }else{
-    r.textContent='未找到该歌手';
+    r.textContent='未找到该歌手，持续更新中';
   }
 }
-
-function switchTab(tab){function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,0);
+// ========== 搜索历史 ==========
+var searchHistory=JSON.parse(localStorage.getItem('searchHistory')||'[]');
+function addHistory(q,type){
+  if(!q||q.length<1)return;
+  searchHistory=searchHistory.filter(function(h){return h.q!==q;});
+  searchHistory.unshift({q:q,t:type});
+  if(searchHistory.length>15)searchHistory.pop();
+  localStorage.setItem('searchHistory',JSON.stringify(searchHistory));
+  renderHistory();
+}
+function renderHistory(){
+  var types={single:'historySingle',batch:'historyBatch',singer:'historySinger'};
+  for(var t in types){
+    var el=document.getElementById(types[t]);
+    if(!el)continue;
+    var filtered=searchHistory.filter(function(h){return h.t===t;});
+    if(filtered.length===0){el.style.display='none';continue;}
+    var html='<span class="sh-label">最近搜索</span>';
+    for(var i=0;i<Math.min(filtered.length,8);i++){
+      html+='<span class="sh-item" onclick="useHistory(' + chr(39) + chr(39) + '+filtered[i].q.replace(/' + chr(92) + chr(39) + '/g,' + chr(92) + chr(92) + chr(39) + ')+' + chr(39) + chr(39) + ',' + chr(39) + chr(39) + '+t+' + chr(39) + chr(39) + ')">'+escHtml(filtered[i].q)+'</span>';
+    }
+    html+='<span class="sh-clear" onclick="clearHistory(' + chr(39) + chr(39) + '+t+' + chr(39) + chr(39) + ')">✕</span>';
+    el.innerHTML=html;
+  }
+}
+function useHistory(q,type){
+  if(type==='single'){document.getElementById('searchInput').value=q;doSearch();}
+  else if(type==='batch'){document.getElementById('batchInput').value=q;batchSearch();}
+  else{document.getElementById('singerSearchIn').value=q;searchSinger();}
+}
+function clearHistory(type){
+  searchHistory=searchHistory.filter(function(h){return h.t!==type;});
+  localStorage.setItem('searchHistory',JSON.stringify(searchHistory));
+  renderHistory();
+}
+// Show history on focus
+document.addEventListener('focusin',function(e){
+  var t=e.target;
+  if(t.id==='searchInput'||t.id==='batchInput'||t.id==='singerSearchIn'){
+    renderHistory();
+    var type=t.id==='searchInput'?'single':t.id==='batchInput'?'batch':'singer';
+    var el=document.getElementById('history'+type.charAt(0).toUpperCase()+type.slice(1));
+    if(el&&el.textContent.trim().length>0)el.style.display='block';
+  }
+  return;
+  var t=e.target;
+  var type=null;
+  if(t.id==='searchInput')type='single';
+  else if(t.id==='batchInput')type='batch';
+  else if(t.id==='singerSearchIn')type='singer';
+  if(type){
+    if(searchHistory.some(function(h){return h.t===type;})){
+      document.getElementById('history'+type.charAt(0).toUpperCase()+type.slice(1)).style.display='block';
+    }
+    renderHistory();
+  }
+});
+document.addEventListener('focusout',function(e){
+  setTimeout(function(){
+    ['Single','Batch','Singer'].forEach(function(t){
+      var el=document.getElementById('history'+t);
+      if(el)el.style.display='none';
+    });
+  },200);
+});
+function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,0);
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
   document.getElementById('tab-'+tab).style.display='block';
