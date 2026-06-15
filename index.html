@@ -16443,7 +16443,7 @@ function searchSinger(){
     a.target='_blank';
     a.style.display='none';
     document.body.appendChild(a);
-    a.click();
+    a.click();addHistory(found,'singer');
     document.body.removeChild(a);
   }else{
     r.textContent='未找到该歌手，持续更新中';
