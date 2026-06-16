@@ -161,12 +161,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <div class="update-bar"><span class="live-dot"></span>
     <div class="update-track" id="updateTrack">
-      <span class="update-item"><span class="live-dot"></span>2026-06-10 威仔等新歌入库+歌手搜索上线</span><span class="update-sep">|</span>
-      <span class="update-item">2026-06-09 新增歌手合集223位</span><span class="update-sep">|</span>
-      <span class="update-item">2026-06-08 新增周杰伦194首曲库</span><span class="update-sep">|</span>
-      <span class="update-item">2026-06-08 歌单新增：2026抖音热歌合集</span><span class="update-sep">|</span>
-      <span class="update-item">2026-06-07 批量新增41个曲库1369首</span><span class="update-sep">|</span>
-      <span class="update-item">持续更新中 · www.hxxsz666.vip</span>
+      <span class="update-item" id="upd1"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd2"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd3"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd4"></span><span class="update-sep">|</span>
+      <span class="update-item">收藏 www.hxxsz666.vip</span>
     </div>
   </div>
 
@@ -17969,6 +17968,12 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
   var firstItem=document.querySelector('.update-item');
   if(firstItem)firstItem.innerHTML='<span class="live-dot"></span>'+today+' 曲库持续更新中，欢迎收藏';
 
+  var now=new Date();
+  var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
+  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 曲库持续更新中';
+  document.getElementById('upd2').textContent=td+' 新增419首曲库';
+  document.getElementById('upd3').textContent=td+' 歌手合集+歌单上线';
+  document.getElementById('upd4').textContent=td+' 批量搜索+歌手搜索';
   var st=localStorage.getItem('activeTab')||'single';
   document.getElementById('tab-'+st).style.display='block';
   document.querySelectorAll('.tab-btn').forEach(function(b){
