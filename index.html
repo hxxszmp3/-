@@ -17886,7 +17886,9 @@ function doSearch() {
           var key = singer + '||' + songs[j].name;
           if (!seen[key]) {
             seen[key] = true;
-            results.push({ name: songs[j].name, cover: songs[j].cover, quark: songs[j].quark, singer: singer });
+            var dn=songs[j].name,ds=singer;
+          if(songDB[dn]&&!songDB[ds]){var t=dn;dn=ds;ds=t;}
+          results.push({ name: dn, cover: songs[j].cover, quark: songs[j].quark, singer: ds });
           }
         }
       }
