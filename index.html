@@ -179,7 +179,11 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;p
 .tab-bar{display:flex;gap:8px;margin-bottom:20px}
 .tab-btn{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#8888aa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .tab-btn:hover{border-color:#a78bfa;color:#a78bfa}
+.tab-btn{position:relative;overflow:hidden}
+.tab-btn::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border-radius:22px;background:conic-gradient(transparent 0deg,rgba(168,85,247,.3) 90deg,transparent 180deg,rgba(108,92,231,.2) 270deg,transparent 360deg);animation:tab-flow 3s linear infinite;z-index:-1}
 .tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border-color:#6c5ce7}
+.tab-btn.active::before{background:conic-gradient(transparent 0deg,rgba(255,255,255,.4) 60deg,transparent 120deg,rgba(168,85,247,.5) 200deg,transparent 280deg);animation-duration:2s}
+@keyframes tab-flow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
