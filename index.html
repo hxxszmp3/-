@@ -24,6 +24,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .title-char:nth-child(5){animation-delay:.6s}
 .title-char:nth-child(6){animation-delay:.75s}
 @keyframes titleBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-title{font-size:32px;font-weight:700;background:linear-gradient(135deg,#c4b5fd,#a78bfa,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
 .hero h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#c4b5fd,#a78bfa,#7c3aed,#6c5ce7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
 .hero p{color:#8888aa;font-size:13px}
 .search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px)}
@@ -129,6 +130,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .float-btn:hover{background:rgba(108,92,231,.3);border-color:#c4b5fd;transform:translateY(-50%) scale(1.1);box-shadow:0 0 25px rgba(168,85,247,.4)}
 .back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;color:#fff;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
 .back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
+.fb{position:fixed;left:50px;z-index:99;width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,255,255,.06);color:#a855f7;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:12px;font-weight:700;cursor:grab;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;line-height:20px;transition:background .2s}
+.fb:hover{background:rgba(255,255,255,.14)}
 .site-footer{border-top:1px solid #e8edf2;margin-top:40px;padding:14px 16px 18px;background:transparent}
 .footer-row{max-width:780px;margin:0 auto;display:flex;gap:16px}
 .footer-box{flex:1;padding:8px 12px;border-radius:8px;border:1px solid #eef3f8;cursor:pointer;user-select:none}
@@ -218,7 +221,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
 <main class="main">
   <div class="hero">
-    <h1><span class="title-char">发</span><span class="title-char">现</span><span class="title-char">你</span><span class="title-char">的</span><span class="title-char">音</span><span class="title-char">乐</span></h1>
+    <h1 class="hero-title">发现你的音乐</h1>
     <p>和弦叙事者</p>
   </div>
 
@@ -17445,6 +17448,7 @@ function renderPlaylists(){
   document.getElementById('plCount').textContent=items.length;
 }
 
+function showDisclaimer(){alert('免责声明\n\n本站所有资源均来自网络公开分享，仅供个人学习交流使用。\n版权归原作者所有，如有侵权请联系 gg318364167@gmail.com');}
 function copyAllLinks(){
   var links=[];
   var cards=document.querySelectorAll('.song-card');
@@ -18059,7 +18063,21 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
     b.classList.remove('active');
     if(b.textContent.indexOf(st==='single'?'单曲':st==='batch'?'批量':st==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
   });});
+(function(){
+  function drag(el){
+    var ox,oy,down=false;
+    el.addEventListener('mousedown',function(e){down=true;ox=e.clientX-el.offsetLeft;oy=e.clientY-el.offsetTop;el.style.transition='none';e.preventDefault();});
+    el.addEventListener('touchstart',function(e){down=true;var t=e.touches[0];ox=t.clientX-el.offsetLeft;oy=t.clientY-el.offsetTop;el.style.transition='none';},{passive:false});
+    document.addEventListener('mousemove',function(e){if(!down)return;el.style.left=(e.clientX-ox)+'px';el.style.top=(e.clientY-oy)+'px';el.style.bottom='auto';});
+    document.addEventListener('touchmove',function(e){if(!down)return;var t=e.touches[0];el.style.left=(t.clientX-ox)+'px';el.style.top=(t.clientY-oy)+'px';el.style.bottom='auto';},{passive:false});
+    document.addEventListener('mouseup',function(){down=false;el.style.transition='background .2s';});
+    document.addEventListener('touchend',function(){down=false;el.style.transition='background .2s';});
+  }
+  setTimeout(function(){var a=document.getElementById('fbQQ'),b=document.getElementById('fbDisc');if(a)drag(a);if(b)drag(b);},500);
+})();
 </script>
 
+<a class="fb" id="fbQQ" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="音乐交流群" style="bottom:100px">●群</a>
+<button class="fb" id="fbDisc" onclick="showDisclaimer()" title="免责声明" style="bottom:72px">●责</button>
 </body>
 </html>
