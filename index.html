@@ -108,6 +108,11 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;p
 .singer-name-item:hover{color:#c4b5fd!important}
 .singer-letter-title{color:#a78bfa!important}
 .singer-letter-block{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.06)!important}
+.glow-box{position:relative;overflow:hidden;border:1px solid transparent;border-radius:14px}
+.glow-box::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;border-radius:14px;background:conic-gradient(transparent,rgba(108,92,231,.15),rgba(168,85,247,.1),transparent,rgba(108,92,231,.08),rgba(168,85,247,.06));animation:border-glow 4s linear infinite;z-index:0;pointer-events:none}
+.glow-box>*{position:relative;z-index:1}
+.sticky-header{position:relative;overflow:hidden;margin-bottom:8px}
+.sticky-header::before{content:"";position:absolute;inset:0;border-radius:14px;padding:1px;background:conic-gradient(transparent,rgba(108,92,231,.2),rgba(168,85,247,.15),transparent,rgba(108,92,231,.1),rgba(168,85,247,.08));animation:border-glow 5s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .toast.show{opacity:1}
 .search-history{display:none;padding:4px 0;margin-bottom:8px}
@@ -247,7 +252,7 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;p
 
   <!-- Tab 2: 批量搜索 -->
   <div class="tab-panel" id="tab-batch" style="display:none">
-    <div class="batch-section">
+    <div class="glow-box class="batch-section">
       <div class="batch-title">📋 批量搜索（歌手+歌名精准匹配）</div>
       <div class="batch-row">
         <textarea class="batch-input" id="batchInput" placeholder="一行一个，回车换行&#10;" onkeydown=""></textarea>
@@ -260,7 +265,7 @@ body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;p
 
   <!-- Tab 3: 歌单大厅 -->
   <div class="tab-panel" id="tab-playlist" style="display:none">
-    <div class="playlist-section">
+    <div class="glow-box class="playlist-section">
       <div class="playlist-title">📀 精选歌单（共<span id="plCount">0</span>个）</div>
       <div id="playlistContainer"></div>
     </div>
