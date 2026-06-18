@@ -10,62 +10,62 @@
 <title>MusicFind - 音乐搜索</title>
 <style>
 html{font-size:200%}*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f2f6fa;color:#333;min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#10102e 30%,#1a1040 60%,#0d0d25 100%);color:#e0e0f0;min-height:100vh;background-attachment:fixed}
 .header{background:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8edf2;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#3a7bd5;letter-spacing:1px}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#6db3f2,#3a7bd5);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#6c5ce7,#a855f7);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
 .main{max-width:780px;margin:0 auto;padding:28px 20px 40px}
 .hero{text-align:center;margin-bottom:32px}
-.hero h1{font-size:32px;font-weight:700;color:#3a7bd5;margin-bottom:6px}
-.hero p{color:#999;font-size:13px}
-.search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:#fff;border-radius:10px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid #dce6f0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.mode-btn{padding:10px 28px;border:none;background:transparent;color:#999;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
-.mode-btn.active{background:#3a7bd5;color:#fff;font-weight:600}
-.mode-btn:not(.active):hover{color:#3a7bd5;background:#f0f5fb}
-.search-box{display:flex;gap:8px;margin-bottom:28px;position:relative;background:#fff;border-radius:12px;padding:5px;border:2px solid #dce6f0;transition:border-color .3s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.hero h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#6c5ce7,#a855f7,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.hero p{color:#8888aa;font-size:13px}
+.search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px)}
+.mode-btn{padding:10px 28px;border:none;background:transparent;color:#8888aa;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
+.mode-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;font-weight:600}
+.mode-btn:not(.active):hover{color:#a78bfa;background:rgba(255,255,255,0.05)}
+.search-box{display:flex;gap:8px;margin-bottom:28px;position:relative;background:rgba(255,255,255,0.05);border-radius:14px;padding:5px;border:2px solid rgba(255,255,255,0.08);transition:all .3s;box-shadow:0 4px 24px rgba(0,0,0,.2);backdrop-filter:blur(20px)}
 .search-box:focus-within{border-color:#3a7bd5;box-shadow:0 2px 12px rgba(58,123,213,.12)}
-.search-input{flex:1;background:transparent;border:none;outline:none;color:#333;font-size:15px;padding:13px 16px}
-.search-input::placeholder{color:#bbb}
-.search-btn{background:linear-gradient(135deg,#6db3f2,#3a7bd5);border:none;color:#fff;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
-.search-btn:hover{background:linear-gradient(135deg,#5da3e8,#2d6dc4);transform:translateY(-1px);box-shadow:0 6px 20px rgba(58,123,213,.3)}
+.search-input{flex:1;background:transparent;border:none;outline:none;color:#e0e0f0;font-size:15px;padding:13px 16px}
+.search-input::placeholder{color:#555}
+.search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);border:none;color:#fff;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
+.search-btn:hover{background:linear-gradient(135deg,#5b4cdb,#9333ea);transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .search-btn:active{transform:scale(.97)}
-.hint{text-align:center;color:#bbb;font-size:13px;margin-bottom:24px}
+.hint{text-align:center;color:#555;font-size:13px;margin-bottom:24px}
 .hint span{color:#3a7bd5;font-weight:600;cursor:pointer;transition:opacity .2s}
 .hint span:hover{opacity:.7}
 .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.results-count{font-size:13px;color:#999}
-.results-count strong{color:#3a7bd5;font-size:15px}
+.results-count{font-size:13px;color:#8888aa}
+.results-count strong{color:#a78bfa;font-size:15px}
 .song-list{display:flex;flex-direction:column;gap:6px}
-.song-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:12px 16px;transition:all .25s;border:1px solid #eef3f8;box-shadow:0 1px 3px rgba(0,0,0,.03)}
-.song-card:hover{background:#fbfdff;border-color:#d4e2f2;transform:translateX(3px);box-shadow:0 2px 10px rgba(58,123,213,.08)}
-.song-index{width:30px;height:30px;border-radius:50%;background:#f0f4f8;display:flex;align-items:center;justify-content:center;font-size:12px;color:#aaa;flex-shrink:0;font-weight:500}
-.song-card:nth-child(1) .song-index{background:rgba(58,123,213,.12);color:#3a7bd5;font-weight:700}
-.song-card:nth-child(2) .song-index{background:rgba(58,123,213,.08);color:#5b9bd5}
-.song-card:nth-child(3) .song-index{background:rgba(58,123,213,.05);color:#6db3f2}
+.song-card{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.04);border-radius:12px;padding:12px 16px;transition:all .25s;border:1px solid rgba(255,255,255,0.06);box-shadow:0 2px 12px rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+.song-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(108,92,231,.3);transform:translateX(3px);box-shadow:0 4px 20px rgba(108,92,231,.15)}
+.song-index{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;color:#777;flex-shrink:0;font-weight:500}
+.song-card:nth-child(1) .song-index{background:rgba(108,92,231,.2);color:#a78bfa;font-weight:700}
+.song-card:nth-child(2) .song-index{background:rgba(108,92,231,.12);color:#8b5cf6}
+.song-card:nth-child(3) .song-index{background:rgba(108,92,231,.07);color:#7c3aed}
 .song-cover{width:44px;height:44px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#e8f0f8,#dce6f0);display:flex;align-items:center;justify-content:center;}
 .song-cover svg{width:24px;height:24px}
 .song-info{flex:1;min-width:0}
-.song-name{font-size:15px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
-.song-name-link{font-size:15px;font-weight:600;color:#2c3e50;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.song-name{font-size:15px;font-weight:600;color:#e8e8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.song-name-link{font-size:15px;font-weight:600;color:#e8e8f8;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .song-name-link:hover{color:#3a7bd5}
-.song-singer{font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.download-btn{flex-shrink:0;width:38px;height:38px;border-radius:9px;background:rgba(58,123,213,.06);border:1px solid rgba(58,123,213,.18);color:#3a7bd5;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative}
-.download-btn:hover{background:#3a7bd5;color:#fff;box-shadow:0 4px 14px rgba(58,123,213,.35);transform:scale(1.08)}
+.song-singer{font-size:12px;color:#8888aa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.download-btn{flex-shrink:0;width:38px;height:38px;border-radius:9px;background:rgba(108,92,231,.08);border:1px solid rgba(108,92,231,.2);color:#a78bfa;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative}
+.download-btn:hover{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;box-shadow:0 4px 14px rgba(108,92,231,.4);transform:scale(1.08)}
 .download-btn:active{transform:scale(.93)}
 .download-btn svg{width:18px;height:18px}
 .download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#555;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 .download-btn:hover .tooltip{opacity:1}
-.empty-state{text-align:center;padding:60px 20px;color:#bbb}
+.empty-state{text-align:center;padding:60px 20px;color:#555}
 .empty-state .empty-icon{font-size:64px;margin-bottom:14px;opacity:.35}
 .empty-state p{font-size:14px}
 .loading-wrap{text-align:center;padding:40px}
-.spinner{display:inline-block;width:32px;height:32px;border:3px solid #e8edf2;border-top-color:#3a7bd5;border-radius:50%;animation:spin .8s linear infinite}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid rgba(255,255,255,0.06);border-top-color:#a78bfa;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(58,123,213,.3)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .toast.show{opacity:1}
 .search-history{display:none;padding:4px 0;margin-bottom:8px}
 .search-history .sh-label{font-size:10px;color:#ccc;margin-right:8px}
-.search-history .sh-item{display:inline-block;padding:2px 10px;margin:2px 4px;background:#f5f5f5;border-radius:10px;font-size:11px;color:#999;cursor:pointer;transition:all .15s}
+.search-history .sh-item{display:inline-block;padding:2px 10px;margin:2px 4px;background:#f5f5f5;border-radius:10px;font-size:11px;color:#8888aa;cursor:pointer;transition:all .15s}
 .search-history .sh-item:hover{background:#e8f0f8;color:#3a7bd5}
 .search-history .sh-clear{font-size:10px;color:#ddd;cursor:pointer;margin-left:6px}
 .search-history .sh-clear:hover{color:#e74c3c}
@@ -78,8 +78,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .footer-box.open .footer-box-content{display:block}
 .footer-box.open .fold-arrow{display:inline-block;transform:rotate(90deg)}
 .fold-arrow{font-size:10px;transition:transform .2s}
-.footer-box-title{font-size:12px;font-weight:600;color:#999;margin-bottom:4px}
-.footer-box p{font-size:11px;color:#bbb;line-height:1.7;margin-bottom:2px}
+.footer-box-title{font-size:12px;font-weight:600;color:#8888aa;margin-bottom:4px}
+.footer-box p{font-size:11px;color:#555;line-height:1.7;margin-bottom:2px}
 .footer-qq-btn{display:inline-block;margin-top:4px;padding:4px 12px;background:rgba(58,123,213,.08);color:#3a7bd5;border:1px solid rgba(58,123,213,.2);border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;transition:all .2s}
 .footer-qq-btn:hover{background:#3a7bd5;color:#fff}
 @media(max-width:600px){.footer-row{flex-direction:column}}
@@ -91,19 +91,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 @keyframes scroll-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @keyframes blink{0%,100%{opacity:.3}50%{opacity:.9}}
 /* 批量搜索 */
-.batch-section{margin-bottom:28px;background:#fff;border-radius:12px;padding:18px;border:1px solid #eef3f8;box-shadow:0 1px 3px rgba(0,0,0,.03)}
-.batch-title{font-size:15px;font-weight:700;color:#3a7bd5;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.batch-section{margin-bottom:28px;background:rgba(255,255,255,0.04);border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 2px 12px rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+.batch-title{font-size:15px;font-weight:700;color:#a78bfa;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .batch-row{display:flex;gap:8px}
 .batch-input{flex:1;padding:12px 16px;border:2px solid #dce6f0;border-radius:10px;font-size:14px;outline:none;resize:vertical;font-family:inherit;min-height:140px;line-height:1.8}
 .batch-input:focus{border-color:#3a7bd5}
 .batch-btn{background:#3a7bd5;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-start}
 .batch-btn:hover{background:#2d6dc4}
-.suggest-dropdown{position:absolute;background:#fff;border:1px solid #dce6f0;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;width:calc(100% - 90px);z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.suggest-dropdown{position:absolute;background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;width:calc(100% - 90px);z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .suggest-item{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f3f7}
-.suggest-item:hover{background:#f0f5fb}
+.suggest-item:hover{background:rgba(108,92,231,.15)}
 .suggest-item .match{color:#3a7bd5;font-weight:700}
-.suggest-item .rest{color:#999}
-.suggest-close{position:absolute;top:6px;right:8px;background:none;border:none;font-size:14px;color:#bbb;cursor:pointer;padding:2px 6px}
+.suggest-item .rest{color:#8888aa}
+.suggest-close{position:absolute;top:6px;right:8px;background:none;border:none;font-size:14px;color:#555;cursor:pointer;padding:2px 6px}
 .suggest-close:hover{color:#e74c3c}
 .batch-results{margin-top:12px}
 .batch-item{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;margin-bottom:4px;font-size:13px}
@@ -120,14 +120,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .pl-card:hover{background:#fafcfd;margin:0 -18px;padding:12px 18px;border-radius:8px}
 .pl-cover{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e8f0f8,#dce6f0);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .pl-info{flex:1;min-width:0}
-.pl-name{font-size:14px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pl-time{font-size:11px;color:#bbb;margin-top:2px}
+.pl-name{font-size:14px;font-weight:600;color:#e8e8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-time{font-size:11px;color:#555;margin-top:2px}
 .pl-btn{padding:6px 14px;border-radius:8px;border:1px solid #3a7bd5;background:rgba(58,123,213,.06);color:#3a7bd5;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
 .pl-btn:hover{background:#3a7bd5;color:#fff}
 .tab-bar{display:flex;gap:8px;margin-bottom:20px}
-.tab-btn{padding:8px 20px;border-radius:20px;border:2px solid #dce6f0;background:#fff;color:#888;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.tab-btn:hover{border-color:#3a7bd5;color:#3a7bd5}
-.tab-btn.active{background:#3a7bd5;color:#fff;border-color:#3a7bd5}
+.tab-btn{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#8888aa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.tab-btn:hover{border-color:#a78bfa;color:#a78bfa}
+.tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border-color:#6c5ce7}
 .singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
@@ -17342,7 +17342,7 @@ function batchSearch(){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
-  var html='<div style="margin-bottom:12px;font-size:13px;color:#999;display:flex;align-items:center;gap:10px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copyAllLinks()">📥 批量下载</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div>';
+  var html='<div style="margin-bottom:12px;font-size:13px;color:#8888aa;display:flex;align-items:center;gap:10px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copyAllLinks()">📥 批量下载</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div>';
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
@@ -17411,7 +17411,7 @@ function copyAllLinks(){
   var box=document.createElement('div');
   box.style.cssText='background:#fff;border-radius:14px;padding:16px;width:92%;max-width:400px;max-height:70vh;overflow:auto';
   box.onclick=function(e){e.stopPropagation();};
-  box.innerHTML='<div style=\"font-weight:700;margin-bottom:8px;color:#333\">📋 长按下方文字 → 全选 → 拷贝</div><textarea id=\"copyFallback\" style=\"width:100%;height:180px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px\" readonly>'+text.replace(/</g,'&lt;')+'</textarea><div style=\"font-size:11px;color:#999;margin-top:6px\">共 '+links.length+' 条链接，拷贝后夸克会自动识别</div>';
+  box.innerHTML='<div style=\"font-weight:700;margin-bottom:8px;color:#333\">📋 长按下方文字 → 全选 → 拷贝</div><textarea id=\"copyFallback\" style=\"width:100%;height:180px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px\" readonly>'+text.replace(/</g,'&lt;')+'</textarea><div style=\"font-size:11px;color:#8888aa;margin-top:6px\">共 '+links.length+' 条链接，拷贝后夸克会自动识别</div>';
   overlay.appendChild(box);
   document.body.appendChild(overlay);
   // Auto-select after render
@@ -17658,7 +17658,7 @@ var singerCollection = {
 function renderSingerCollection(){
   var singers=Object.keys(singerCollection);
   if(singers.length===0){
-    document.getElementById('singerGrid').innerHTML='<div style="color:#999;text-align:center;padding:40px">暂无歌手合集</div>';
+    document.getElementById('singerGrid').innerHTML='<div style="color:#8888aa;text-align:center;padding:40px">暂无歌手合集</div>';
     return;
   }
   singers.sort(function(a,b){var fa=getFL(a),fb=getFL(b);if(fa!==fb)return fa.localeCompare(fb);return a.localeCompare(b);});
