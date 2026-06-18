@@ -61,14 +61,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .loading-wrap{text-align:center;padding:40px}
 .spinner{display:inline-block;width:32px;height:32px;border:3px solid rgba(255,255,255,0.06);border-top-color:#a78bfa;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-
-
-
-
-
-
-.pl-card{transition:all .3s}
+body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 50%,rgba(108,92,231,.06) 0%,transparent 40%),radial-gradient(ellipse at 80% 30%,rgba(168,85,247,.04) 0%,transparent 40%),radial-gradient(ellipse at 40% 70%,rgba(99,102,241,.05) 0%,transparent 40%)}
+.main>div,.main>input,.main>button,.main>.tab-bar,.main>.batch-section{position:relative;z-index:1}
+.wave-bar{display:flex;justify-content:center;align-items:flex-end;gap:2px;height:24px;margin:8px 0}
+.wave-bar span{display:block;width:2px;border-radius:2px;background:linear-gradient(180deg,#a855f7,#6c5ce7);animation:wave 1.2s ease-in-out infinite}
+.wave-bar span:nth-child(1){height:10px;animation-delay:0s}
+.wave-bar span:nth-child(2){height:18px;animation-delay:.1s}
+.wave-bar span:nth-child(3){height:14px;animation-delay:.2s}
+.wave-bar span:nth-child(4){height:22px;animation-delay:.3s}
+.wave-bar span:nth-child(5){height:16px;animation-delay:.4s}
+.wave-bar span:nth-child(6){height:20px;animation-delay:.5s}
+.wave-bar span:nth-child(7){height:12px;animation-delay:.6s}
+.wave-bar span:nth-child(8){height:24px;animation-delay:.7s}
+.wave-bar span:nth-child(9){height:15px;animation-delay:.8s}
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.3)}}
+.song-card{position:relative;overflow:hidden}
+.song-card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent,rgba(108,92,231,.25),rgba(168,85,247,.2),transparent,rgba(108,92,231,.15),rgba(168,85,247,.1));animation:border-glow 4s linear infinite;z-index:0;pointer-events:none}
+.song-card>*{position:relative;z-index:1}
+@keyframes border-glow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.hero h1{animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{0%,100%{filter:brightness(1)}50%{filter:brightness(1.2)}}
+.search-btn{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(108,92,231,.4)}70%{box-shadow:0 0 0 8px rgba(108,92,231,0)}}
+.pl-card{position:relative;overflow:hidden}
+.pl-card::after{content:"";position:absolute;left:-100%;top:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(108,92,231,.06),transparent);transition:left .6s}
+.pl-card:hover::after{left:100%}
 .suggest-dropdown{background:#0f0f2a!important;border-color:rgba(255,255,255,.08)!important}
 .suggest-item{color:#aaa!important;border-bottom-color:rgba(255,255,255,.04)!important}
 .suggest-item:hover{background:rgba(108,92,231,.12)!important;color:#fff!important}
@@ -91,6 +108,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .singer-name-item:hover{color:#c4b5fd!important}
 .singer-letter-title{color:#a78bfa!important}
 .singer-letter-block{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.06)!important}
+.glow-box{position:relative;overflow:hidden;border:1px solid transparent;border-radius:14px}
+.glow-box::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;border-radius:14px;background:conic-gradient(transparent,rgba(108,92,231,.15),rgba(168,85,247,.1),transparent,rgba(108,92,231,.08),rgba(168,85,247,.06));animation:border-glow 4s linear infinite;z-index:0;pointer-events:none}
+.glow-box>*{position:relative;z-index:1}
+.sticky-header{position:relative;overflow:hidden;margin-bottom:8px}
+.sticky-header::before{content:"";position:absolute;inset:0;border-radius:14px;padding:1px;background:conic-gradient(transparent,rgba(108,92,231,.2),rgba(168,85,247,.15),transparent,rgba(108,92,231,.1),rgba(168,85,247,.08));animation:border-glow 5s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .toast.show{opacity:1}
 .search-history{display:none;padding:4px 0;margin-bottom:8px}
@@ -157,11 +179,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tab-bar{display:flex;gap:8px;margin-bottom:20px}
 .tab-btn{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#8888aa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .tab-btn:hover{border-color:#a78bfa;color:#a78bfa}
-.tab-btn{position:relative}
-.tab-btn::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(168,85,247,.15),rgba(108,92,231,.1),transparent);transform:skewX(-25deg);animation:tab-sweep 4s ease-in-out infinite;pointer-events:none}
+.tab-btn{position:relative;overflow:visible}
+.tab-btn::after{content:"";position:absolute;inset:-3px;border-radius:22px;padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,#a855f7 25%,#6c5ce7 50%,transparent 50%,transparent 75%,#a855f7 100%);animation:tab-light 3s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+@property --angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes tab-light{0%{--angle:0deg}100%{--angle:360deg}}
 .tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border-color:#6c5ce7}
-.tab-btn.active::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),rgba(168,85,247,.2),transparent);animation-duration:3s}
-@keyframes tab-sweep{0%{left:-100%}50%{left:120%}100%{left:120%}}
+.tab-btn.active::after{padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,rgba(255,255,255,.8) 20%,#fff 40%,transparent 40%,transparent 70%,#a78bfa 85%,transparent 95%);animation-duration:2s}
 .singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
@@ -191,6 +214,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <div class="hero">
     <h1>发现你的音乐</h1>
     <p>和弦叙事者</p>
+    <div class="wave-bar"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
   </div>
 
   <div class="update-bar"><span class="live-dot"></span>
