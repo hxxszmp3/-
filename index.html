@@ -16,7 +16,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#6c5ce7,#a855f7);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
 .main{max-width:780px;margin:0 auto;padding:28px 20px 40px}
 .hero{text-align:center;margin-bottom:32px}
-.hero h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#6c5ce7,#a855f7,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.hero h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#c4b5fd,#a78bfa,#7c3aed,#6c5ce7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
 .hero p{color:#8888aa;font-size:13px}
 .search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px)}
 .mode-btn{padding:10px 28px;border:none;background:transparent;color:#8888aa;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
@@ -114,6 +114,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .search-history .sh-item:hover{background:#e8f0f8;color:#3a7bd5}
 .search-history .sh-clear{font-size:10px;color:#ddd;cursor:pointer;margin-left:6px}
 .search-history .sh-clear:hover{color:#e74c3c}
+.float-side{position:fixed;right:12px;bottom:50%;transform:translateY(50%);z-index:88;display:flex;flex-direction:column;gap:10px}
+.float-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(168,85,247,.2);color:#a78bfa;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s;backdrop-filter:blur(10px)}
+.float-btn:hover{background:rgba(108,92,231,.2);border-color:#a78bfa;transform:scale(1.1);box-shadow:0 0 16px rgba(108,92,231,.3)}
 .back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;color:#fff;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
 .back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
 .site-footer{border-top:1px solid #e8edf2;margin-top:40px;padding:14px 16px 18px;background:transparent}
@@ -231,7 +234,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <div class="tab-panel" id="tab-single" style="display:none">
     <div class="search-box">
       <input type="text" class="search-input" id="searchInput"
-        placeholder="输入歌手名或歌曲名"
+        placeholder="输入歌手名或歌曲名" style="color:#e0e0f0"
         autocomplete="off"
         oninput="showSuggestions()"
         onkeydown="handleSuggestKey(event)" />
@@ -18068,5 +18071,9 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
     </div>
   </div>
 </div><button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
+<div class="float-side">
+  <button class="float-btn" onclick="document.querySelector('.footer-box').classList.toggle('open');document.querySelector('.footer-box').scrollIntoView({behavior:'smooth',block:'center'})" title="免责声明">📜</button>
+  <a class="float-btn" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="音乐交流群">🎵</a>
+</div>
 </body>
 </html>
