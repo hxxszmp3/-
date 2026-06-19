@@ -31,13 +31,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .mode-btn{padding:10px 28px;border:none;background:transparent;color:#8888aa;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
 .mode-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
 .mode-btn:not(.active):hover{color:#a78bfa;background:rgba(255,255,255,0.05)}
-.search-box{display:flex;gap:0;margin-bottom:28px;position:relative;border:none;box-shadow:none;padding:0;background:transparent;backdrop-filter:none}
-.search-box:focus-within{border-color:#3a7bd5;box-shadow:0 2px 12px rgba(58,123,213,.12)}
-.search-input{flex:1;padding:10px 14px;border:1px solid rgba(168,85,247,.3);border-radius:10px 0 0 10px;background:rgba(255,255,255,.04);color:#fff;font-size:14px;outline:none;font-family:inherit}
-.search-input::placeholder{color:#555}
-.search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);border:none;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
-.search-btn:hover{background:linear-gradient(135deg,#5b4cdb,#9333ea);transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,92,231,.4)}
-.search-btn:active{transform:scale(.97)}
+
+
+
+
+
+
+
 .hint{text-align:center;color:#555;font-size:13px;margin-bottom:24px}
 .hint span{color:#3a7bd5;font-weight:600;cursor:pointer;transition:opacity .2s}
 .hint span:hover{opacity:.7}
@@ -96,8 +96,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .suggest-item .match{color:#a78bfa!important}
 .batch-section,.playlist-section{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.06)!important;backdrop-filter:blur(10px)}
 .batch-title,.playlist-title{color:#a78bfa!important}
-.batch-input{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.08)!important;color:#e0e0f0!important}
-.batch-input::placeholder{color:#555!important}
+
+
 .copy-all-btn{background:rgba(108,92,231,.1)!important;border-color:rgba(108,92,231,.2)!important;color:#a78bfa!important}
 .copy-all-btn:hover{background:linear-gradient(135deg,#6c5ce7,#a855f7)!important;color:#fff!important}
 .update-bar{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.06)!important;color:#888!important}
@@ -163,10 +163,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .batch-section{margin-bottom:28px;background:rgba(255,255,255,0.04);border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 2px 12px rgba(0,0,0,.2);backdrop-filter:blur(10px)}
 .batch-title{font-size:15px;font-weight:700;color:#a78bfa;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .batch-row{display:flex;gap:8px}
-.batch-input{flex:1;padding:10px 14px;border:1px solid rgba(168,85,247,.3);border-radius:10px 0 0 10px;background:rgba(255,255,255,.04);color:#fff;font-size:14px;outline:none;resize:vertical;font-family:inherit;min-height:120px;line-height:1.8}
-.batch-input:focus{border-color:#a78bfa}
-.batch-btn{background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-start}
-.batch-btn:hover{opacity:.9}
+
+
+
+
 .suggest-dropdown{position:absolute;background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;width:calc(100% - 90px);z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .suggest-item{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f3f7}
 .suggest-item:hover{background:rgba(108,92,231,.15)}
@@ -194,7 +194,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .pl-btn{padding:6px 14px;border-radius:8px;border:1px solid #3a7bd5;background:rgba(58,123,213,.06);color:#3a7bd5;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
 .pl-btn:hover{background:#3a7bd5;color:#fff}
 .tab-bar{display:flex;gap:8px;margin-bottom:20px}
-.tab-btn{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#8888aa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+
+.search-box{display:flex;gap:0;margin-bottom:28px;border:none;padding:0;background:0}
+.search-box:focus-within .search-input{border-color:#a78bfa}
+.search-input{flex:1;padding:10px 14px;border:1px solid rgba(168,85,247,.35);border-radius:10px 0 0 10px;background:rgba(255,255,255,.05);color:#fff;font-size:14px;outline:none;font-family:inherit}
+.search-input::placeholder{color:#777}
+.search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;padding:10px 22px;border-radius:0 10px 10px 0;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.search-btn:hover{opacity:.9}
+
+.batch-input{flex:1;padding:10px 14px;border:1px solid rgba(168,85,247,.35);border-radius:10px 0 0 10px;background:rgba(255,255,255,.05);color:#fff;font-size:14px;outline:none;resize:vertical;font-family:inherit;min-height:120px;line-height:1.8}
+.batch-input:focus{border-color:#a78bfa}
+.batch-input::placeholder{color:#777}
+.batch-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;padding:10px 22px;border-radius:0 10px 10px 0;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;align-self:stretch}
+.batch-btn:hover{opacity:.9}
+
+.singer-search-wrap{display:flex;gap:0;margin-bottom:12px}
+.singer-search-in{flex:1;padding:8px 12px;border:1px solid rgba(168,85,247,.35);border-radius:8px 0 0 8px;background:rgba(255,255,255,.05);color:#fff;font-size:13px;outline:none;font-family:inherit}
+.singer-search-in:focus{border-color:#a78bfa}
+.singer-search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;padding:8px 16px;border-radius:0 8px 8px 0;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.singer-search-btn:hover{opacity:.9}
+.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.tab-btn{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#8888aa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .tab-btn:hover{border-color:#a78bfa;color:#a78bfa}
 .tab-btn{position:relative;overflow:visible}
 .tab-btn::after{content:"";position:absolute;inset:-3px;border-radius:22px;padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,#a855f7 25%,#6c5ce7 50%,transparent 50%,transparent 75%,#a855f7 100%);animation:tab-light 3s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
@@ -216,8 +235,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 @media(max-width:600px){
 .hero h1{font-size:24px}
 .mode-btn{padding:9px 16px;font-size:13px}
-.search-input{font-size:14px;padding:11px 12px}
-.search-btn{padding:11px 18px;font-size:14px}
+
+
 .song-card{padding:10px 12px;gap:10px}
 .song-cover{width:38px;height:38px}
 .song-cover svg{width:20px;height:20px}
