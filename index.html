@@ -18042,6 +18042,24 @@ function renderSingerCollection(){
     azHtml+='<a href="#singer-l-'+al+'" style="'+(exists?'':'opacity:.25;pointer-events:none')+'">'+al+'</a>';
   }
   document.getElementById('singerAzSide').innerHTML=azHtml;
+  window.addEventListener('scroll',function(){
+    var links=document.querySelectorAll('#singerAzSide a');
+    var best=null,bestTop=Infinity;
+    for(var i=0;i<links.length;i++){
+      var lt=links[i].getAttribute('data-letter');
+      if(!lt)continue;
+      var el=document.getElementById('singer-l-'+lt);
+      if(!el)continue;
+      var rect=el.getBoundingClientRect();
+      if(rect.top<200&&rect.top>-100){
+        if(Math.abs(rect.top-100)<bestTop){bestTop=Math.abs(rect.top-100);best=links[i];}
+      }
+    }
+    if(best){
+      document.querySelectorAll('#singerAzSide a').forEach(function(a){a.style.background='';a.style.color='#888';});
+      best.style.background='rgba(108,92,231,.4)';best.style.color='#fff';
+    }
+  });
 }
 function getAvatarColor(s){
   var colors=['#6c5ce7','#a855f7','#6366f1','#8b5cf6','#7c3aed','#c084fc','#818cf8','#a78bfa'];
