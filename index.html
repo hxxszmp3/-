@@ -227,7 +227,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .singer-avatar-item{display:flex;flex-direction:column;align-items:center;gap:8px;width:80px;text-decoration:none;transition:all .2s;padding:8px 0}
 .singer-avatar-item:hover{transform:translateY(-3px)}
 .singer-avatar-item:hover .singer-avatar-img{box-shadow:0 6px 20px rgba(108,92,231,.3);transform:scale(1.05)}
-.singer-avatar-img{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;transition:all .2s;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.singer-avatar-img{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;transition:all .2s;box-shadow:0 3px 12px rgba(0,0,0,.15);overflow:hidden;background:linear-gradient(135deg,#6c5ce7,#a855f7)}.singer-avatar-img img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .singer-avatar-name{font-size:12px;color:#a78bfa;text-align:center;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
 .singer-block-list{display:flex;flex-wrap:wrap;gap:2px 14px}
@@ -17780,7 +17780,7 @@ function renderSingerCollection(){
       var sn=groups[l][si];
       var avatarBg=getAvatarColor(sn);
       h+='<a class="singer-avatar-item" href="'+singerCollection[sn].replace(/&/g,'&amp;')+'" target="_blank">'+
-        '<div class="singer-avatar-img" style="background:'+avatarBg+'">'+escHtml(sn[0])+'</div>'+
+        '<div class="singer-avatar-img" ><img src="https://ui-avatars.com/api/?name='+encodeURIComponent(sn)+'&size=80&background=6c5ce7&color=fff&bold=true&format=svg" width="64" height="64" onerror="this.style.display='none';this.parentElement.textContent='"+escHtml(sn[0])+"'" alt="" loading="lazy"></div>'+
         '<div class="singer-avatar-name">'+escHtml(sn)+'</div></a>';
     }
     h+='</div><div class="singer-block-foot">持续更新……</div></div>';
