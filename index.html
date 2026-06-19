@@ -18155,7 +18155,8 @@ function searchSinger(){
 function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,0);
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
-  document.getElementById('tab-'+tab).style.display='block';var az=document.getElementById('singerAzWrap');var at=document.getElementById('singerAzToggle');if(az)az.style.display=tab==='singer'?'flex':'none';if(at)at.style.display=tab==='singer'?'flex':'none';
+  document.getElementById('tab-'+tab).style.display='block';if(tab==='singer'){renderSingerCollection();}
+  var az=document.getElementById('singerAzWrap');var at=document.getElementById('singerAzToggle');if(az)az.style.display=tab==='singer'?'flex':'none';if(at)at.style.display=tab==='singer'?'flex':'none';
   document.querySelectorAll('.tab-btn').forEach(function(b){
     if(b.textContent.indexOf(tab==='single'?'单曲':tab==='batch'?'批量':tab==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
   });
@@ -18365,7 +18366,10 @@ function escAttr(s) {
 })();
 
 window.addEventListener('DOMContentLoaded',function(){window.addEventListener('scroll',function(){var b=document.getElementById('backTop');if(b)b.style.display=window.scrollY>400?'block':'none';});
-renderPlaylists();renderSingerCollection();
+renderPlaylists();
+  var st=localStorage.getItem('activeTab')||'single';
+  if(st==='singer')renderSingerCollection();
+  document.getElementById('tab-'+st).style.display='block';
   var now=new Date();
   var today=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
   var firstItem=document.querySelector('.update-item');
@@ -18377,8 +18381,7 @@ renderPlaylists();renderSingerCollection();
   document.getElementById('upd2').textContent=td+' 新增419首曲库';
   document.getElementById('upd3').textContent=td+' 歌手合集+歌单上线';
   document.getElementById('upd4').textContent=td+' 批量搜索+歌手搜索';
-  var st=localStorage.getItem('activeTab')||'single';
-  document.getElementById('tab-'+st).style.display='block';
+  
   document.querySelectorAll('.tab-btn').forEach(function(b){
     b.classList.remove('active');
     if(b.textContent.indexOf(st==='single'?'单曲':st==='batch'?'批量':st==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
