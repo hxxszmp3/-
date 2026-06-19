@@ -1,0 +1,15 @@
+# MP3 音频文件
+*.mp3
+
+# 歌词文件
+*.lrc
+
+# Python 脚本
+*.py
+
+# 临时文件
+_t.js
+
+# 系统文件
+.DS_Store
+Thumbs.db
