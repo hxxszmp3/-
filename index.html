@@ -101,7 +101,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .copy-all-btn{background:rgba(108,92,231,.1)!important;border-color:rgba(108,92,231,.2)!important;color:#a78bfa!important}
 .copy-all-btn:hover{background:linear-gradient(135deg,#6c5ce7,#a855f7)!important;color:#fff!important}
 .update-bar{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.06)!important;color:#888!important}
-.back-to-top{background:linear-gradient(135deg,#6c5ce7,#a855f7)!important}
+
 .footer-box{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.06)!important}
 .footer-box-title{color:#a78bfa!important}
 .footer-box p{color:#888!important}
@@ -128,14 +128,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .float-right{right:10px}
 .float-btn span{font-size:9px;opacity:.8}
 .float-btn:hover{background:rgba(108,92,231,.3);border-color:#c4b5fd;transform:translateY(-50%) scale(1.1);box-shadow:0 0 25px rgba(168,85,247,.4)}
-.back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
+
 .singer-search-wrap{display:flex;gap:0;margin-bottom:12px}
 .singer-search-in{flex:1;padding:8px 12px;border:1px solid rgba(168,85,247,.3);border-radius:8px 0 0 8px;background:rgba(255,255,255,.04);color:#fff;font-size:13px;outline:none;font-family:inherit}
 .singer-search-in:focus{border-color:#a78bfa}
 .singer-search-btn{padding:8px 16px;background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;border-radius:0 8px 8px 0;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .singer-search-btn:hover{opacity:.9}
 .singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}
-.back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
+
 .fb-row{display:flex;justify-content:center;gap:16px;margin:6px 0}
 .fb-inline{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;border:1px solid rgba(168,85,247,.25);background:rgba(255,255,255,.04);color:#a78bfa;font-size:12px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;cursor:pointer;text-decoration:none;transition:all .2s}
 .fb-inline:hover{background:rgba(108,92,231,.15);border-color:#a78bfa}
@@ -242,6 +242,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .song-cover svg{width:20px;height:20px}
 .song-name{font-size:14px}
 }
+#backTop{position:fixed;bottom:80px;right:16px;z-index:90;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(108,92,231,.3);display:none;line-height:1.2}
+#backTop:hover{opacity:.85}
 </style>
 </head>
 <body>
@@ -18073,8 +18075,9 @@ function escAttr(s) {
     },1200);
   }
 })();
-window.addEventListener('scroll',function(){var b=document.getElementById('backTop');if(b)b.style.display=window.scrollY>400?'block':'none';});
-window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSingerCollection();
+
+window.addEventListener('DOMContentLoaded',function(){window.addEventListener('scroll',function(){var b=document.getElementById('backTop');if(b)b.style.display=window.scrollY>400?'block':'none';});
+renderPlaylists();renderSingerCollection();
   var now=new Date();
   var today=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
   var firstItem=document.querySelector('.update-item');
@@ -18094,6 +18097,6 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
   });});
 </script>
 
-<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到<br>顶部</button>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
 </body>
 </html>
