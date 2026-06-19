@@ -223,6 +223,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tab-btn.active::after{padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,rgba(255,255,255,.8) 20%,#fff 40%,transparent 40%,transparent 70%,#a78bfa 85%,transparent 95%);animation-duration:2s}
 .singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
+.singer-avatar-grid{display:flex;flex-wrap:wrap;gap:15px;justify-content:flex-start;padding:4px 0}
+.singer-avatar-item{display:flex;flex-direction:column;align-items:center;gap:8px;width:80px;text-decoration:none;transition:all .2s;padding:8px 0}
+.singer-avatar-item:hover{transform:translateY(-3px)}
+.singer-avatar-item:hover .singer-avatar-img{box-shadow:0 6px 20px rgba(108,92,231,.3);transform:scale(1.05)}
+.singer-avatar-img{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;transition:all .2s;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.singer-avatar-name{font-size:12px;color:#a78bfa;text-align:center;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
 .singer-block-list{display:flex;flex-wrap:wrap;gap:2px 14px}
 .singer-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:#3a7bd5;text-decoration:none;padding:2px 0}
@@ -17759,7 +17765,7 @@ var singerCollection = {
 function renderSingerCollection(){
   var singers=Object.keys(singerCollection);
   if(singers.length===0){
-    document.getElementById('singerGrid').innerHTML='<div style="color:#8888aa;text-align:center;padding:40px">暂无歌手合集</div>';
+    document.getElementById('singerGrid').innerHTML='<div style="color:#999;text-align:center;padding:40px">暂无歌手合集</div>';
     return;
   }
   singers.sort(function(a,b){var fa=getFL(a),fb=getFL(b);if(fa!==fb)return fa.localeCompare(fb);return a.localeCompare(b);});
@@ -17769,14 +17775,22 @@ function renderSingerCollection(){
   var h='';
   for(var li=0;li<letters.length;li++){
     var l=letters[li];
-    h+='<div class="singer-block"><div class="singer-block-title">'+l+'</div><div class="singer-block-list">';
+    h+='<div class="singer-block"><div class="singer-block-title">'+l+'</div><div class="singer-avatar-grid">';
     for(var si=0;si<groups[l].length;si++){
       var sn=groups[l][si];
-      h+='<a class="singer-link" href="'+singerCollection[sn].replace(/&/g,'&amp;')+'" target="_blank"><span class="singer-link-dot">🎵</span>'+escHtml(sn)+'</a>';
+      var avatarBg=getAvatarColor(sn);
+      h+='<a class="singer-avatar-item" href="'+singerCollection[sn].replace(/&/g,'&amp;')+'" target="_blank">'+
+        '<div class="singer-avatar-img" style="background:'+avatarBg+'">'+escHtml(sn[0])+'</div>'+
+        '<div class="singer-avatar-name">'+escHtml(sn)+'</div></a>';
     }
     h+='</div><div class="singer-block-foot">持续更新……</div></div>';
   }
   document.getElementById('singerGrid').innerHTML=h;
+}
+function getAvatarColor(s){
+  var colors=['#6c5ce7','#a855f7','#6366f1','#8b5cf6','#7c3aed','#c084fc','#818cf8','#a78bfa'];
+  var hash=0;for(var i=0;i<s.length;i++)hash=s.charCodeAt(i)+((hash<<5)-hash);
+  return colors[Math.abs(hash)%colors.length];
 }
 function getFL(s){
   if(!s||!s[0])return'Z';
