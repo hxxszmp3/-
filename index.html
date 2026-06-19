@@ -29,13 +29,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .hero p{color:#8888aa;font-size:13px}
 .search-mode{display:flex;justify-content:center;gap:0;margin-bottom:18px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;width:fit-content;margin-left:auto;margin-right:auto;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px)}
 .mode-btn{padding:10px 28px;border:none;background:transparent;color:#8888aa;font-size:14px;cursor:pointer;transition:all .3s;font-weight:500}
-.mode-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;font-weight:600}
+.mode-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
 .mode-btn:not(.active):hover{color:#a78bfa;background:rgba(255,255,255,0.05)}
 .search-box{display:flex;gap:8px;margin-bottom:28px;position:relative;background:rgba(255,255,255,0.05);border-radius:14px;padding:5px;border:2px solid rgba(255,255,255,0.08);transition:all .3s;box-shadow:0 4px 24px rgba(0,0,0,.2);backdrop-filter:blur(20px)}
 .search-box:focus-within{border-color:#3a7bd5;box-shadow:0 2px 12px rgba(58,123,213,.12)}
 .search-input{flex:1;background:transparent;border:none;outline:none;color:#e0e0f0;font-size:15px;padding:13px 16px}
 .search-input::placeholder{color:#555}
-.search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);border:none;color:#fff;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
+.search-btn{background:linear-gradient(135deg,#6c5ce7,#a855f7);border:none;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px}
 .search-btn:hover{background:linear-gradient(135deg,#5b4cdb,#9333ea);transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .search-btn:active{transform:scale(.97)}
 .hint{text-align:center;color:#555;font-size:13px;margin-bottom:24px}
@@ -59,10 +59,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .song-name-link:hover{color:#3a7bd5}
 .song-singer{font-size:12px;color:#8888aa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .download-btn{flex-shrink:0;width:38px;height:38px;border-radius:9px;background:rgba(108,92,231,.08);border:1px solid rgba(108,92,231,.2);color:#a78bfa;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative}
-.download-btn:hover{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;box-shadow:0 4px 14px rgba(108,92,231,.4);transform:scale(1.08)}
+.download-btn:hover{background:linear-gradient(135deg,#6c5ce7,#a855f7);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;box-shadow:0 4px 14px rgba(108,92,231,.4);transform:scale(1.08)}
 .download-btn:active{transform:scale(.93)}
 .download-btn svg{width:18px;height:18px}
-.download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#555;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#555;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 .download-btn:hover .tooltip{opacity:1}
 .empty-state{text-align:center;padding:60px 20px;color:#555}
 .empty-state .empty-icon{font-size:64px;margin-bottom:14px;opacity:.35}
@@ -115,7 +115,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .glow-box{position:relative;overflow:hidden;border:1px solid transparent;border-radius:14px}
 .glow-box>*{position:relative;z-index:1}
 .sticky-header{position:relative;overflow:hidden;margin-bottom:8px}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(108,92,231,.4)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:11px 22px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 20px rgba(108,92,231,.4)}
 .toast.show{opacity:1}
 .search-history{display:none;padding:4px 0;margin-bottom:8px}
 .search-history .sh-label{font-size:10px;color:#ccc;margin-right:8px}
@@ -128,9 +128,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .float-right{right:10px}
 .float-btn span{font-size:9px;opacity:.8}
 .float-btn:hover{background:rgba(108,92,231,.3);border-color:#c4b5fd;transform:translateY(-50%) scale(1.1);box-shadow:0 0 25px rgba(168,85,247,.4)}
-.back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;color:#fff;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
+.back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
 .back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
-.fb{position:fixed;left:50px;z-index:99;width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,255,255,.06);color:#fff;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;line-height:20px;transition:background .2s}
+.fb{position:fixed;left:50px;z-index:99;width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,255,255,.06);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;line-height:20px;transition:background .2s}
 .fb:hover{background:rgba(255,255,255,.14)}
 .site-footer{border-top:1px solid #e8edf2;margin-top:40px;padding:14px 16px 18px;background:transparent}
 .footer-row{max-width:780px;margin:0 auto;display:flex;gap:16px}
@@ -157,7 +157,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .batch-row{display:flex;gap:8px}
 .batch-input{flex:1;padding:12px 16px;border:2px solid #dce6f0;border-radius:10px;font-size:14px;outline:none;resize:vertical;font-family:inherit;min-height:140px;line-height:1.8}
 .batch-input:focus{border-color:#3a7bd5}
-.batch-btn{background:#3a7bd5;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-start}
+.batch-btn{background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-start}
 .batch-btn:hover{background:#2d6dc4}
 .suggest-dropdown{position:absolute;background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;width:calc(100% - 90px);z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .suggest-item{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f3f7}
@@ -192,9 +192,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tab-btn::after{content:"";position:absolute;inset:-3px;border-radius:22px;padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,#a855f7 25%,#6c5ce7 50%,transparent 50%,transparent 75%,#a855f7 100%);animation:tab-light 3s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 @property --angle{syntax:"<angle>";initial-value:0deg;inherits:false}
 @keyframes tab-light{0%{--angle:0deg}100%{--angle:360deg}}
-.tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border-color:#6c5ce7}
+.tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border-color:#6c5ce7}
 .tab-btn.active::after{padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,rgba(255,255,255,.8) 20%,#fff 40%,transparent 40%,transparent 70%,#a78bfa 85%,transparent 95%);animation-duration:2s}
-.singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
+.singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
 .singer-block-list{display:flex;flex-wrap:wrap;gap:2px 14px}
@@ -18065,7 +18065,7 @@ window.addEventListener('DOMContentLoaded',function(){renderPlaylists();renderSi
   });});
 </script>
 
-<a class="fb" id="fbQQ" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="音乐交流群" style="bottom:120px">◉群</a>
-<button class="fb" id="fbDisc" onclick="showDisclaimer()" title="免责声明" style="bottom:88px">◉责</button>
+<a class="fb" id="fbQQ" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="音乐交流群" style="bottom:100px">◉群</a>
+<button class="fb" id="fbDisc" onclick="showDisclaimer()" title="免责声明" style="bottom:70px">◉责</button>
 </body>
 </html>
