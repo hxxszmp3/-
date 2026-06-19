@@ -18026,7 +18026,7 @@ function renderSingerCollection(){
     h+='<div class="singer-block" id="singer-l-'+l+'"><div class="singer-block-title">'+l+'</div><div class="singer-avatar-grid">';
     for(var si=0;si<groups[l].length;si++){
       var sn=groups[l][si];
-      var avatarBg=getAvatarColor(sn);
+      var imgUrl=singerImgs[sn]||'';var avatarBg=getAvatarColor(sn);
       h+='<a class="singer-avatar-item" href="'+singerCollection[sn].replace(/&/g,'&amp;')+'" target="_blank">'+
         '<div class="singer-avatar-img" style="background:'+avatarBg+';background-image:url('+encodeURI(imgUrl)+');background-size:cover;background-position:center">'+'</div>'+
         '<div class="singer-avatar-name">'+escHtml(sn)+'</div></a>';
