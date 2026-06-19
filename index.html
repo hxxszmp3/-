@@ -105,9 +105,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .footer-box{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.06)!important}
 .footer-box-title{color:#a78bfa!important}
 .footer-box p{color:#888!important}
-.singer-search-in{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.08)!important;color:#e0e0f0!important}
-.singer-search-in:focus{border-color:#a78bfa!important}
-.singer-search-btn2{background:linear-gradient(135deg,#6c5ce7,#a855f7)!important}
+
+
+
 .singer-name-item{color:#a78bfa!important}
 .singer-name-item:hover{color:#c4b5fd!important}
 .singer-letter-title{color:#a78bfa!important}
@@ -129,6 +129,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .float-btn span{font-size:9px;opacity:.8}
 .float-btn:hover{background:rgba(108,92,231,.3);border-color:#c4b5fd;transform:translateY(-50%) scale(1.1);box-shadow:0 0 25px rgba(168,85,247,.4)}
 .back-to-top{position:fixed;bottom:80px;right:16px;width:36px;height:36px;border-radius:50%;background:#3a7bd5;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;font-size:16px;cursor:pointer;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;display:none}
+.singer-search-wrap{display:flex;gap:0;margin-bottom:12px}
+.singer-search-in{flex:1;padding:8px 12px;border:1px solid rgba(255,255,255,.1);border-radius:8px 0 0 8px;background:rgba(255,255,255,.04);color:#e0e0f0;font-size:13px;outline:none;font-family:inherit}
+.singer-search-in:focus{border-color:#a78bfa}
+.singer-search-btn{padding:8px 16px;background:linear-gradient(135deg,#6c5ce7,#a855f7);color:#fff;border:none;border-radius:0 8px 8px 0;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.singer-search-btn:hover{opacity:.9}
+.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}
 .back-to-top:hover{background:#2d6dc4;transform:translateY(-2px)}
 .fb-row{display:flex;justify-content:center;gap:16px;margin:6px 0}
 .fb-inline{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;border:1px solid rgba(168,85,247,.25);background:rgba(255,255,255,.04);color:#a78bfa;font-size:12px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;cursor:pointer;text-decoration:none;transition:all .2s}
@@ -196,7 +202,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 @keyframes tab-light{0%{--angle:0deg}100%{--angle:360deg}}
 .tab-btn.active{background:linear-gradient(135deg,#6c5ce7,#a855f7);background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border-color:#6c5ce7}
 .tab-btn.active::after{padding:2px;background:conic-gradient(from var(--angle,0deg),transparent 0%,rgba(255,255,255,.8) 20%,#fff 40%,transparent 40%,transparent 70%,#a78bfa 85%,transparent 95%);animation-duration:2s}
-.singer-search-in{width:100%;padding:8px 12px;border:1px solid #ecc8c8;border-radius:8px;font-size:13px;outline:none;margin-bottom:8px;font-family:inherit;box-sizing:border-box}.singer-search-in:focus{border-color:#c0392b}.singer-search-btn2{padding:8px 16px;background:#c0392b;background:linear-gradient(135deg,#c4b5fd,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}.singer-search-msg{font-size:12px;color:#e74c3c;margin-left:8px}.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
+.singer-grid{max-width:800px;margin:0 auto;padding:10px 0}
 .singer-block{background:#fefdfb;border:1px solid #ecc8c8;border-radius:10px;padding:18px 24px 14px;margin-bottom:12px}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#c0392b;margin-bottom:10px;letter-spacing:3px}
 .singer-block-list{display:flex;flex-wrap:wrap;gap:2px 14px}
@@ -291,7 +297,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   </div>
 
   <div class="tab-panel" id="tab-singer" style="display:none">
-    <div style="position:relative;display:flex;align-items:center"><input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()" style="padding-right:50px"><button class="singer-search-btn2" onclick="searchSinger()" style="position:absolute;right:2px;top:50%;transform:translateY(-50%);padding:2px 8px;font-size:11px;color:#fff;background:#a855f7;border:none;border-radius:4px;cursor:pointer">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
+    <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手"><button class="singer-search-btn" onclick="searchSinger()">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
+    <div class="singer-grid" id="singerGrid"></div>
   </div>
 
 </main>
@@ -17757,25 +17764,6 @@ function getFL(s){
   if(map[ch])return map[ch];
   return /[一-鿿]/.test(ch)?'#':ch.toUpperCase();
 }
-function searchSinger(){
-  var q=document.getElementById('singerSearchIn').value.trim();
-  var r=document.getElementById('singerSearchMsg');
-  if(!q){r.textContent='';return;}
-  var singers=Object.keys(singerCollection);
-  var found=null;
-  for(var i=0;i<singers.length;i++){
-    if(singers[i].toLowerCase().indexOf(q.toLowerCase())!==-1){found=singers[i];break;}
-  }
-  if(found){
-    r.textContent='';
-    window.open(singerCollection[found],'_blank');
-    addHistory(found,'singer');
-  }else{
-    r.textContent='未找到该歌手，持续更新中';
-  }
-}
-// ========== 搜索历史 ==========
-var searchHistory=JSON.parse(localStorage.getItem('searchHistory')||'[]');
 function addHistory(q,type){
   if(!q||q.length<1)return;
   searchHistory=searchHistory.filter(function(h){return h.q!==q;});
@@ -17839,6 +17827,22 @@ document.addEventListener('focusout',function(e){
     });
   },200);
 });
+function searchSinger(){
+  var q=document.getElementById('singerSearchIn').value.trim();
+  var r=document.getElementById('singerSearchMsg');
+  if(!q){r.textContent='';return;}
+  var singers=Object.keys(singerCollection);
+  var found=null;
+  for(var i=0;i<singers.length;i++){
+    if(singers[i].toLowerCase().indexOf(q.toLowerCase())!==-1){found=singers[i];break;}
+  }
+  if(found){
+    r.textContent='';
+    window.open(singerCollection[found],'_blank');addHistory(found,'singer');
+  }else{
+    r.textContent='未找到该歌手';
+  }
+}
 function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,0);
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.style.display='none'});
