@@ -224,7 +224,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 <main class="main">
   <div class="hero">
     <h1 class="hero-title">发现你的音乐</h1>
-    <p>和弦叙事者</p>
+    <p>我要你的播放器，里面全是你爱听的歌</p>
     <div class="fb-row">
       <a class="fb-inline" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank"><span class="fb-icon">👥</span>群</a>
       <button class="fb-inline" onclick="showDisclaimer()"><span class="fb-icon">📜</span>责</button>
@@ -291,7 +291,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   </div>
 
   <div class="tab-panel" id="tab-singer" style="display:none">
-    <div style="display:flex;gap:6px;align-items:center"><input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()" style="margin-bottom:0"><button class="singer-search-btn2" onclick="searchSinger()" style="margin-bottom:0">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
+    <div style="position:relative;display:flex;align-items:center"><input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()" style="padding-right:50px"><button class="singer-search-btn2" onclick="searchSinger()" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:4px 10px;font-size:11px;margin-bottom:0">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
   </div>
 
 </main>
