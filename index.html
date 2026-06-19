@@ -291,7 +291,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   </div>
 
   <div class="tab-panel" id="tab-singer" style="display:none">
-    <input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()"><button class="singer-search-btn2" onclick="searchSinger()">搜索</button><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
+    <div style="display:flex;gap:6px;align-items:center"><input type="text" class="singer-search-in" id="singerSearchIn" placeholder="搜索歌手" onkeydown="if(event.key==='Enter')searchSinger()" style="margin-bottom:0"><button class="singer-search-btn2" onclick="searchSinger()" style="margin-bottom:0">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span><div class="singer-grid" id="singerGrid"></div>
   </div>
 
 </main>
