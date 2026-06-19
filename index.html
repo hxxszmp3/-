@@ -18000,7 +18000,7 @@ function renderSingerCollection(){
       var sn=groups[l][si];
       var scData=singerCollection[sn];var linkUrl=typeof scData==='object'?scData.link:scData;var avatarBg=getAvatarColor(sn);var imgUrl=singerImgs[sn]||'';
       h+='<a class="singer-avatar-item" href="'+linkUrl.replace(/&/g,'&amp;')+'" target="_blank">'+
-        '<div class="singer-avatar-img" style="background:'+avatarBg+';background-image:url('+imgUrl+');background-size:cover;background-position:center">'+escHtml(sn[0])+'</div>'+
+        '<div class="singer-avatar-img" style="background:'+avatarBg+';background-image:url('+imgUrl+');background-size:cover;background-position:center">'+'</div>'+
         '<div class="singer-avatar-name">'+escHtml(sn)+'</div></a>';
     }
     h+='</div><div class="singer-block-foot">持续更新……</div></div>';
