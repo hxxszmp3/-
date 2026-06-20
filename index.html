@@ -3417,8 +3417,9 @@ function doSearch() {
     var q = query.toLowerCase();
     var singerKeys = Object.keys(songDB);
     var seen = {};
-    var anySingerMatch=false;
-    for(var si=0;si<singerKeys.length;si++){if(singerKeys[si].toLowerCase().indexOf(q)!==-1){anySingerMatch=true;break;}}
+    // Rule: always match song name. If query is also a singer name, add that singer's songs too.
+    var queryIsSinger=false;
+    for(var si=0;si<singerKeys.length;si++){if(singerKeys[si].toLowerCase()===q){queryIsSinger=true;break;}}
 
     for (var i = 0; i < singerKeys.length; i++) {
       var singer = singerKeys[i];
@@ -3429,14 +3430,12 @@ function doSearch() {
       for (var j = 0; j < songs.length; j++) {
         var songLower = songs[j].name.toLowerCase();
         var songMatch = songLower.indexOf(q) !== -1;
-        // Smart match: query might contain both song and singer (e.g., "晴汪苏泷")
         var combined1 = songLower + singerLower;
         var combined2 = singerLower + songLower;
         var smartMatch = combined1.indexOf(q) !== -1 || combined2.indexOf(q) !== -1;
-        // Also check if query contains song name and singer name as substrings
         var containsBoth = q.indexOf(songLower) !== -1 && q.indexOf(singerLower) !== -1;
 
-        if (anySingerMatch ? singerMatch : (singerMatch || songMatch || smartMatch || containsBoth)) {
+        if (songMatch || smartMatch || containsBoth || (queryIsSinger && singerMatch)) {
           var key = singer + '||' + songs[j].name;
           if (!seen[key]) {
             seen[key] = true;
