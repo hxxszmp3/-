@@ -2514,11 +2514,6 @@ renderPlaylists();
   if(st==='singer')renderSingerCollection();
   document.getElementById('tab-'+st).style.display='block';
   var now=new Date();
-  var today=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  var firstItem=document.querySelector('.update-item');
-  if(firstItem)firstItem.innerHTML='<span class="live-dot"></span>'+today+' 曲库持续更新中，欢迎收藏';
-
-  var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
   document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 今日更新33位歌手';
   document.getElementById('upd2').textContent='新增904首歌曲';
