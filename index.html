@@ -3178,7 +3178,7 @@ function batchSearch(){
           else if(charMatch)score=30;
           else score=40;
           var dn=songs[k].name,ds=singer;
-          if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
+          
           foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
         }
       }
@@ -3194,7 +3194,7 @@ function batchSearch(){
           var sNoSym=songLower.replace(/[^a-z0-9一-鿿]/g,'');
           if(songLower.indexOf(q)!==-1||sNoSym.indexOf(qNoSym)!==-1){
             var dn=songs[k].name,ds=singer;
-            if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
+            
             foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:40});matched=true;
           }
         }
@@ -4080,7 +4080,7 @@ function doSearch() {
           if (!seen[key]) {
             seen[key] = true;
             var dn=songs[j].name,ds=singer;
-          if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
+          
           results.push({ name: dn, cover: songs[j].cover, quark: songs[j].quark, singer: ds });
           }
         }
