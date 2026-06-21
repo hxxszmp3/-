@@ -2615,14 +2615,18 @@ function batchSearch(){
         var combined=songLower+' '+singerLower;
         var smartMatch=combined.indexOf(q)!==-1;
         var containsBoth=q.indexOf(songLower)!==-1&&q.indexOf(singerLower)!==-1;
-        // Same rules as single search: any match = include
-        if(songMatch||singerMatch||smartMatch||containsBoth){
+        // Rule: strip punctuation, match only characters
+        var qClean=q.replace(/[^a-z0-9一-鿿]/g,'');
+        var sClean=songLower.replace(/[^a-z0-9一-鿿]/g,'');
+        var charMatch=qClean.length>=1&&sClean.indexOf(qClean)!==-1;
+        if(songMatch||singerMatch||smartMatch||containsBoth||charMatch){
           var score=0;
           if(songLower===q)score=100;
           else if(songLower.indexOf(q)===0)score=90;
           else if(songLower.indexOf(q)>0)score=80;
           else if(smartMatch)score=60;
           else if(containsBoth)score=50;
+          else if(charMatch)score=30;
           else score=40;
           var dn=songs[k].name,ds=singer;
           if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
