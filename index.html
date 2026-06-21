@@ -2594,27 +2594,40 @@ function batchSearch(){
   }
   var foundSongs=[],notFound=[];
   var singerKeys=Object.keys(songDB);
+  // Pre-calc all singer lowers
+  var singerLowers=singerKeys.map(function(k){return k.toLowerCase();});
   for(var i=0;i<queries.length;i++){
     var q=queries[i].song.toLowerCase(),sf=queries[i].singer,matched=false;
+    // For fuzzy matching, also try removing common noise from query
+    var qClean=q.replace(/[\s\d]+/g,'').replace(/[（(][^)）]*[)）]/g,'').replace(/[-_]/g,'');
     for(var j=0;j<singerKeys.length;j++){
-      if(sf&&singerKeys[j].toLowerCase().indexOf(sf.toLowerCase())===-1)continue;
+      if(sf&&singerLowers[j].indexOf(sf.toLowerCase())===-1)continue;
       var songs=songDB[singerKeys[j]];
       for(var k=0;k<songs.length;k++){
         var songLower=songs[k].name.toLowerCase();
-        // Fuzzy scoring: exact match=100, starts with=80, contains=60, partial word=40
+        var songClean=songLower.replace(/[\s\d]+/g,'').replace(/[（(][^)）]*[)）]/g,'').replace(/[-_]/g,'');
+        var singerL=singerLowers[j];
         var score=0;
-        if(songLower===q)score=100;
+        // Level 1: singer+song combined exact match (user typed "歌名 歌手")
+        var combined=songLower+' '+singerL;
+        if(combined===q||combined.indexOf(q)===0)score=100;
+        // Level 2: exact song name match
+        else if(songLower===q)score=95;
+        // Level 3: song name starts with query
         else if(songLower.indexOf(q)===0)score=80;
-        else if(songLower.indexOf(q)>0)score=60;
-        else{
-          // Partial word matching
-          var words=q.split(/\s+/);
-          var matchCount=0;
-          for(var wi=0;wi<words.length;wi++){
-            if(words[wi]&&songLower.indexOf(words[wi])!==-1)matchCount++;
+        // Level 4: song name contains query
+        else if(songLower.indexOf(q)>0)score=70;
+        // Level 5: fuzzy match (remove spaces/numbers/symbols, compare core chars)
+        else if(qClean.length>=2&&songClean.indexOf(qClean)!==-1)score=50;
+        // Level 6: partial char overlap (allow typos — count matching chars)
+        else if(qClean.length>=2&&songClean.length>=2){
+          var matchChars=0;
+          for(var ci=0;ci<qClean.length;ci++){
+            if(songClean.indexOf(qClean[ci])!==-1)matchChars++;
           }
-          if(matchCount===words.length)score=40*matchCount/words.length;
-          else if(matchCount>0)score=20*matchCount/words.length;
+          var ratio=matchChars/Math.max(qClean.length,songClean.length);
+          if(ratio>=0.7)score=Math.floor(30*ratio);
+          else if(ratio>=0.5)score=Math.floor(20*ratio);
         }
         if(score>0){
           var dn=songs[k].name,ds=singerKeys[j];
@@ -2623,16 +2636,16 @@ function batchSearch(){
         }
       }
     }
-    // Sort found songs by score descending
-    foundSongs.sort(function(a,b){return b.score-a.score;});
     if(!matched)notFound.push(queries[i].original);
   }
+  // Sort ALL found songs by score descending
+  foundSongs.sort(function(a,b){return b.score-a.score;});
   var seen={},unique=[];
   for(var i=0;i<foundSongs.length;i++){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
-  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 复制选中</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" onchange="toggleSelectAll()" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
+  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 复制选中</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" onclick="toggleSelectAll(this)" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
@@ -2715,9 +2728,8 @@ function copySelectedLinks(){
   if(links.length===0){showToast('请先勾选要下载的歌曲');return;}
 
 function copyAllLinks(){copySelectedLinks();}
-
-function toggleSelectAll(){
-  var checked=document.getElementById('selectAllBatch').checked;
+function toggleSelectAll(el){
+  var checked=el?el.checked:document.getElementById('selectAllBatch').checked;
   document.querySelectorAll('.batch-cb').forEach(function(cb){cb.checked=checked;});
 }
   var text=links.join('\n');
