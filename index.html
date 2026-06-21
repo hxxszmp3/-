@@ -2604,14 +2604,22 @@ function batchSearch(){
   var singerKeys=Object.keys(songDB);
   for(var i=0;i<queries.length;i++){
     var q=queries[i].song.toLowerCase(),sf=queries[i].singer,matched=false;
-    var qClean=q.replace(/[\s\d]+/g,'');
+    // If singer filter specified but doesn't match ANY singer, ignore it
+    if(sf){
+      var sfClean=sf.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();
+      var sfFoundAny=false;
+      for(var si=0;si<singerKeys.length;si++){
+        if(singerKeys[si].toLowerCase().replace(/[^a-z0-9一-鿿]/gi,'').indexOf(sfClean)!==-1){sfFoundAny=true;break;}
+      }
+      if(!sfFoundAny)sf=null;
+    }
     for(var j=0;j<singerKeys.length;j++){
       var singer=singerKeys[j],singerLower=singer.toLowerCase();
-      // Singer filter: if specified, singer must contain the filter
-      // Singer filter: strip symbols from both sides before comparing
-      // So "许嵩、何曼婷" matches "许嵩&何曼婷"
-      var sfClean=sf.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();
-      if(sf&&singerLower.replace(/[^a-z0-9一-鿿]/gi,'').indexOf(sfClean)===-1)continue;
+      // Singer filter
+      if(sf){
+        var sfClean2=sf.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();
+        if(singerLower.replace(/[^a-z0-9一-鿿]/gi,'').indexOf(sfClean2)===-1)continue;
+      }
       var songs=songDB[singer];
       for(var k=0;k<songs.length;k++){
         var songLower=songs[k].name.toLowerCase();
