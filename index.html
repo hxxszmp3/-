@@ -3509,8 +3509,12 @@ function doSearch() {
         var combined2 = singerLower + songLower;
         var smartMatch = combined1.indexOf(q) !== -1 || combined2.indexOf(q) !== -1;
         var containsBoth = q.indexOf(songLower) !== -1 && q.indexOf(singerLower) !== -1;
+        // Strip symbols: match only characters, ignore punctuation
+        var qClean=q.replace(/[^a-z0-9一-鿿]/g,'');
+        var sClean=songLower.replace(/[^a-z0-9一-鿿]/g,'');
+        var charMatch=qClean.length>=1&&sClean.indexOf(qClean)!==-1;
 
-        if (songMatch || smartMatch || containsBoth || (queryIsSinger && singerMatch)) {
+        if (songMatch || smartMatch || containsBoth || charMatch || (queryIsSinger && singerMatch)) {
           var key = singer + '||' + songs[j].name;
           if (!seen[key]) {
             seen[key] = true;
