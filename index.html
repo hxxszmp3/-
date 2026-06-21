@@ -2521,10 +2521,12 @@ renderPlaylists();
 
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 曲库持续更新中';
-  document.getElementById('upd2').textContent=td+' 新增419首曲库';
-  document.getElementById('upd3').textContent=td+' 歌手合集+歌单上线';
-  document.getElementById('upd4').textContent=td+' 批量搜索+歌手搜索';
+  var singerCount=Object.keys(singerCollection).length;
+  var songCount=0;Object.keys(songDB).forEach(function(k){songCount+=songDB[k].length;});
+  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 已更新'+singerCount+'位歌手';
+  document.getElementById('upd2').textContent='共收录'+songCount+'首歌曲';
+  document.getElementById('upd3').textContent='收藏 www.hxxsz666.vip 持续更新';
+  document.getElementById('upd4').textContent='更多资源请加下方QQ群';
   
   document.querySelectorAll('.tab-btn').forEach(function(b){
     b.classList.remove('active');
