@@ -2600,43 +2600,31 @@ function batchSearch(){
   }
   var foundSongs=[],notFound=[];
   var singerKeys=Object.keys(songDB);
-  // Pre-calc all singer lowers
-  var singerLowers=singerKeys.map(function(k){return k.toLowerCase();});
   for(var i=0;i<queries.length;i++){
     var q=queries[i].song.toLowerCase(),sf=queries[i].singer,matched=false;
-    // For fuzzy matching, also try removing common noise from query
-    var qClean=q.replace(/[\s\d]+/g,'').replace(/[（(][^)）]*[)）]/g,'').replace(/[-_]/g,'');
+    var qClean=q.replace(/[\s\d]+/g,'');
     for(var j=0;j<singerKeys.length;j++){
-      if(sf&&singerLowers[j].indexOf(sf.toLowerCase())===-1)continue;
-      var songs=songDB[singerKeys[j]];
+      var singer=singerKeys[j],singerLower=singer.toLowerCase();
+      // Singer filter: if specified, singer must contain the filter
+      if(sf&&singerLower.indexOf(sf.toLowerCase())===-1)continue;
+      var songs=songDB[singer];
       for(var k=0;k<songs.length;k++){
         var songLower=songs[k].name.toLowerCase();
-        var songClean=songLower.replace(/[\s\d]+/g,'').replace(/[（(][^)）]*[)）]/g,'').replace(/[-_]/g,'');
-        var singerL=singerLowers[j];
-        var score=0;
-        // Level 1: singer+song combined exact match (user typed "歌名 歌手")
-        var combined=songLower+' '+singerL;
-        if(combined===q||combined.indexOf(q)===0)score=100;
-        // Level 2: exact song name match
-        else if(songLower===q)score=95;
-        // Level 3: song name starts with query
-        else if(songLower.indexOf(q)===0)score=80;
-        // Level 4: song name contains query
-        else if(songLower.indexOf(q)>0)score=70;
-        // Level 5: fuzzy match (remove spaces/numbers/symbols, compare core chars)
-        else if(qClean.length>=2&&songClean.indexOf(qClean)!==-1)score=50;
-        // Level 6: partial char overlap (allow typos — count matching chars)
-        else if(qClean.length>=2&&songClean.length>=2){
-          var matchChars=0;
-          for(var ci=0;ci<qClean.length;ci++){
-            if(songClean.indexOf(qClean[ci])!==-1)matchChars++;
-          }
-          var ratio=matchChars/Math.max(qClean.length,songClean.length);
-          if(ratio>=0.7)score=Math.floor(30*ratio);
-          else if(ratio>=0.5)score=Math.floor(20*ratio);
-        }
-        if(score>0){
-          var dn=songs[k].name,ds=singerKeys[j];
+        var songMatch=songLower.indexOf(q)!==-1;
+        var singerMatch=singerLower.indexOf(q)!==-1;
+        var combined=songLower+' '+singerLower;
+        var smartMatch=combined.indexOf(q)!==-1;
+        var containsBoth=q.indexOf(songLower)!==-1&&q.indexOf(singerLower)!==-1;
+        // Same rules as single search: any match = include
+        if(songMatch||singerMatch||smartMatch||containsBoth){
+          var score=0;
+          if(songLower===q)score=100;
+          else if(songLower.indexOf(q)===0)score=90;
+          else if(songLower.indexOf(q)>0)score=80;
+          else if(smartMatch)score=60;
+          else if(containsBoth)score=50;
+          else score=40;
+          var dn=songs[k].name,ds=singer;
           if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
           foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
         }
@@ -2644,7 +2632,6 @@ function batchSearch(){
     }
     if(!matched)notFound.push(queries[i].original);
   }
-  // Sort ALL found songs by score descending
   foundSongs.sort(function(a,b){return b.score-a.score;});
   var seen={},unique=[];
   for(var i=0;i<foundSongs.length;i++){
