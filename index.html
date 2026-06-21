@@ -315,7 +315,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <!-- Tab 2: 批量搜索 -->
   <div class="tab-panel" id="tab-batch" style="display:none">
     <div class="glow-box class="batch-section">
-      <div class="batch-title">📋 批量搜索（歌手+歌名精准匹配）</div>
+      <div class="batch-title">📋 批量搜索（歌手+歌名模糊匹配）</div>
       <div class="batch-row">
         <textarea class="batch-input" id="batchInput" placeholder="一行一个，回车换行&#10;" onkeydown=""></textarea>
         <button class="batch-btn" onclick="batchSearch()">批量搜索</button>
@@ -329,6 +329,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <div class="tab-panel" id="tab-playlist" style="display:none">
     <div class="glow-box class="playlist-section">
       <div class="playlist-title">📀 精选歌单（共<span id="plCount">0</span>个）</div>
+      <div class="search-box" style="margin-bottom:16px"><input type="text" class="search-input" id="plSearch" placeholder="搜索歌单..." style="color:#e0e0f0" oninput="filterPlaylists()"></div>
       <div id="playlistContainer"></div>
     </div>
   </div>
@@ -2599,13 +2600,31 @@ function batchSearch(){
       if(sf&&singerKeys[j].toLowerCase().indexOf(sf.toLowerCase())===-1)continue;
       var songs=songDB[singerKeys[j]];
       for(var k=0;k<songs.length;k++){
-        if(songs[k].name.toLowerCase().indexOf(q)!==-1){
+        var songLower=songs[k].name.toLowerCase();
+        // Fuzzy scoring: exact match=100, starts with=80, contains=60, partial word=40
+        var score=0;
+        if(songLower===q)score=100;
+        else if(songLower.indexOf(q)===0)score=80;
+        else if(songLower.indexOf(q)>0)score=60;
+        else{
+          // Partial word matching
+          var words=q.split(/\s+/);
+          var matchCount=0;
+          for(var wi=0;wi<words.length;wi++){
+            if(words[wi]&&songLower.indexOf(words[wi])!==-1)matchCount++;
+          }
+          if(matchCount===words.length)score=40*matchCount/words.length;
+          else if(matchCount>0)score=20*matchCount/words.length;
+        }
+        if(score>0){
           var dn=songs[k].name,ds=singerKeys[j];
           if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
-          foundSongs.push({name:dn,quark:songs[k].quark,singer:ds,query:queries[i].original});matched=true;
+          foundSongs.push({name:dn,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
         }
       }
     }
+    // Sort found songs by score descending
+    foundSongs.sort(function(a,b){return b.score-a.score;});
     if(!matched)notFound.push(queries[i].original);
   }
   var seen={},unique=[];
@@ -2613,7 +2632,7 @@ function batchSearch(){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
-  var html='<div style="margin-bottom:12px;font-size:13px;color:#999;display:flex;align-items:center;gap:10px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copyAllLinks()">📥 批量下载</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div>';
+  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 复制选中</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" onchange="toggleSelectAll()" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
@@ -2650,20 +2669,47 @@ function renderPlaylists(){
   }
   container.innerHTML=html;
   document.getElementById('plCount').textContent=items.length;
+  // Store for search filtering
+  window._allPls=items;
+  window._plContainer=container;
+  document.getElementById('plSearch').value='';
+}
+function filterPlaylists(){
+  var q=(document.getElementById('plSearch').value||'').toLowerCase().trim();
+  var items=window._allPls||[];
+  var container=window._plContainer;
+  if(!container)return;
+  var filtered=q?items.filter(function(item){return item.name.toLowerCase().indexOf(q)!==-1;}):items;
+  var html='';
+  for(var i=0;i<filtered.length;i++){
+    html+=('<div class="pl-card">'+
+      '<div class="pl-cover">📀</div>'+
+      '<div class="pl-info">'+
+        '<div class="pl-name">'+escHtml(filtered[i].name)+'</div>'+
+        '<div class="pl-time">歌单 #'+(items.indexOf(filtered[i])+1)+'</div>'+
+      '</div>'+
+      '<a class="pl-btn" href="'+filtered[i].quark.replace(/&/g,'&amp;')+'" target="_blank">打开</a>'+
+    '</div>');
+  }
+  container.innerHTML=html||'<div style="color:#999;text-align:center;padding:30px">没有匹配的歌单</div>';
 }
 
 function showDisclaimer(){alert('免责声明\n\n本站所有资源均来自网络公开分享，仅供个人学习交流使用。\n版权归原作者所有，如有侵权请联系 gg318364167@gmail.com');}
-function copyAllLinks(){
+function copySelectedLinks(){
   var links=[];
-  var cards=document.querySelectorAll('.song-card');
-  for(var i=0;i<cards.length;i++){
-    var b=cards[i].querySelector('.download-btn');
-    if(b){
-      var q=b.getAttribute('data-quark');
-      if(q) links.push(q);
-    }
+  var cbs=document.querySelectorAll('.batch-cb:checked');
+  for(var i=0;i<cbs.length;i++){
+    var q=cbs[i].getAttribute('data-quark');
+    if(q) links.push(q);
   }
-  if(links.length===0){showToast('没有可复制链接');return;}
+  if(links.length===0){showToast('请先勾选要下载的歌曲');return;}
+
+function copyAllLinks(){copySelectedLinks();}
+
+function toggleSelectAll(){
+  var checked=document.getElementById('selectAllBatch').checked;
+  document.querySelectorAll('.batch-cb').forEach(function(cb){cb.checked=checked;});
+}
   var text=links.join('\n');
   // Auto-copy attempt
   try{
