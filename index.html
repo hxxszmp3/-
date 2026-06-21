@@ -2619,7 +2619,7 @@ function batchSearch(){
         if(score>0){
           var dn=songs[k].name,ds=singerKeys[j];
           if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
-          foundSongs.push({name:dn,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
+          foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
         }
       }
     }
@@ -2637,8 +2637,18 @@ function batchSearch(){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
       var s=unique[i];
-      var num=i<9?'0'+(i+1):''+(i+1);
-      html+='<div class="song-card"><div class="song-index">'+num+'</div><div class="song-cover"><svg viewBox="0 0 24 24" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg></div><div class="song-info"><div class="song-name">'+escHtml(s.name)+'</div><div class="song-singer">'+escHtml(s.singer)+'</div></div><button class="download-btn" data-quark="'+escAttr(s.quark)+'" data-name="'+escAttr(s.name)+' - '+escAttr(s.singer)+'" onclick="doDownload(\''+escAttr(s.name)+'\',\''+escAttr(s.singer)+'\',\''+escAttr(s.quark)+'\')"><span class="tooltip">夸克网盘下载</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div>';
+      html+='<div class="song-card">'+
+        '<div class="song-index" style="width:auto;padding:0 4px"><input type="checkbox" class="batch-cb" data-quark="'+escAttr(s.quark)+'" style="accent-color:#6c5ce7;width:16px;height:16px;cursor:pointer" checked></div>'+
+        '<div class="song-cover">'+(s.cover?'<img src="'+s.cover+'" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">':'<svg viewBox="0 0 24 24" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>')+'</div>'+
+        '<div class="song-info">'+
+          '<div class="song-name">'+escHtml(s.name)+'</div>'+
+          '<div class="song-singer">'+escHtml(s.singer)+'</div>'+
+        '</div>'+
+        '<button class="download-btn" data-quark="'+escAttr(s.quark)+'" data-name="'+escAttr(s.name)+' - '+escAttr(s.singer)+'" onclick="doDownload(\''+escAttr(s.name)+'\',\''+escAttr(s.singer)+'\',\''+escAttr(s.quark)+'\')">'+
+          '<span class="tooltip">夸克网盘下载</span>'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'+
+        '</button>'+
+      '</div>';
     }
     html+='</div>';
   }
