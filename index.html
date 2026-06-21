@@ -2645,13 +2645,13 @@ function batchSearch(){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
-  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 复制选中</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px" id="selectAllLabel"><input type="checkbox" id="selectAllBatch" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
+  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 批量下载</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
       var s=unique[i];
       html+='<div class="song-card">'+
-        '<div class="song-index" style="width:auto;padding:0 4px"><input type="checkbox" class="batch-cb" data-quark="'+escAttr(s.quark)+'" style="accent-color:#6c5ce7;width:16px;height:16px;cursor:pointer" checked></div>'+
+        '<div class="song-index" style="width:auto;padding:0 4px"><input type="checkbox" class="batch-cb" data-quark="'+escAttr(s.quark)+'" style="accent-color:#6c5ce7;width:16px;height:16px;cursor:pointer"></div>'+
         '<div class="song-cover">'+(s.cover?'<img src="'+s.cover+'" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">':'<svg viewBox="0 0 24 24" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>')+'</div>'+
         '<div class="song-info">'+
           '<div class="song-name">'+escHtml(s.name)+'</div>'+
