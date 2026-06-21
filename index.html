@@ -2677,7 +2677,7 @@ function batchSearch(){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
-  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 批量下载</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label id="selectAllWrap" style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
+  var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 批量下载（一次最多100首）</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label id="selectAllWrap" style="cursor:pointer;font-size:13px;color:#a78bfa;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" style="accent-color:#6c5ce7"> 全选 / 取消全选</label></div>';
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
