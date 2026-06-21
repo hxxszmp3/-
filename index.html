@@ -2673,7 +2673,7 @@ function batchSearch(){
   container.innerHTML=html;
   // Bind select-all checkbox
   var sa=document.getElementById('selectAllBatch');
-  if(sa){sa.onchange=function(){toggleSelectAll(this);};}
+  if(sa){sa.onclick=function(){toggleSelectAll(this);};}
 }
 function renderPlaylists(){
   var pls=songDB['歌单'];
@@ -2732,8 +2732,10 @@ function copySelectedLinks(){
 
 function copyAllLinks(){copySelectedLinks();}
 function toggleSelectAll(el){
-  var cbs=document.querySelectorAll('.batch-cb');
-  for(var i=0;i<cbs.length;i++){cbs[i].checked=el.checked;}
+  setTimeout(function(){
+    var cbs=document.querySelectorAll('.batch-cb');
+    for(var i=0;i<cbs.length;i++){cbs[i].checked=el.checked;}
+  },0);
 }
   var text=links.join('\n');
   // Auto-copy attempt
