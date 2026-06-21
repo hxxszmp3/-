@@ -2649,6 +2649,23 @@ function batchSearch(){
         }
       }
     }
+    // Fallback: if singer filter matched singers but song not found, search ALL
+    if(!matched&&sf){
+      for(var j=0;j<singerKeys.length;j++){
+        var singer=singerKeys[j],singerLower=singer.toLowerCase();
+        var songs=songDB[singer];
+        for(var k=0;k<songs.length;k++){
+          var songLower=songs[k].name.toLowerCase();
+          var qNoSym=q.replace(/[^a-z0-9一-鿿]/g,'');
+          var sNoSym=songLower.replace(/[^a-z0-9一-鿿]/g,'');
+          if(songLower.indexOf(q)!==-1||sNoSym.indexOf(qNoSym)!==-1){
+            var dn=songs[k].name,ds=singer;
+            if(singerCollection[dn]){var t=dn;dn=ds;ds=t;}
+            foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:40});matched=true;
+          }
+        }
+      }
+    }
     if(!matched)notFound.push(queries[i].original);
   }
   foundSongs.sort(function(a,b){return b.score-a.score;});
