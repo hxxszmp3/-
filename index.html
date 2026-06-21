@@ -2593,6 +2593,8 @@ function batchSearch(){
   var queries=[];
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();
+    // Strip leading number/serial: "1 歌名" "99. 歌名" "123、歌名" -> "歌名"
+    line=line.replace(/^\d+[\.\、\s，,]+/,'').trim();
     var songName=line,singerFilter=null;
     var dashIdx=line.indexOf('-');
     if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+1).trim();}
