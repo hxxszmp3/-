@@ -276,20 +276,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <div class="update-bar"><span class="live-dot"></span>
     <div class="update-track" id="updateTrack">
-      <span class="update-item" id="upd1">264位歌手持续更新</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd2">共11900首歌曲</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd3">收藏 www.hxxsz666.vip</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd4">更多资源加QQ群</span><span class="update-sep">|</span>
-      <span class="update-item"><span class="live-dot"></span>持续更新中</span>
+      <span class="update-item" id="upd1"><span class="live-dot"></span>今日更新33位歌手</span><span class="update-sep">|</span>
+      <span class="update-item" id="upd2">新增904首歌曲</span><span class="update-sep">|</span>
+      <span class="update-item" id="upd3">收藏 www.hxxsz666.vip 持续更新</span><span class="update-sep">|</span>
+      <span class="update-item" id="upd4">更多资源加下方QQ群</span>
     </div>
   </div>
 
   <!-- 三个Tab切换按钮 -->
   <div class="tab-bar">
-    <button class="tab-btn" onclick="switchTab('single')">🔍 单曲搜索</button>
-    <button class="tab-btn" onclick="switchTab('batch')">📋 批量搜索</button>
-    <button class="tab-btn" onclick="switchTab('playlist')">📀 歌单大厅</button>
-    <button class="tab-btn" onclick="switchTab('singer')">🎤 歌手合集</button>
+    <button class="tab-btn" onclick="switchTab('single')" style="font-weight:700;font-size:15px">🔍 单曲搜索</button>
+    <button class="tab-btn" onclick="switchTab('batch')" style="font-weight:700;font-size:15px">📋 批量搜索</button>
+    <button class="tab-btn" onclick="switchTab('playlist')" style="font-weight:700;font-size:15px">📀 歌单大厅</button>
+    <button class="tab-btn" onclick="switchTab('singer')" style="font-weight:700;font-size:15px">🎤 歌手合集</button>
   </div>
 
   <!-- Tab 1: 单曲搜索 -->
@@ -2521,12 +2520,10 @@ renderPlaylists();
 
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  var singerCount=Object.keys(singerCollection).length;
-  var songCount=0;Object.keys(songDB).forEach(function(k){songCount+=songDB[k].length;});
-  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 已更新'+singerCount+'位歌手';
-  document.getElementById('upd2').textContent='共收录'+songCount+'首歌曲';
+  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 今日更新33位歌手';
+  document.getElementById('upd2').textContent='新增904首歌曲';
   document.getElementById('upd3').textContent='收藏 www.hxxsz666.vip 持续更新';
-  document.getElementById('upd4').textContent='更多资源请加下方QQ群';
+  document.getElementById('upd4').textContent='更多资源加下方QQ群';
   
   document.querySelectorAll('.tab-btn').forEach(function(b){
     b.classList.remove('active');
