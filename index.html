@@ -2392,6 +2392,7 @@ function getFL(s){
   if(map[ch])return map[ch];
   return /[一-鿿]/.test(ch)?'#':ch.toUpperCase();
 }
+var searchHistory=[];
 function addHistory(q,type){
   if(!q||q.length<1)return;
   searchHistory=searchHistory.filter(function(h){return h.q!==q;});
