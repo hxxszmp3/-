@@ -293,7 +293,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <!-- Tab 1: 单曲搜索 -->
   <div class="tab-panel" id="tab-single" style="display:none">
-    <div class="search-box">
+    <div id="searchLoading" style="text-align:center;padding:20px;color:#888;font-size:14px">曲库加载中，请稍候...</div>
+    <div class="search-box" style="display:none" id="searchBoxWrap">
       <input type="text" class="search-input" id="searchInput"
         placeholder="输入歌手名或歌曲名" style="color:#e0e0f0"
         autocomplete="off"
@@ -2711,6 +2712,7 @@ renderPlaylists();
   var st=localStorage.getItem('activeTab')||'single';
   if(st==='singer')renderSingerCollection();
   document.getElementById('tab-'+st).style.display='block';
+  try{document.getElementById('searchLoading').style.display='none';document.getElementById('searchBoxWrap').style.display='flex';}catch(e){}
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
   document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 今日更新1位歌手+88首';
