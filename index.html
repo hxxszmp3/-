@@ -1631,6 +1631,13 @@ function filterPlaylists(){
 }
 
 function showDisclaimer(){alert('免责声明\n\n本站所有资源均来自网络公开分享，仅供个人学习交流使用。\n版权归原作者所有，如有侵权请联系 gg318364167@gmail.com');}
+function copyAllLinks(){copySelectedLinks();}
+function toggleSelectAll(el){
+  setTimeout(function(){
+    var cbs=document.querySelectorAll('.batch-cb');
+    for(var i=0;i<cbs.length;i++){cbs[i].checked=el.checked;}
+  },0);
+}
 function copySelectedLinks(){
   var links=[];
   var cbs=document.querySelectorAll('.batch-cb:checked');
@@ -1639,40 +1646,24 @@ function copySelectedLinks(){
     if(q) links.push(q);
   }
   if(links.length===0){showToast('请先勾选要下载的歌曲');return;}
-
-function copyAllLinks(){copySelectedLinks();}
-function toggleSelectAll(el){
-  setTimeout(function(){
-    var cbs=document.querySelectorAll('.batch-cb');
-    for(var i=0;i<cbs.length;i++){cbs[i].checked=el.checked;}
-  },0);
-}
+  // 复制链接
   var text=links.join('\n');
-  // Auto-copy attempt
-  try{
-    var ta=document.createElement('textarea');
-    ta.value=text;ta.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:1px;height:1px;opacity:0;z-index:99999';
-    document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,99999);
-    var ok=document.execCommand('copy');
-    document.body.removeChild(ta);
-    if(ok){showToast('已复制 '+links.length+' 条链接');return;}
-  }catch(e){}
-  // Fallback: show textarea for manual copy
-  var overlay=document.createElement('div');
-  overlay.id='copyOverlay';
-  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9998;display:flex;align-items:center;justify-content:center';
-  overlay.onclick=function(){document.body.removeChild(this);};
-  var box=document.createElement('div');
-  box.style.cssText='background:#fff;border-radius:14px;padding:16px;width:92%;max-width:400px;max-height:70vh;overflow:auto';
-  box.onclick=function(e){e.stopPropagation();};
-  box.innerHTML='<div style=\"font-weight:700;margin-bottom:8px;color:#333\">📋 长按下方文字 → 全选 → 拷贝</div><textarea id=\"copyFallback\" style=\"width:100%;height:180px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px\" readonly>'+text.replace(/</g,'&lt;')+'</textarea><div style=\"font-size:11px;color:#b8b0a8;margin-top:6px\">共 '+links.length+' 条链接，拷贝后夸克会自动识别</div>';
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-  // Auto-select after render
-  setTimeout(function(){
-    var t=document.getElementById('copyFallback');
-    if(t){t.focus();t.select();}
-  },200);
+  var ta=document.createElement('textarea');
+  ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+  // 手机端：打开第一个链接唤醒夸克，夸克会自动识别剪贴板
+  var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobile){
+    showToast('已复制 '+links.length+' 条，正在打开夸克...');
+    setTimeout(function(){
+      var w=window.open(links[0],'_blank');
+      if(!w) window.location.href=links[0];
+    },300);
+  }else{
+    showToast('已复制 '+links.length+' 条链接');
+  }
 }
 
 var singerImgs = {
