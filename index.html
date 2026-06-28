@@ -218,7 +218,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   <!-- 三个Tab切换按钮 -->
   <div class="tab-bar">
     <button class="tab-btn" onclick="switchTab('single')" style="font-weight:700;font-size:15px">🔍 单曲搜索</button>
-    <button class="tab-btn" onclick="switchTab('batch')" style="font-weight:700;font-size:15px">📋 批量搜索</button>
+    <button class="tab-btn" onclick="switchTab('batch')" style="font-weight:700;font-size:15px">📋 批量下载</button>
     <button class="tab-btn" onclick="switchTab('playlist')" style="font-weight:700;font-size:15px">📀 歌单大厅</button>
     <button class="tab-btn" onclick="switchTab('singer')" style="font-weight:700;font-size:15px">🎤 歌手合集</button>
   </div>
@@ -243,16 +243,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <div id="resultsContainer"></div>
   </div>
 
-  <!-- Tab 2: 批量搜索 -->
+  <!-- Tab 2: 批量下载 -->
   <div class="tab-panel" id="tab-batch" style="display:none">
-    <div class="glow-box class="batch-section">
-      <div class="batch-title">📋 批量下载（歌名+歌手精准搜索）<a href="#" class="tutorial-link">使用教程 →</a></div>
+    <div class="batch-section">
+      <div class="batch-title">📋 批量下载 <a href="#" class="tutorial-link">使用教程 →</a></div>
       <div class="batch-row">
-        <textarea class="batch-input" id="batchInput" placeholder="一行一个，回车换行&#10;" onkeydown=""></textarea>
+        <textarea class="batch-input" id="batchInput" placeholder="一行一个，格式：歌名 - 歌手&#10;" onkeydown=""></textarea>
         <button class="batch-btn" onclick="batchSearch()">批量搜索</button>
       </div>
       <div class="batch-results" id="batchResults"></div>
-
     </div>
   </div>
 
@@ -1518,65 +1517,30 @@ function batchSearch(){
   var foundSongs=[],notFound=[];
   var singerKeys=Object.keys(songDB);
   for(var i=0;i<queries.length;i++){
-    var q=queries[i].song.toLowerCase(),sf=queries[i].singer,matched=false;
-    // If singer filter specified but doesn't match ANY singer, ignore it
+    var q=queries[i].song,sf=queries[i].singer,matched=false;
     if(sf){
-      var sfClean=sf.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();
-      var sfFoundAny=false;
-      for(var si=0;si<singerKeys.length;si++){
-        if(singerKeys[si].toLowerCase().replace(/[^a-z0-9一-鿿]/gi,'').indexOf(sfClean)!==-1){sfFoundAny=true;break;}
-      }
-      if(!sfFoundAny)sf=null;
-    }
-    for(var j=0;j<singerKeys.length;j++){
-      var singer=singerKeys[j],singerLower=singer.toLowerCase();
-      // Singer filter
-      if(sf){
-        var sfClean2=sf.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();
-        if(singerLower.replace(/[^a-z0-9一-鿿]/gi,'').indexOf(sfClean2)===-1)continue;
-      }
-      var songs=songDB[singer];
-      for(var k=0;k<songs.length;k++){
-        var songLower=songs[k].name.toLowerCase();
-        // Strip symbols for matching: "素颜" matches "素颜（feat.xxx）"
-        var qNoSym=q.replace(/[^a-z0-9一-鿿]/g,'');
-        var sNoSym=songLower.replace(/[^a-z0-9一-鿿]/g,'');
-        var songMatch=songLower.indexOf(q)!==-1;
-        var singerMatch=singerLower.indexOf(q)!==-1;
-        var combined=songLower+' '+singerLower;
-        var smartMatch=combined.indexOf(q)!==-1;
-        var containsBoth=q.indexOf(songLower)!==-1&&q.indexOf(singerLower)!==-1;
-        var charMatch=qNoSym.length>=1&&sNoSym.indexOf(qNoSym)!==-1;
-        // Also try matching query singer part against DB singer (symbol-blind)
-        var singerSymMatch=sf&&sNoSym.indexOf(qNoSym)!==-1;
-        if(songMatch||singerMatch||smartMatch||containsBoth||charMatch){
-          var score=0;
-          if(songLower===q)score=100;
-          else if(songLower.indexOf(q)===0)score=90;
-          else if(songLower.indexOf(q)>0)score=80;
-          else if(smartMatch)score=60;
-          else if(containsBoth)score=50;
-          else if(charMatch)score=30;
-          else score=40;
-          var dn=songs[k].name,ds=singer;
-          
-          foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:score});matched=true;
-        }
-      }
-    }
-    // Fallback: if singer filter matched singers but song not found, search ALL
-    if(!matched&&sf){
+      // 精确匹配：歌手和歌名都对上才显示
+      var sfLower=sf.toLowerCase();
       for(var j=0;j<singerKeys.length;j++){
-        var singer=singerKeys[j],singerLower=singer.toLowerCase();
+        var singer=singerKeys[j];
+        if(singer.toLowerCase()!==sfLower)continue;
         var songs=songDB[singer];
         for(var k=0;k<songs.length;k++){
-          var songLower=songs[k].name.toLowerCase();
-          var qNoSym=q.replace(/[^a-z0-9一-鿿]/g,'');
-          var sNoSym=songLower.replace(/[^a-z0-9一-鿿]/g,'');
-          if(songLower.indexOf(q)!==-1||sNoSym.indexOf(qNoSym)!==-1){
-            var dn=songs[k].name,ds=singer;
-            
-            foundSongs.push({name:dn,cover:songs[k].cover,quark:songs[k].quark,singer:ds,query:queries[i].original,score:40});matched=true;
+          if(songs[k].name.toLowerCase()===q.toLowerCase()){
+            foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
+            break;
+          }
+        }
+        break;
+      }
+    }else{
+      // 只搜歌名：精确匹配
+      for(var j=0;j<singerKeys.length;j++){
+        var singer=singerKeys[j];
+        var songs=songDB[singer];
+        for(var k=0;k<songs.length;k++){
+          if(songs[k].name.toLowerCase()===q.toLowerCase()){
+            foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
           }
         }
       }
