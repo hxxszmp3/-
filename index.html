@@ -1510,23 +1510,25 @@ function batchSearch(){
     // Strip leading number/serial: "1 歌名" "99. 歌名" "123、歌名" -> "歌名"
     line=line.replace(/^\d+[\.\、\s，]+/,'').trim();
     var songName=line,singerFilter=null;
-    var dashIdx=line.indexOf('-');
-    if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+1).trim();}
+    var dashIdx=line.indexOf(' - ');
+    if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+3).trim();}
+    else{var lastSpace=line.lastIndexOf(' ');if(lastSpace>0){var maybeSinger=line.substring(lastSpace+1).trim();var sKeys=Object.keys(songDB);for(var si=0;si<sKeys.length;si++){if(sKeys[si].toLowerCase()===maybeSinger.toLowerCase()){songName=line.substring(0,lastSpace).trim();singerFilter=maybeSinger;break;}}}}
     queries.push({song:songName,singer:singerFilter,original:line});
   }
   var foundSongs=[],notFound=[];
+  function cleanStr(s){return s.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();}
   var singerKeys=Object.keys(songDB);
   for(var i=0;i<queries.length;i++){
-    var q=queries[i].song,sf=queries[i].singer,matched=false;
+    var q=cleanStr(queries[i].song),sf=queries[i].singer,matched=false;
     if(sf){
-      // 精确匹配：歌手和歌名都对上才显示
-      var sfLower=sf.toLowerCase();
+      // 精确匹配：歌手和歌名都对上才显示（忽略符号）
+      var sfClean=cleanStr(sf);
       for(var j=0;j<singerKeys.length;j++){
         var singer=singerKeys[j];
-        if(singer.toLowerCase()!==sfLower)continue;
+        if(cleanStr(singer)!==sfClean)continue;
         var songs=songDB[singer];
         for(var k=0;k<songs.length;k++){
-          if(songs[k].name.toLowerCase()===q.toLowerCase()){
+          if(cleanStr(songs[k].name)===q){
             foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
             break;
           }
@@ -1534,12 +1536,12 @@ function batchSearch(){
         break;
       }
     }else{
-      // 只搜歌名：精确匹配
+      // 只搜歌名：精确匹配（忽略符号）
       for(var j=0;j<singerKeys.length;j++){
         var singer=singerKeys[j];
         var songs=songDB[singer];
         for(var k=0;k<songs.length;k++){
-          if(songs[k].name.toLowerCase()===q.toLowerCase()){
+          if(cleanStr(songs[k].name)===q){
             foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
           }
         }
