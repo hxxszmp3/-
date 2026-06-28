@@ -146,7 +146,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .pl-time{font-size:11px;color:#7a8a98;margin-top:2px}
 .pl-btn{padding:6px 14px;border-radius:8px;border:1px solid #6b9aae;background:rgba(107,154,174,.06);color:#6b9aae;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
 .pl-btn:hover{background:#6b9aae;color:#fff}
-.tab-bar{display:flex;gap:8px;margin-bottom:20px}
+.tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:nowrap}
 .search-box{display:flex;gap:0;margin-bottom:28px;border:none;padding:0;background:0}
 .search-box:focus-within .search-input{border-color:#6b9aae}
 .search-input{flex:1;padding:10px 14px;border:1px solid #d4dce4;border-radius:10px 0 0 10px;background:#fff;color:#4a5568;font-size:14px;outline:none;font-family:inherit}
@@ -186,7 +186,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .song-cover svg{width:20px;height:20px}
 .song-name{font-size:14px}
 .main{padding:20px 12px 32px}
-.tab-btn{padding:8px 14px;font-size:12px}
+.tab-btn{padding:6px 10px;font-size:11px;white-space:nowrap}
 .footer-row{flex-direction:column}
 }
 #backTop{position:fixed;bottom:80px;right:16px;z-index:90;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8cb0c0,#6b9aae);color:#fff;border:none;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(107,154,174,.2);display:none;line-height:1.2}
@@ -208,10 +208,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <div class="update-bar"><span class="live-dot"></span>
     <div class="update-track" id="updateTrack">
-      <span class="update-item" id="upd1"><span class="live-dot"></span>今日更新1位歌手+88首</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd2">今日共更新88首</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd3">收藏 www.hxxsz666.vip 持续更新</span><span class="update-sep">|</span>
-      <span class="update-item" id="upd4">更多资源加上方QQ群</span>
+      <span class="update-item" id="upd1"><span class="live-dot"></span></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd2"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd3"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd4"></span><span class="update-sep">|</span>
+      <span class="update-item" id="upd5"></span>
     </div>
   </div>
 
@@ -2621,10 +2622,11 @@ renderPlaylists();
   try{document.getElementById('searchLoading').style.display='none';document.getElementById('searchBoxWrap').style.display='flex';}catch(e){}
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 今日更新1位歌手+88首';
-  document.getElementById('upd2').textContent='今日共更新88首';
-  document.getElementById('upd3').textContent='收藏 www.hxxsz666.vip 持续更新';
-  document.getElementById('upd4').textContent='更多资源加上方QQ群';
+  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 新增林俊杰41首歌曲';
+  document.getElementById('upd2').textContent='共1位歌手，新歌41首';
+  document.getElementById('upd3').textContent='合并王靖雯不胖→王靖雯53首';
+  document.getElementById('upd4').textContent='收藏 www.hxxsz666.vip 持续更新';
+  document.getElementById('upd5').textContent='更多资源请加下方QQ群';
   
   document.querySelectorAll('.tab-btn').forEach(function(b){
     b.classList.remove('active');
