@@ -2643,7 +2643,7 @@ renderPlaylists();
     b.classList.remove('active');
     if(b.textContent.indexOf(st==='single'?'单曲':st==='batch'?'批量':st==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
   });});
-var tutImgs=['tutorial/1.png','tutorial/2.png','tutorial/3.png','tutorial/4.png'];var tutIdx=0;
+var tutImgs=['tutorial/1.png','tutorial/2.png','tutorial/3.png','tutorial/4.png','tutorial/5.png'];var tutIdx=0;
 function tutOpen(){tutIdx=0;tutShow();document.getElementById('tutOverlay').classList.add('show');}
 function tutClose(){document.getElementById('tutOverlay').classList.remove('show');}
 function tutShow(){document.getElementById('tutImg').src=tutImgs[tutIdx];document.getElementById('tutStep').textContent=(tutIdx+1)+' / '+tutImgs.length;document.getElementById('tutPrev').disabled=tutIdx===0;document.getElementById('tutNext').disabled=tutIdx===tutImgs.length-1;var dots=document.querySelectorAll('.tut-dot');for(var i=0;i<dots.length;i++)dots[i].classList.toggle('active',i===tutIdx);}
@@ -2660,7 +2660,7 @@ function tutNext(){if(tutIdx<tutImgs.length-1){tutIdx++;tutShow();}}
     <button id="tutNext" onclick="tutNext()">下一步 ▶</button>
   </div>
   <div class="tut-dots" id="tutDots">
-    <span class="tut-dot active"></span><span class="tut-dot"></span><span class="tut-dot"></span><span class="tut-dot"></span>
+    <span class="tut-dot active"></span><span class="tut-dot"></span><span class="tut-dot"></span><span class="tut-dot"></span><span class="tut-dot"></span>
   </div>
 </div>
 <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
