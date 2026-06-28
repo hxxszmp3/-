@@ -1646,24 +1646,42 @@ function copySelectedLinks(){
     if(q) links.push(q);
   }
   if(links.length===0){showToast('请先勾选要下载的歌曲');return;}
-  // 复制链接
   var text=links.join('\n');
-  var ta=document.createElement('textarea');
-  ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
-  document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');}catch(e){}
-  document.body.removeChild(ta);
-  // 手机端：打开第一个链接唤醒夸克，夸克会自动识别剪贴板
   var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  // 复制到剪贴板
+  var copied=false;
+  try{
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:1px;height:1px;opacity:0;z-index:99999';
+    document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,99999);
+    copied=document.execCommand('copy');
+    document.body.removeChild(ta);
+  }catch(e){}
   if(isMobile){
+    // 手机端：复制后自动打开夸克
     showToast('已复制 '+links.length+' 条，正在打开夸克...');
     setTimeout(function(){
       var w=window.open(links[0],'_blank');
       if(!w) window.location.href=links[0];
     },300);
-  }else{
-    showToast('已复制 '+links.length+' 条链接');
+    return;
   }
+  // 电脑端：保留原逻辑
+  if(copied){showToast('已复制 '+links.length+' 条链接');return;}
+  var overlay=document.createElement('div');
+  overlay.id='copyOverlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9998;display:flex;align-items:center;justify-content:center';
+  overlay.onclick=function(){document.body.removeChild(this);};
+  var box=document.createElement('div');
+  box.style.cssText='background:#fff;border-radius:14px;padding:16px;width:92%;max-width:400px;max-height:70vh;overflow:auto';
+  box.onclick=function(e){e.stopPropagation();};
+  box.innerHTML='<div style=\"font-weight:700;margin-bottom:8px;color:#333\">📋 长按下方文字 → 全选 → 拷贝</div><textarea id=\"copyFallback\" style=\"width:100%;height:180px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px\" readonly>'+text.replace(/</g,'&lt;')+'</textarea><div style=\"font-size:11px;color:#b8b0a8;margin-top:6px\">共 '+links.length+' 条链接，拷贝后夸克会自动识别</div>';
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  setTimeout(function(){
+    var t=document.getElementById('copyFallback');
+    if(t){t.focus();t.select();}
+  },200);
 }
 
 var singerImgs = {
