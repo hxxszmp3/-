@@ -118,6 +118,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .singer-az-side a:hover{color:#4a5568;background:rgba(107,154,174,.25)}
 .singer-search-msg{font-size:12px;color:#c07070;margin-left:8px}
 .fb-row{display:flex;justify-content:center;gap:16px;margin:6px 0}
+.top-header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #dce8f0}
+.top-header-inner{max-width:780px;margin:0 auto;padding:10px 16px 8px}
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.top-title{font-size:18px;font-weight:700;color:#6b9aae;letter-spacing:1px}
+.top-actions{display:flex;gap:8px}
+.icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(107,154,174,.3);background:#fff;color:#6b9aae;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;text-decoration:none;transition:all .2s;line-height:1}
+.icon-btn:hover{background:rgba(107,154,174,.12);border-color:#6b9aae}
+.top-header .tab-bar{margin-bottom:0}
+.quote-box{flex:1;min-width:0;overflow:hidden;white-space:nowrap;margin:0 12px}
+.quote-track{display:inline-block;white-space:nowrap;padding-left:100%;animation:quoteScroll 22s linear infinite}
+.quote-track span{font-size:12.5px;color:#6b9aae;font-weight:500;letter-spacing:.5px}
+@keyframes quoteScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+body.dark .quote-track span{color:#8cb0c0}
+body.dark .top-header{background:#22282e;border-bottom-color:#333a42}
+body.dark .icon-btn{background:#232930;color:#6b9aae;border-color:rgba(107,154,174,.3)}
 .fb-inline{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;border:1px solid rgba(107,154,174,.2);background:#fff;color:#6b9aae;font-size:12px;font-family:"Microsoft YaHei",sans-serif;cursor:pointer;text-decoration:none;transition:all .2s}
 .fb-inline:hover{background:rgba(107,154,174,.08);border-color:#6b9aae}
 .fb-icon{border:1px solid #6b9aae;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:9px}
@@ -180,6 +195,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .copy-all-btn:hover{background:#6b9aae;color:#fff}
 @media(max-width:600px){
 .hero h1{font-size:22px}
+.top-title{font-size:15px;letter-spacing:0}
+.quote-box{margin:0 8px;padding:4px 10px}
+.icon-btn{width:30px;height:30px}
 .mode-btn{padding:9px 16px;font-size:13px}
 .song-card{padding:10px 12px;gap:10px}
 .song-cover{width:38px;height:38px}
@@ -215,7 +233,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .hot-tag:hover{background:#6b9aae;color:#fff}
 .sh-del{display:inline-block;margin-left:4px;color:#c0c8cc;font-size:10px;cursor:pointer;padding:0 2px;border-radius:3px}
 .sh-del:hover{color:#c07070;background:rgba(192,112,112,.1)}
-.dark-toggle{flex:0 0 auto!important}
+body.dark .fb-inline{background:#232930;color:#6b9aae;border-color:rgba(107,154,174,.3)}
 .skeleton-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:12px;padding:12px 16px;border:1px solid #dce8f0;margin-bottom:6px}
 .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e6e6e6 37%,#f0f0f0 63%);background-size:400% 100%;animation:sk 1.2s ease infinite;border-radius:6px}
 @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
@@ -258,40 +276,71 @@ body.dark .song-cover{background:linear-gradient(135deg,#2a3138,#333a42)}
 .similar-tag{font-size:12px;color:#6b9aae;background:rgba(107,154,174,.08);border:1px solid rgba(107,154,174,.18);padding:3px 12px;border-radius:14px;cursor:pointer;transition:all .2s}
 .similar-tag:hover{background:#6b9aae;color:#fff}
 body.dark .similar-bar{background:#232930;border-color:#333a42}
+.fpmask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:999;display:flex;align-items:center;justify-content:center}
+.fppanel{background:#fff;border-radius:14px;padding:16px;width:280px;max-width:90vw;max-height:70vh;overflow-y:auto}
+.fptitle{font-size:15px;font-weight:700;color:#4a5568;margin-bottom:12px;text-align:center}
+.fpitem{padding:10px 12px;border-radius:8px;cursor:pointer;color:#4a5568;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.fpitem:hover{background:#f4f8fa}
+.fpcount{font-size:11px;color:#7a8a98}
+.fpnew{padding:10px 12px;border-radius:8px;cursor:pointer;color:#6b9aae;font-size:14px;font-weight:600;text-align:center;border:1px dashed #6b9aae;margin-top:8px}
+.fpnew:hover{background:rgba(107,154,174,.08)}
+.fpcancel{text-align:center;padding:8px;color:#7a8a98;font-size:13px;cursor:pointer;margin-top:8px}
+.fpcancel:hover{color:#c07070}
+body.dark .fppanel{background:#232930}
+body.dark .fptitle,body.dark .fpitem{color:#c8d0d8}
+body.dark .fpitem:hover{background:#2a3138}
+.fav-mgr{max-width:780px;margin:0 auto}
+.fav-mgr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.fav-mgr-title{font-size:16px;font-weight:700;color:#4a5568}
+.fav-new-btn{padding:6px 14px;border-radius:8px;border:1px solid #6b9aae;background:rgba(107,154,174,.06);color:#6b9aae;font-size:13px;font-weight:600;cursor:pointer}
+.fav-new-btn:hover{background:#6b9aae;color:#fff}
+.fav-folder{background:#fff;border:1px solid #dce8f0;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.fav-folder-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
+.fav-folder-name{flex:1;font-size:14px;font-weight:600;color:#4a5568;cursor:pointer}
+.fav-folder-count{font-size:12px;color:#7a8a98}
+.fav-folder-del{font-size:12px;color:#c07070;cursor:pointer;padding:2px 6px}
+.fav-folder-del:hover{background:rgba(192,112,112,.1);border-radius:4px}
+.fav-folder-body{padding:0 16px 12px}
+.fav-song{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f0f2f4}
+.fav-song-info{flex:1;min-width:0}
+.fav-song-name{font-size:14px;font-weight:600;color:#5b7a8c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav-song-singer{font-size:12px;color:#7a8a98}
+.fav-song-del{width:28px;height:28px;border-radius:6px;border:1px solid rgba(192,112,112,.3);background:transparent;color:#c07070;cursor:pointer;font-size:12px;flex-shrink:0}
+.fav-song-del:hover{background:#c07070;color:#fff}
+.fav-empty{color:#a0a8ae;font-size:13px;text-align:center;padding:12px}
+body.dark .fav-mgr-title{color:#d6dee6}
+body.dark .fav-folder{background:#232930;border-color:#333a42}
+body.dark .fav-folder-name{color:#d6dee6}
+body.dark .fav-song{border-top-color:#2a3138}
+body.dark .fav-song-name{color:#c8d0d8}
 .fav-badge{font-size:10px;color:#6b9aae}
 </style>
 </head>
 <body>
 
+<div class="top-header">
+  <div class="top-header-inner">
+    <div class="top-row">
+      <div class="top-title">发现你的音乐</div>
+      <div class="quote-box" id="quoteBar">
+        <span class="quote-track"><span id="quoteText">每一天，都是新的开始</span></span>
+      </div>
+      <div class="top-actions">
+        <a class="icon-btn" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="加QQ群">👥</a>
+        <button class="icon-btn" onclick="showDisclaimer()" title="免责声明">📜</button>
+        <button class="icon-btn" id="darkToggle" onclick="toggleDark()" title="夜间/日间模式">🌙</button>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn" onclick="switchTab('single')" style="font-weight:700">🔍 单曲搜索</button>
+      <button class="tab-btn" onclick="switchTab('batch')" style="font-weight:700">📋 批量下载</button>
+      <button class="tab-btn" onclick="switchTab('playlist')" style="font-weight:700">📀 歌单大厅</button>
+      <button class="tab-btn" onclick="switchTab('singer')" style="font-weight:700">🎤 歌手合集</button>
+    </div>
+  </div>
+</div>
+
 <main class="main">
-  <div class="hero">
-    <h1 class="hero-title">发现你的音乐</h1>
-    <p>我要你的播放器里面，全是你爱听的歌</p>
-    <div class="fb-row">
-      <a class="fb-inline" href="https://qun.qq.com/universal-share/share?ac=1&authKey=OLwgvcJ01A9rbrYZHY9ggFOHxv0HW1DhiuFYFzBiFhOHNGTAR2f1wSOluCeX4FzX&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank"><span class="fb-icon">👥</span>群</a>
-      <button class="fb-inline" onclick="showDisclaimer()"><span class="fb-icon">📜</span>责</button>
-    </div>
-  </div>
-
-  <div class="update-bar"><span class="live-dot"></span>
-    <div class="update-track" id="updateTrack">
-      <span class="update-item" id="upd1"><span class="live-dot"></span></span><span class="update-sep">|</span>
-      <span class="update-item" id="upd2"></span><span class="update-sep">|</span>
-      <span class="update-item" id="upd3"></span><span class="update-sep">|</span>
-      <span class="update-item" id="upd4"></span><span class="update-sep">|</span>
-      <span class="update-item" id="upd5"></span>
-    </div>
-  </div>
-
-  <!-- 三个Tab切换按钮 -->
-  <div class="tab-bar">
-    <button class="tab-btn" onclick="switchTab('single')" style="font-weight:700">🔍 单曲搜索</button>
-    <button class="tab-btn" onclick="switchTab('batch')" style="font-weight:700">📋 批量下载</button>
-    <button class="tab-btn" onclick="switchTab('playlist')" style="font-weight:700">📀 歌单大厅</button>
-    <button class="tab-btn" onclick="switchTab('singer')" style="font-weight:700">🎤 歌手合集</button>
-    <button class="tab-btn dark-toggle" id="darkToggle" onclick="toggleDark()" title="切换深色/浅色">🌙</button>
-  </div>
-
   <!-- Tab 1: 单曲搜索 -->
   <div class="tab-panel" id="tab-single" style="display:none">
     <div id="searchLoading" style="text-align:center;padding:20px;color:#888;font-size:14px">曲库加载中，请稍候...</div>
@@ -2394,6 +2443,15 @@ function getFL(s){
   if(map[ch])return map[ch];
   return /[一-鿿]/.test(ch)?'#':ch.toUpperCase();
 }
+var motivationalQuotes=['学而不思则罔，思而不学则殆。——孔子','三人行，必有我师焉。——孔子','温故而知新，可以为师矣。——孔子','知之者不如好之者，好之者不如乐之者。——孔子','己所不欲，勿施于人。——孔子','三军可夺帅也，匹夫不可夺志也。——孔子','岁寒，然后知松柏之后凋也。——孔子','君子坦荡荡，小人长戚戚。——孔子','志士仁人，无求生以害仁，有杀身以成仁。——孔子','天行健，君子以自强不息。——《周易》','地势坤，君子以厚德载物。——《周易》','生于忧患，死于安乐。——孟子','天将降大任于是人也，必先苦其心志。——孟子','富贵不能淫，贫贱不能移，威武不能屈。——孟子','穷则独善其身，达则兼济天下。——孟子','老吾老以及人之老，幼吾幼以及人之幼。——孟子','志不强者智不达。——墨子','锲而不舍，金石可镂。——荀子','不积跬步，无以至千里。——荀子','青，取之于蓝而青于蓝。——荀子','千里之行，始于足下。——老子','合抱之木，生于毫末。——老子','知人者智，自知者明。——老子','胜人者有力，自胜者强。——老子','天下难事，必作于易。——老子','上善若水，水善利万物而不争。——老子','知足者富。——老子','祸兮福之所倚，福兮祸之所伏。——老子','九层之台，起于累土。——老子','知己知彼，百战不殆。——孙子','为学须先立志。——朱熹','宝剑锋从磨砺出，梅花香自苦寒来。——《警世贤文》','路漫漫其修远兮，吾将上下而求索。——屈原','亦余心之所善兮，虽九死其犹未悔。——屈原','前事不忘，后事之师。——《战国策》','不入虎穴，焉得虎子。——班超','精诚所至，金石为开。——王充','志当存高远。——诸葛亮','非学无以广才，非志无以成学。——诸葛亮','非淡泊无以明志，非宁静无以致远。——诸葛亮','会当凌绝顶，一览众山小。——杜甫','读书破万卷，下笔如有神。——杜甫','长风破浪会有时，直挂云帆济沧海。——李白','天生我材必有用，千金散尽还复来。——李白','仰天大笑出门去，我辈岂是蓬蒿人。——李白','古之立大事者，不惟有超世之才，亦必有坚忍不拔之志。——苏轼','博观而约取，厚积而薄发。——苏轼','不识庐山真面目，只缘身在此山中。——苏轼','竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。——苏轼','但愿人长久，千里共婵娟。——苏轼','山重水复疑无路，柳暗花明又一村。——陆游','纸上得来终觉浅，绝知此事要躬行。——陆游','位卑未敢忘忧国。——陆游','先天下之忧而忧，后天下之乐而乐。——范仲淹','不以物喜，不以己悲。——范仲淹','少壮不努力，老大徒伤悲。——《长歌行》','盛年不重来，一日难再晨。——陶渊明','及时当勉励，岁月不待人。——陶渊明','采菊东篱下，悠然见南山。——陶渊明','问渠那得清如许，为有源头活水来。——朱熹','志不立，天下无可成之事。——王阳明','知行合一。——王阳明','破山中贼易，破心中贼难。——王阳明','有志者，事竟成。——范晔','燕雀安知鸿鹄之志哉。——陈胜','生当作人杰，死亦为鬼雄。——李清照','莫等闲，白了少年头，空悲切。——岳飞','不畏浮云遮望眼，自缘身在最高层。——王安石','千淘万漉虽辛苦，吹尽狂沙始到金。——刘禹锡','沉舟侧畔千帆过，病树前头万木春。——刘禹锡','业精于勤，荒于嬉；行成于思，毁于随。——韩愈','书山有路勤为径，学海无涯苦作舟。——韩愈','绳锯木断，水滴石穿。——罗大经','时间就像海绵里的水，只要愿挤，总还是有的。——鲁迅','哪里有天才，我是把别人喝咖啡的工夫都用在工作上的。——鲁迅','世上本没有路，走的人多了，也便成了路。——鲁迅','真的猛士，敢于直面惨淡的人生。——鲁迅','横眉冷对千夫指，俯首甘为孺子牛。——鲁迅','我以我血荐轩辕。——鲁迅','为中华之崛起而读书。——周恩来','世上无难事，只要肯登攀。——毛泽东','好好学习，天天向上。——毛泽东','自信人生二百年，会当水击三千里。——毛泽东','革命尚未成功，同志仍须努力。——孙中山','少年智则国智，少年强则国强。——梁启超','人生能有几回搏，此时不搏何时搏。——容国团','我的事业在中国，我的成就在中国，我的归宿在中国。——钱学森','人要做有用的人，不要做只讲体面而对别人没有好处的人。——许地山','认识你自己。——苏格拉底','未经审视的人生不值得过。——苏格拉底','我只知道一件事，就是我一无所知。——苏格拉底','理想是世界的灯塔。——柏拉图','良好的开端是成功的一半。——柏拉图','吾爱吾师，吾更爱真理。——亚里士多德','优秀是一种习惯。——亚里士多德','幸福在于自足。——亚里士多德','人是万物的尺度。——普罗泰戈拉','知识就是力量。——培根','读史使人明智，读诗使人灵秀。——培根','合理安排时间，就是节约时间。——培根','我思故我在。——笛卡尔','行动胜于语言。——笛卡尔','自由不是想做什么就做什么，而是不想做什么就不做什么。——卢梭','人人生而平等。——卢梭','存在即合理。——黑格尔','黑夜给了我黑色的眼睛，我却用它寻找光明。——顾城（改为康德更合适）','我要保留以下西方名人名言','生活就像海洋，只有意志坚强的人才能到达彼岸。——马克思','在科学上没有平坦的大道，只有不畏劳苦沿着陡峭山路攀登的人，才有希望达到光辉的顶点。——马克思','哲学家们只是用不同的方式解释世界，问题在于改变世界。——马克思','人不能两次踏进同一条河流。——赫拉克利特','给我一个支点，我可以撬动地球。——阿基米德','人固有一死，或重于泰山，或轻于鸿毛。——司马迁','大鹏一日同风起，扶摇直上九万里。——李白','海阔凭鱼跃，天高任鸟飞。——俗语','宝剑不磨要生锈，人不学习要落后。——谚语','一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》','滴水之恩，当涌泉相报。——《增广贤文》','知人者智，自知者明，胜人者有力，自胜者强。——老子','合抱之木，生于毫末；九层之台，起于累土。——老子','图难于其易，为大于其细。——老子','知足不辱，知止不殆。——老子','大智若愚，大巧若拙。——老子','千里之堤，溃于蚁穴。——韩非','不鸣则已，一鸣惊人。——司马迁','智者千虑，必有一失；愚者千虑，必有一得。——司马迁','人无远虑，必有近忧。——孔子','工欲善其事，必先利其器。——孔子','欲速则不达。——孔子','见贤思齐焉，见不贤而内自省也。——孔子','敏而好学，不耻下问。——孔子','学而时习之，不亦说乎。——孔子','有朋自远方来，不亦乐乎。——孔子','人不知而不愠，不亦君子乎。——孔子','三思而后行。——孔子','小不忍则乱大谋。——孔子','道不同，不相为谋。——孔子','四海之内，皆兄弟也。——孔子','己欲立而立人，己欲达而达人。——孔子','德不孤，必有邻。——孔子','听其言而观其行。——孔子','逝者如斯夫，不舍昼夜。——孔子','吾十有五而志于学。——孔子','默而识之，学而不厌，诲人不倦。——孔子','发愤忘食，乐以忘忧，不知老之将至。——孔子','敏于事而慎于言。——孔子','君子求诸己，小人求诸人。——孔子','过而不改，是谓过矣。——孔子','人而无信，不知其可也。——孔子','勇者不惧，智者不惑，仁者不忧。——孔子','朝闻道，夕死可矣。——孔子','君子成人之美，不成人之恶。——孔子','其身正，不令而行；其身不正，虽令不从。——孔子','不在其位，不谋其政。——孔子','言必信，行必果。——孔子','行百里者半九十。——《战国策》','临渊羡鱼，不如退而结网。——《淮南子》','百闻不如一见。——班固','疾风知劲草，板荡识诚臣。——李世民','水能载舟，亦能覆舟。——李世民','以铜为镜，可以正衣冠；以史为镜，可以知兴替。——李世民','海纳百川，有容乃大。——林则徐','苟利国家生死以，岂因祸福避趋之。——林则徐','人生自古谁无死，留取丹心照汗青。——文天祥','富贵不能淫，威武不能屈。——文天祥（重复，删）','臣心一片磁针石，不指南方不肯休。——文天祥','鞠躬尽瘁，死而后已。——诸葛亮','静以修身，俭以养德。——诸葛亮','一屋不扫，何以扫天下。——薛勤','男儿当自强。——《周易》','王侯将相宁有种乎。——司马迁','力拔山兮气盖世。——项羽','江东子弟多才俊，卷土重来未可知。——杜牧','采得百花成蜜后，为谁辛苦为谁甜。——罗隐','纸上得来终觉浅。——陆游（重复删）','千磨万击还坚劲，任尔东西南北风。——郑板桥','咬定青山不放松，立根原在破岩中。——郑板桥','不经一番寒彻骨，怎得梅花扑鼻香。——黄蘖禅师','野火烧不尽，春风吹又生。——白居易','忽如一夜春风来，千树万树梨花开。——岑参','欲穷千里目，更上一层楼。——王之涣','海日生残夜，江春入旧年。——王湾','春蚕到死丝方尽，蜡炬成灰泪始干。——李商隐','夕阳无限好，只是近黄昏。——李商隐','停车坐爱枫林晚，霜叶红于二月花。——杜牧','人生得意须尽欢，莫使金樽空对月。——李白','安能摧眉折腰事权贵，使我不得开心颜。——李白','举头望明月，低头思故乡。——李白','桃花潭水深千尺，不及汪伦送我情。——李白','大漠孤烟直，长河落日圆。——王维','落红不是无情物，化作春泥更护花。——龚自珍','我劝天公重抖擞，不拘一格降人才。——龚自珍','宝剑锋从磨砺出，梅花香自苦寒来。——《警世贤文》（重复删）','天才是百分之一的灵感，加百分之九十九的汗水。——爱迪生','失败也是我需要的，它和成功一样对我有价值。——爱迪生','天才是长期劳动的结果。——爱迪生','如果你希望成功，当以恒心为良友。——爱迪生','人只有献身社会，才能找出那实际上是短暂而有风险的生命的意义。——爱因斯坦','不要努力成为一个成功者，要努力成为一个有价值的人。——爱因斯坦','在天才和勤奋之间，我毫不犹豫地选择勤奋。——爱因斯坦','想象力比知识更重要。——爱因斯坦','学问是经验的积累，才能是刻苦的忍耐。——爱因斯坦','成功等于艰苦劳动加正确方法加少说空话。——爱因斯坦','生命的意义在于设身处地替人着想，忧他人之忧，乐他人之乐。——爱因斯坦','兴趣是最好的老师。——爱因斯坦','人生最高之理想，在求达于真理。——李大钊','铁肩担道义，妙手著文章。——李大钊','青年之字典，无困难之字。——李大钊','不驰于空想，不骛于虚声。——李大钊','以青春之我，创建青春之家庭，青春之国家。——李大钊','为真理而斗争是人生最大的乐趣。——布鲁诺','人的天职在于勇于探索真理。——哥白尼','我之所以看得远，是因为我站在巨人的肩上。——牛顿','如果说我看得比别人更远些，那是因为我站在巨人的肩膀上。——牛顿','无论做什么事情，只要肯努力奋斗，是没有不成功的。——牛顿','思考，然后行动。——牛顿','给我一个支点，我就能撬起整个地球。——阿基米德','数学是科学之王。——高斯','生活是不公平的，你要去适应它。——比尔盖茨','在你没有成功之前，没人会在意你的自尊。——比尔盖茨','你要成功，就要忍受孤独和寂寞。——比尔盖茨','成功不是将来才有的，而是从决定去做的那一刻起，持续累积而成。——俞敏洪','人生的奋斗目标不要太大，认准了一件事情，投入兴趣与热情坚持去做，你就会成功。——俞敏洪','只要心中有理想，有志向，你终将走向成功。——俞敏洪','当全世界抛弃你的时候，你也要相信自己。——俞敏洪','任何时代，都不会亏待有才华的人。——马云','今天很残酷，明天更残酷，后天很美好，但绝大多数人死在明天晚上。——马云','人永远不要忘记自己第一天的梦想。——马云','梦想还是要有的，万一实现了呢。——马云','永远不要跟别人比幸运，我从来没想过我比别人幸运。——马云','自信，是成功的第一秘诀。——爱默生','生活中最伟大的事，是永不放弃。——爱默生','每一种挫折或不利的突变，都带着同样或较大的有利的种子。——爱默生','做你害怕的事，害怕就会消失。——爱默生','人如果没有理想，和咸鱼有什么区别。——周星驰','我可以接受失败，但我不能接受放弃。——乔丹','我失败过很多次，这正是我成功的原因。——乔丹','天才不是天生的，而是靠不懈努力得来的。——乔丹','坚持，是世界上最简单的事，也是世界上最难的事。——柏拉图','你只有两件东西可以依靠：你的才能和你的努力。——卡耐基','朝着一定目标走去是志，一鼓作气中途绝不停止是气，两者合起来就是志气。——卡耐基','成功的人，都有一颗勇于拼搏的心。——卡耐基','生命中最重要的是要有目标，其次是坚持。——卡耐基','人生如逆水行舟，不进则退。——俗语','失败是成功之母。——俗语','吃得苦中苦，方为人上人。——俗语','天道酬勤。——《周易》','一分耕耘，一分收获。——俗语','滴水穿石，非一日之功。——俗语','只要功夫深，铁杵磨成针。——俗语','冰冻三尺，非一日之寒。——俗语','百尺竿头，更进一步。——朱熹','世上只有一种真正的英雄主义，那就是认清生活的真相后依然热爱生活。——罗曼·罗兰','人生的价值，并不是用时间，而是用深度去衡量的。——列夫·托尔斯泰','人的一生可能燃烧也可能腐朽，我不能腐朽，我愿意燃烧起来。——奥斯特洛夫斯基','人最宝贵的是生命，生命属于人只有一次。——奥斯特洛夫斯基','人的一生应当这样度过：不因虚度年华而悔恨，不因碌碌无为而羞愧。——奥斯特洛夫斯基','黑夜无论怎样悠长，白昼总会到来。——莎士比亚','患难可以试验一个人的品格，非常的境遇方才可以显出非常的气节。——莎士比亚','与其做愚蠢的聪明人，不如做聪明的愚人。——莎士比亚','行动胜过语言。——莎士比亚','通向荣誉的道路上并不铺满鲜花。——但丁','走自己的路，让别人说去吧。——但丁','世界上最宽阔的是海洋，比海洋更宽阔的是天空，比天空更宽阔的是人的心灵。——雨果','未来将属于两种人：思想的人和劳动的人。——雨果','苦难对于天才是一块垫脚石，对能干的人是一笔财富，对弱者是一个万丈深渊。——巴尔扎克','天才不过是最大的忍耐力而已。——布封','我们要有毅力，尤其要有自信力。——居里夫人','我从来不曾有过幸运，将来也永远不指望幸运，我最高原则是不论对任何困难都决不屈服。——居里夫人','好奇心是学者的第一美德。——居里夫人','我成功，因为志在要成功，我未尝踌躇。——拿破仑','不想当将军的士兵不是好士兵。——拿破仑','胜利属于最坚忍的人。——拿破仑','最困难的时候，也就是我们离成功不远的时候。——拿破仑','幸运并非没有恐惧和烦恼，厄运也决非没有安慰和希望。——培根','成功的秘诀，在于永不改变既定的目标。——卢梭','忍耐是痛苦的，但它的果实是甜蜜的。——卢梭','浪费时间是一桩大罪过。——卢梭','勤劳一日，可得一夜安眠；勤劳一生，可得幸福长眠。——达芬奇','天才是永恒的耐心。——米开朗琪罗','千里马常有，而伯乐不常有。——韩愈','闻道有先后，术业有专攻。——韩愈','师者，所以传道受业解惑也。——韩愈','人生如逆旅，我亦是行人。——苏轼','粗缯大布裹生涯，腹有诗书气自华。——苏轼','人有悲欢离合，月有阴晴圆缺，此事古难全。——苏轼','安得广厦千万间，大庇天下寒士俱欢颜。——杜甫','落霞与孤鹜齐飞，秋水共长天一色。——王勃','海内存知己，天涯若比邻。——王勃','老骥伏枥，志在千里；烈士暮年，壮心不已。——曹操','天下兴亡，匹夫有责。——顾炎武','我自横刀向天笑，去留肝胆两昆仑。——谭嗣同','埋骨何须桑梓地，人生无处不青山。——毛泽东','自己动手，丰衣足食。——毛泽东','虚心使人进步，骄傲使人落后。——毛泽东','读书是学习，使用也是学习，而且是更重要的学习。——毛泽东','为有牺牲多壮志，敢教日月换新天。——毛泽东','星星之火，可以燎原。——毛泽东','天若有情天亦老，人间正道是沧桑。——毛泽东','牢骚太盛防肠断，风物长宜放眼量。——毛泽东','一万年太久，只争朝夕。——毛泽东','雄关漫道真如铁，而今迈步从头越。——毛泽东','不到长城非好汉。——毛泽东','大江东去，浪淘尽，千古风流人物。——苏轼','机会是留给有准备的人的。——巴斯德','灵感是长期劳动的结果。——列宾','只要路是对的，就不怕路远。——俗语','没有天生的强者，只有不断努力的人。——俗语','坚持就是胜利。——俗语','努力了不一定成功，但不努力一定不会成功。——俗语','今天的努力，是为了明天更好的自己。——俗语','世上无难事，只怕有心人。——俗语','有志不在年高，无志空活百岁。——俗语','三百六十行，行行出状元。——俗语','活到老，学到老。——俗语','学无止境。——俗语','路在人走，事在人为。——俗语','人生不是一支短短的蜡烛，而是一支由我们暂时拿着的火炬。——萧伯纳','一个尝试错误的人生，比无所事事的人生更荣耀，并且有意义。——萧伯纳','我从来不把安逸和享乐看作是生活目的本身。——爱因斯坦','一个人的价值，应该看他贡献什么，而不应当看他取得什么。——爱因斯坦','真正的快乐，是对生活的乐观，对工作的愉快，对事业的热心。——爱因斯坦','生命的意义在于付出，在于给予，而不是在于接受，也不是在于争取。——巴金','成功的人不是没有眼泪的人，而是含着眼泪奔跑的人。——朗费罗','时间就是生命，时间就是速度，时间就是力量。——郭沫若','天才由于积累，聪明在于勤奋。——华罗庚','勤能补拙是良训，一分辛苦一分才。——华罗庚','读书好，好读书，读好书。——冰心','成功的花，人们只惊羡她现时的明艳！然而当初她的芽儿，浸透了奋斗的泪泉。——冰心','今天能做的事，绝不要留到明天。——富兰克林','早起的鸟儿有虫吃。——富兰克林','诚实和勤勉，应该成为你永久的伴侣。——富兰克林','懒惰像生锈一样，比操劳更能消耗身体。——富兰克林','你若要喜爱你自己的价值，你就得给世界创造价值。——歌德','读一本好书，就是和许多高尚的人谈话。——歌德','谁要是游戏人生，他就一事无成。——歌德','凡自强不息者，终能自救。——歌德','理想是石，敲出星星之火；理想是火，点燃熄灭的灯。——流沙河','勤学如春起之苗，不见其增，日有所长。——陶渊明','天下大事，必作于细。——老子','夫祸患常积于忽微，而智勇多困于所溺。——欧阳修','忧劳可以兴国，逸豫可以亡身。——欧阳修','博学之，审问之，慎思之，明辨之，笃行之。——《礼记》','学而不已，阖棺乃止。——孔子','玉不琢，不成器；人不学，不知道。——《礼记》','读万卷书，行万里路。——刘彝','丈夫志四海，万里犹比邻。——曹植','捐躯赴国难，视死忽如归。——曹植','时穷节乃见，一一垂丹青。——文天祥','心事浩茫连广宇，于无声处听惊雷。——鲁迅','沉默呵！不在沉默中爆发，就在沉默中灭亡。——鲁迅','人生的旅途，前途很远也很暗，然而不要怕，不怕的人面前才有路。——鲁迅','我好象一只牛，吃的是草，挤出的是奶、血。——鲁迅','度尽劫波兄弟在，相逢一笑泯恩仇。——鲁迅','必须敢于正视，这才可望敢想、敢说、敢做、敢当。——鲁迅','生命是以时间为单位的，浪费别人的时间等于谋财害命。——鲁迅','不满足是向上的车轮。——鲁迅','优胜者固然可敬，但那虽然落后而仍非跑至终点不止的竞技者更可敬。——鲁迅','有缺点的战士终竟是战士，完美的苍蝇也终竟不过是苍蝇。——鲁迅','青年应当天真烂漫。——鲁迅','志之所趋，无远弗届，穷山距海，不能限也。——《格言联璧》','天行有常，不为尧存，不为桀亡。——荀子','道虽迩，不行不至；事虽小，不为不成。——荀子','少年易老学难成，一寸光阴不可轻。——朱熹','少而好学，如日出之阳；壮而好学，如日中之光。——刘向'];
+function renderDailyQuote(){
+  var d = new Date();
+  var start = new Date(d.getFullYear(), 0, 0);
+  var day = Math.floor((d - start) / 86400000);
+  var idx = ((day - 1) % motivationalQuotes.length + motivationalQuotes.length) % motivationalQuotes.length;
+  var el = document.getElementById('quoteText');
+  if (el) el.textContent = motivationalQuotes[idx];
+}
 var searchHistory=[];
 function addHistory(q,type){
   if(!q||q.length<1)return;
@@ -2693,7 +2751,7 @@ function songCardHTML(song, idx, query) {
       '<div class="song-name">' + highlight(song.name, query) + '</div>' +
       '<div class="song-singer">' + highlight(song.singer, query) + '</div>' +
     '</div>' +
-    '<button class="fav-btn' + (fav ? ' fav-on' : '') + '" onclick="toggleFav(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\',\'' + escAttr(song.cover) + '\',this)" title="收藏">' + (fav ? '★' : '☆') + '</button>' +
+    '<button class="fav-btn' + (fav ? ' fav-on' : '') + '" data-k="' + encodeURIComponent(song.name + '||' + song.singer) + '" onclick="toggleFav(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\',\'' + escAttr(song.cover) + '\',this)" title="收藏">' + (fav ? '★' : '☆') + '</button>' +
     '<button class="download-btn" data-quark="' + escAttr(song.quark) + '" data-name="' + escAttr(song.name) + ' - ' + escAttr(song.singer) + '" onclick="doDownload(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\')">' +
       '<span class="tooltip">夸克网盘下载</span>' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
@@ -2719,13 +2777,13 @@ function toggleDark(){
   var b = document.body.classList.toggle('dark');
   localStorage.setItem('darkMode', b ? '1' : '0');
   var t = document.getElementById('darkToggle');
-  if (t) t.textContent = b ? '☀️' : '🌙';
+  if (t) t.innerHTML = '<span class="fb-icon">' + (b ? '☀️' : '🌙') + '</span>' + (b ? '日' : '夜');
 }
 function initDark(){
   if (localStorage.getItem('darkMode') === '1') {
     document.body.classList.add('dark');
     var t = document.getElementById('darkToggle');
-    if (t) t.textContent = '☀️';
+    if (t) t.innerHTML = '<span class="fb-icon">☀️</span>日';
   }
 }
 function skeletonHTML(){
@@ -2735,32 +2793,180 @@ function skeletonHTML(){
   }
   return h;
 }
-var favList = [];
-function loadFavs(){ try{ favList = JSON.parse(localStorage.getItem('favList')||'[]'); }catch(e){ favList=[]; } }
-function saveFavs(){ localStorage.setItem('favList', JSON.stringify(favList)); }
-function isFav(name, singer){ for(var i=0;i<favList.length;i++){ if(favList[i].name===name && favList[i].singer===singer) return true; } return false; }
-function toggleFav(name, singer, quark, cover, btn){
-  var idx = -1;
-  for(var i=0;i<favList.length;i++){ if(favList[i].name===name && favList[i].singer===singer){ idx=i; break; } }
-  if(idx>=0){ favList.splice(idx,1); showToast('已取消收藏'); }
-  else{ favList.unshift({name:name, singer:singer, quark:quark, cover:cover}); showToast('⭐ 已收藏：'+singer+' - '+name); }
-  saveFavs();
-  if(btn){ var f=isFav(name,singer); btn.textContent = f?'★':'☆'; btn.classList.toggle('fav-on', f); }
-  renderFavBadge();
+var favFolders = [];
+var _pendingFav = null;
+function loadFolders(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('favFolders')||'null'); }catch(e){ saved = null; }
+  if(saved && saved.length){ favFolders = saved; }
+  else {
+    var old = [];
+    try{ old = JSON.parse(localStorage.getItem('favList')||'[]'); }catch(e){ old = []; }
+    favFolders = [{name:'我的收藏', songs: old}];
+    saveFolders();
+  }
 }
-function renderFavBadge(){ var el=document.getElementById('favBadge'); if(el) el.textContent = favList.length>0 ? '（'+favList.length+'）' : ''; }
-function renderFavs(){
-  var container = document.getElementById('resultsContainer');
-  if(favList.length===0){
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">⭐</div><p>还没有收藏的歌曲</p><p style="font-size:12px;color:#7a8a98;margin-top:6px">在搜索结果里点 ☆ 即可收藏</p></div>';
+function saveFolders(){ localStorage.setItem('favFolders', JSON.stringify(favFolders)); }
+function isFav(name, singer){
+  for(var i=0;i<favFolders.length;i++){
+    for(var j=0;j<favFolders[i].songs.length;j++){
+      var s = favFolders[i].songs[j];
+      if(s.name===name && s.singer===singer) return true;
+    }
+  }
+  return false;
+}
+function removeFromAllFolders(name, singer){
+  for(var i=0;i<favFolders.length;i++){
+    favFolders[i].songs = favFolders[i].songs.filter(function(s){ return !(s.name===name && s.singer===singer); });
+  }
+  saveFolders();
+}
+function addToFolder(idx, name, singer, quark, cover){
+  if(!favFolders[idx]) return;
+  favFolders[idx].songs.unshift({name:name, singer:singer, quark:quark, cover:cover});
+  saveFolders();
+}
+function refreshFavButtons(){
+  var btns = document.querySelectorAll('.fav-btn');
+  for(var i=0;i<btns.length;i++){
+    var b = btns[i];
+    var k = b.getAttribute('data-k');
+    if(!k) continue;
+    var parts = decodeURIComponent(k).split('||');
+    var f = isFav(parts[0], parts[1]);
+    b.textContent = f ? '★' : '☆';
+    b.classList.toggle('fav-on', f);
+  }
+}
+function toggleFav(name, singer, quark, cover, btn){
+  if(isFav(name, singer)){
+    removeFromAllFolders(name, singer);
+    showToast('已取消收藏');
+    refreshFavButtons();
+    renderFavBadge();
     return;
   }
-  container.innerHTML = '<div class="results-header"><span class="results-count">⭐ 我的收藏 &middot; 共 <strong>'+favList.length+'</strong> 首</span></div><div class="song-list" id="songList"></div>';
-  var list = document.getElementById('songList');
-  for(var i=0;i<favList.length;i++){
-    list.insertAdjacentHTML('beforeend', songCardHTML(favList[i], i, ''));
+  _pendingFav = {name:name, singer:singer, quark:quark, cover:cover};
+  if(favFolders.length === 1){
+    addToFolder(0, name, singer, quark, cover);
+    showToast('⭐ 已收藏到「' + favFolders[0].name + '」');
+    refreshFavButtons();
+    renderFavBadge();
+    return;
   }
+  showFolderPicker();
 }
+function showFolderPicker(){
+  var html = '<div class="fpmask" onclick="closeFolderPicker()"><div class="fppanel" onclick="event.stopPropagation()">';
+  html += '<div class="fptitle">选择收藏夹</div>';
+  for(var i=0;i<favFolders.length;i++){
+    html += '<div class="fpitem" onclick="pickFolder('+i+')"><span>'+escHtml(favFolders[i].name)+'</span><span class="fpcount">'+favFolders[i].songs.length+' 首</span></div>';
+  }
+  html += '<div class="fpnew" onclick="promptNewFolder()">＋ 新建收藏夹</div>';
+  html += '<div class="fpcancel" onclick="closeFolderPicker()">取消</div>';
+  html += '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+function closeFolderPicker(){
+  var m = document.querySelector('.fpmask');
+  if(m) m.remove();
+}
+function pickFolder(idx){
+  if(_pendingFav){
+    addToFolder(idx, _pendingFav.name, _pendingFav.singer, _pendingFav.quark, _pendingFav.cover);
+    showToast('⭐ 已收藏到「' + favFolders[idx].name + '」');
+    _pendingFav = null;
+  }
+  closeFolderPicker();
+  refreshFavButtons();
+  renderFavBadge();
+}
+function promptNewFolder(){
+  var name = prompt('请输入新收藏夹名称：');
+  if(!name || !name.trim()){ closeFolderPicker(); return; }
+  name = name.trim();
+  favFolders.push({name:name, songs:[]});
+  saveFolders();
+  if(_pendingFav){
+    addToFolder(favFolders.length-1, _pendingFav.name, _pendingFav.singer, _pendingFav.quark, _pendingFav.cover);
+    showToast('⭐ 已收藏到「' + name + '」');
+    _pendingFav = null;
+  }
+  closeFolderPicker();
+  refreshFavButtons();
+  renderFavBadge();
+}
+function renderFavBadge(){
+  var total = 0;
+  for(var i=0;i<favFolders.length;i++) total += favFolders[i].songs.length;
+  var el = document.getElementById('favBadge');
+  if(el) el.textContent = total > 0 ? '（' + total + '）' : '';
+}
+function renderFavs(){
+  var container = document.getElementById('resultsContainer');
+  var html = '<div class="fav-mgr">';
+  html += '<div class="fav-mgr-head"><span class="fav-mgr-title">⭐ 我的收藏夹</span><button class="fav-new-btn" onclick="createFolder()">＋ 新建收藏夹</button></div>';
+  if(favFolders.length === 0){
+    html += '<div class="empty-state"><div class="empty-icon">⭐</div><p>还没有收藏夹，点「＋ 新建收藏夹」创建</p></div>';
+  }
+  for(var i=0;i<favFolders.length;i++){
+    var f = favFolders[i];
+    html += '<div class="fav-folder"><div class="fav-folder-head" onclick="toggleFolder('+i+')">';
+    html += '<span class="fav-folder-name">📁 ' + escHtml(f.name) + '</span>';
+    html += '<span class="fav-folder-count">' + f.songs.length + ' 首</span>';
+    if(i>0) html += '<span class="fav-folder-del" onclick="event.stopPropagation();deleteFolder('+i+')">删除</span>';
+    html += '</div>';
+    html += '<div class="fav-folder-body" id="favFolderBody'+i+'" style="display:none">';
+    if(f.songs.length === 0){
+      html += '<p class="fav-empty">暂无歌曲，去搜索里点 ☆ 收藏进来吧</p>';
+    } else {
+      for(var j=0;j<f.songs.length;j++){
+        html += songRowHTML(f.songs[j], i, j);
+      }
+    }
+    html += '</div></div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+function songRowHTML(song, fi, si){
+  return '<div class="fav-song">' +
+    '<div class="fav-song-info"><div class="fav-song-name">' + escHtml(song.name) + '</div><div class="fav-song-singer">' + escHtml(song.singer) + '</div></div>' +
+    '<button class="download-btn" onclick="doDownload(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\')" title="下载">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+    '</button>' +
+    '<button class="fav-song-del" onclick="removeFromFolder('+fi+','+si+')" title="移除">✕</button>' +
+  '</div>';
+}
+function toggleFolder(i){
+  var b = document.getElementById('favFolderBody'+i);
+  if(b) b.style.display = b.style.display === 'none' ? 'block' : 'none';
+}
+function createFolder(){
+  var name = prompt('请输入新收藏夹名称：');
+  if(!name || !name.trim()) return;
+  favFolders.push({name:name.trim(), songs:[]});
+  saveFolders();
+  renderFavs();
+  renderFavBadge();
+}
+function deleteFolder(i){
+  if(!confirm('确定删除收藏夹「' + favFolders[i].name + '」及其中的 ' + favFolders[i].songs.length + ' 首歌吗？')) return;
+  favFolders.splice(i,1);
+  saveFolders();
+  renderFavs();
+  renderFavBadge();
+}
+function removeFromFolder(fi, si){
+  favFolders[fi].songs.splice(si,1);
+  saveFolders();
+  renderFavs();
+  renderFavBadge();
+  refreshFavButtons();
+}
+loadFolders();
+
 function similarSingers(query){
   var qc = cleanStr(query);
   var target = null;
@@ -2790,7 +2996,6 @@ function renderSimilarBar(query){
   }
   bar.innerHTML = html;
 }
-loadFavs();
 function doDownload(name, singer, link) {
   window.open(link, '_blank');
   showToast('&#x1F3A7; 正在跳转夸克网盘：' + singer + ' - ' + name);
@@ -2839,11 +3044,7 @@ renderPlaylists();
   initDark();
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  document.getElementById('upd1').innerHTML='<span class="live-dot"></span>'+td+' 新增林俊杰41首+王靖雯24首+李宗盛63首';
-  document.getElementById('upd2').textContent='共3位歌手，新增128首歌曲';
-  document.getElementById('upd3').textContent='歌手合集新增李宗盛，UI优化+批量下载教程';
-  document.getElementById('upd4').textContent='收藏 www.hxxsz666.vip 持续更新';
-  document.getElementById('upd5').textContent='更多资源请加上方QQ群';
+  renderDailyQuote();
   
   document.querySelectorAll('.tab-btn').forEach(function(b){
     b.classList.remove('active');
