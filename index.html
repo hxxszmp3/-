@@ -2552,7 +2552,7 @@ function gotoSingerPage(i){
   window.scrollTo(0,0);
 }
 function renderLetterNav(){
-  var h='<a class="az-link az-all" onclick="gotoLetter(\'\')">全部</a>';
+  var h='';
   var all='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   for(var i=0;i<all.length;i++){
     var al=all[i];
@@ -2567,7 +2567,7 @@ function updateAzActive(){
   var links=document.querySelectorAll('#singerAzSide .az-link');
   for(var i=0;i<links.length;i++){
     var l=links[i].getAttribute('data-l');
-    var isActive=(l===null && _curLetter==='')||(l===_curLetter);
+    var isActive=(l===_curLetter);
     links[i].classList.toggle('az-active',isActive);
   }
 }
