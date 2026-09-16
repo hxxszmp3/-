@@ -121,21 +121,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .top-header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #dce8f0}
 .top-header-inner{max-width:780px;margin:0 auto;padding:10px 16px 8px}
 .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.top-title{font-size:22px;font-weight:700;color:#6b9aae;letter-spacing:1px}
+.top-title{font-size:32px;font-weight:700;color:#6b9aae;letter-spacing:1px}
 .top-actions{display:flex;gap:8px}
 .icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(107,154,174,.3);background:#fff;color:#6b9aae;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;text-decoration:none;transition:all .2s;line-height:1}
 .icon-btn:hover{background:rgba(107,154,174,.12);border-color:#6b9aae}
 .top-header .tab-bar{margin-bottom:0}
 .quote-box{flex:1;min-width:0;overflow:hidden;white-space:nowrap;margin:0 12px;display:flex;align-items:center;gap:8px}
-.quote-track{flex:1;min-width:0;overflow:hidden}
 .fb-link{flex-shrink:0}
 .fb-link{color:#6b9aae;font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap}
 .fb-link:hover{text-decoration:underline}
 .fb-sep{color:#c0c8d0;font-size:12px;margin:0 2px}
 body.dark .fb-link{color:#8cb0c0}
 body.dark .fb-sep{color:#4a5568}
-.quote-track{display:inline-block;white-space:nowrap;padding-left:100%;animation:quoteScroll 22s linear infinite}
-.quote-track span{font-size:12.5px;color:#6b9aae;font-weight:500;letter-spacing:.5px}
+.quote-track{flex:1;min-width:0;overflow:hidden;white-space:nowrap}
+.quote-track span{display:inline-block;padding-left:100%;animation:quoteScroll 22s linear infinite;font-size:12.5px;color:#6b9aae;font-weight:500;letter-spacing:.5px}
 @keyframes quoteScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 body.dark .quote-track span{color:#8cb0c0}
 body.dark .top-header{background:#22282e;border-bottom-color:#333a42}
@@ -235,7 +234,7 @@ body.dark .singer-row-name{color:#d6dee6}
 .copy-all-btn:hover{background:#6b9aae;color:#fff}
 @media(max-width:600px){
 .hero h1{font-size:22px}
-.top-title{font-size:15px;letter-spacing:0}
+.top-title{font-size:20px;letter-spacing:0}
 .quote-box{margin:0 8px;padding:4px 10px}
 .icon-btn{width:30px;height:30px}
 .mode-btn{padding:9px 16px;font-size:13px}
