@@ -193,11 +193,11 @@ body.dark .singer-row-flash{animation:singerFlashDark 1s ease 2}
 .singer-az-top{margin-bottom:12px;text-align:center}
 .singer-toolbar{position:sticky;top:88px;z-index:90;background:#faf8f5;padding:6px 0 2px;margin:0 -2px}
 body.dark .singer-toolbar{background:#171c21}
-.az-link.az-active{background:#6b9aae;color:#fff!important}
+.az-link.az-active{background:#4a90d9!important;color:#fff!important}
 .az-link.az-all{font-weight:700;padding:0 6px}
 .az-link{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:11px;font-weight:700;color:#6b9aae;text-decoration:none;border-radius:3px;cursor:pointer;transition:all .15s}
 .az-link:hover{background:rgba(107,154,174,.2)}
-.az-link.off{color:#c0c8cc;cursor:default}
+.az-link.off{color:#b8c0c8;cursor:default;width:auto;height:auto;padding:0 1px;background:none}
 .singer-page-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:16px 0}
 .page-btn{padding:7px 18px;border-radius:8px;border:1px solid #6b9aae;background:#fff;color:#6b9aae;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .page-btn:hover:not(:disabled){background:#6b9aae;color:#fff}
@@ -422,7 +422,7 @@ body.dark .fav-song-name{color:#c8d0d8}
 
   <div class="tab-panel" id="tab-singer" style="display:none">
     <div class="singer-toolbar">
-      <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="输入歌手名，自动跳转"><button class="singer-search-btn" onclick="searchSinger()">跳转</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
+      <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="输入歌手名，回车跳转" onkeydown="if(event.key===&apos;Enter&apos;){event.preventDefault();searchSinger();}"><button class="singer-search-btn" onclick="searchSinger()">跳转</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
       <div class="singer-az-top"><div class="singer-az-side" id="singerAzSide"></div></div>
     </div>
     <div class="singer-grid" id="singerGrid"></div>
