@@ -188,7 +188,7 @@ body.dark .icon-btn{background:#232930;color:#6b9aae;border-color:rgba(107,154,1
 .singer-avatar-img{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;transition:all .2s;box-shadow:0 3px 12px rgba(0,0,0,.08)}
 .singer-avatar-name{font-size:12px;color:#4a5568;font-weight:700;font-family:"PingFang SC","Microsoft YaHei",sans-serif;text-align:center;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
 .singer-list{display:flex;flex-direction:column;gap:8px}
-.singer-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #dce8f0;border-radius:10px;padding:10px 14px;transition:all .2s}
+.singer-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #dce8f0;border-radius:10px;padding:10px 14px;transition:all .2s;scroll-margin-top:180px}
 .singer-row:hover{border-color:#b8d4e0;box-shadow:0 2px 8px rgba(100,150,170,.08)}
 .singer-row-avatar{width:44px;height:44px;border-radius:50%;background-size:cover;background-position:center;flex-shrink:0;background-color:#e4ecf0}
 .singer-row-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px}
@@ -369,7 +369,7 @@ body.dark .fav-song-name{color:#c8d0d8}
         <span class="quote-track"><span id="quoteText">缺歌反馈，更多资源，点击右侧图标加入群聊👉</span></span>
       </div>
       <div class="top-actions">
-        <a class="icon-btn" href="https://qun.qq.com/universal-share/share?ac=1&authKey=h%2BjdFC2tAG7ZQYwK1%2B%2FOhuUZigJvWWrxmttmOxAfwWuSyAKocl2l0Hg4ZQJLmEDS&busi_data=eyJncm91cENvZGUiOiIxMDk4OTU1NzQzIiwidG9rZW4iOiJXd1M5SUp5cmNkV25UQVVzbFZrRjhkTEtsVzBvcGNBUGQ5VEFDdXF4a1pJNXMzczB6VU1vMm9lM29hTVJhMWpDIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=uVJ63vCYKortLY_MbjtAzVJjdJtR3so2RLlgtQ61CzF4181s6SHVopF4gFILaFuMl4cYps_veSdZLzIa7vtWEw&svctype=4&tempid=h5_group_info&busi_data=eyJncm91cENvZGUiOiIxMDUxNjAzNDk3IiwidG9rZW4iOiJZYXp1R0FPb1o4anNsZzBNcDJpa01ZVHpUdCtIMVlzZUJ3bkVoeHN4TGl6ODdRRFNieEhSbTdtY21FNW5GajNEIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=UknZ5-3o0gdylWTec4uVFTKRigQ80dY62hSllLKH4AiHtoQLkpFwV_mK-ODIjLdqwsXlK8Y6ePnge2HbwmsDMg&svctype=4&tempid=h5_group_info" target="_blank" title="加QQ群">👥</a>
+        <a class="icon-btn" href="https://qun.qq.com/universal-share/share?ac=1&authKey=h%2BjdFC2tAG7ZQYwK1%2B%2FOhuUZigJvWWrxmttmOxAfwWuSyAKocl2l0Hg4ZQJLmEDS&busi_data=eyJncm91cENvZGUiOiIxMDk4OTU1NzQzIiwidG9rZW4iOiJXd1M5SUp5cmNkV25UQVVzbFZrRjhkTEtsVzBvcGNBUGQ5VEFDdXF4a1pJNXMzczB6VU1vMm9lM29hTVJhMWpDIiwidWluIjoiMTU5MTE5MzYyMiJ9&data=uVJ63vCYKortLY_MbjtAzVJjdJtR3so2RLlgtQ61CzF4181s6SHVopF4gFILaFuMl4cYps_veSdZLzIa7vtWEw&svctype=4&tempid=h5_group_info" target="_blank" title="加QQ群">👥</a>
         <button class="icon-btn" onclick="showDisclaimer()" title="免责声明">📜</button>
         <button class="icon-btn" id="darkToggle" onclick="toggleDark()" title="夜间/日间模式">🌙</button>
       </div>
@@ -2711,7 +2711,7 @@ function searchSinger(){
       _singerPageIdx=pageIdx;
       renderSingerPage();
       var el=document.getElementById('singer-row-'+encodeURIComponent(found));
-      if(el){el.classList.add('singer-row-flash');setTimeout(function(){el.classList.remove('singer-row-flash');},2000);}
+      if(el){var _idx=-1;for(var _k=0;_k<_singerPages[pageIdx].length;_k++){if(_singerPages[pageIdx][_k].singer===found){_idx=_k;break;}}if(_idx>=3){el.scrollIntoView({behavior:'smooth',block:'start'});}el.classList.add('singer-row-flash');setTimeout(function(){el.classList.remove('singer-row-flash');},2000);}
     }else{r.textContent='未找到该歌手位置';}
   }else{
     r.textContent='未找到该歌手';
