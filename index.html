@@ -2711,7 +2711,7 @@ function searchSinger(){
       _singerPageIdx=pageIdx;
       renderSingerPage();
       var el=document.getElementById('singer-row-'+encodeURIComponent(found));
-      if(el){var tb=document.querySelector('.singer-toolbar');var off=(tb?tb.offsetHeight:0)+12;window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-off,behavior:'smooth'});el.classList.add('singer-row-flash');setTimeout(function(){el.classList.remove('singer-row-flash');},2000);}
+      if(el){el.classList.add('singer-row-flash');setTimeout(function(){el.classList.remove('singer-row-flash');},2000);}
     }else{r.textContent='未找到该歌手位置';}
   }else{
     r.textContent='未找到该歌手';
