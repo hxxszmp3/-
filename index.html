@@ -1784,7 +1784,7 @@ function renderPlaylists(){
           '<div class="pl-name">'+escHtml(items[i].name)+'</div>'+
           '<div class="pl-time">歌单 #'+(items.length-i)+'</div>'+
         '</div>'+
-        '<a class="pl-btn" href="'+items[i].quark.replace(/&/g,'&amp;')+'" target="_blank">打开</a>'+
+        '<a class="pl-btn" href="'+items[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
       '</div>';
   }
   container.innerHTML=html;
@@ -1808,7 +1808,7 @@ function filterPlaylists(){
         '<div class="pl-name">'+escHtml(filtered[i].name)+'</div>'+
         '<div class="pl-time">歌单 #'+(items.indexOf(filtered[i])+1)+'</div>'+
       '</div>'+
-      '<a class="pl-btn" href="'+filtered[i].quark.replace(/&/g,'&amp;')+'" target="_blank">打开</a>'+
+      '<a class="pl-btn" href="'+filtered[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
     '</div>');
   }
   container.innerHTML=html||'<div style="color:#999;text-align:center;padding:30px">没有匹配的歌单</div>';
