@@ -163,7 +163,9 @@ body.dark .icon-btn{background:#232930;color:#6b9aae;border-color:rgba(107,154,1
 .pl-card:hover{background:#fafafa;margin:0 -18px;padding:12px 18px;border-radius:8px}
 .pl-cover{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#f0f4f6,#e4ecf0);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .pl-info{flex:1;min-width:0}
-.pl-name{font-size:14px;font-weight:600;color:#4a5568;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-name{font-size:14px;font-weight:600;color:#4a5568;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.pl-name-open{white-space:normal;overflow:visible;text-overflow:clip}
+.pl-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .pl-time{font-size:11px;color:#7a8a98;margin-top:2px}
 .pl-btn{padding:4px 10px;border-radius:7px;border:none;background:linear-gradient(135deg,#8cb0c0,#6b9aae);color:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none;box-shadow:0 2px 6px rgba(107,154,174,.3)}
 .pl-btn-baidu{border:1px solid #c0c8d0;background:rgba(120,130,140,.12);color:#7a8a98;box-shadow:none}
@@ -1788,11 +1790,13 @@ function renderPlaylists(){
       '<div class="pl-card">'+
         '<div class="pl-cover">📀</div>'+
         '<div class="pl-info">'+
-          '<div class="pl-name'+(items[i].name.length>12?' pl-name-scroll':'')+'">'+(items[i].name.length>12?'<span class="pl-name-track">'+escHtml(items[i].name)+'</span>':escHtml(items[i].name))+'</div>'+
+          '<div class="pl-name" onclick="togglePlName(this)">'+escHtml(items[i].name)+'</div>'+
           '<div class="pl-time">歌单 #'+(items.length-i)+'</div>'+
+          '<div class="pl-btns">'+
+            '<a class="pl-btn" href="'+items[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
+            (items[i].baidu?'<a class="pl-btn pl-btn-baidu" href="'+items[i].baidu.replace(/&/g,'&amp;')+'" target="_blank">备用下载</a>':'')+
+          '</div>'+
         '</div>'+
-        '<a class="pl-btn" href="'+items[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
-        (items[i].baidu?'<a class="pl-btn pl-btn-baidu" href="'+items[i].baidu.replace(/&/g,'&amp;')+'" target="_blank">备用下载</a>':'')+
       '</div>';
   }
   container.innerHTML=html;
@@ -1813,15 +1817,18 @@ function filterPlaylists(){
     html+=('<div class="pl-card">'+
       '<div class="pl-cover">📀</div>'+
       '<div class="pl-info">'+
-        '<div class="pl-name'+(filtered[i].name.length>12?' pl-name-scroll':'')+'">'+(filtered[i].name.length>12?'<span class="pl-name-track">'+escHtml(filtered[i].name)+'</span>':escHtml(filtered[i].name))+'</div>'+
+        '<div class="pl-name" onclick="togglePlName(this)">'+escHtml(filtered[i].name)+'</div>'+
         '<div class="pl-time">歌单 #'+(items.indexOf(filtered[i])+1)+'</div>'+
+        '<div class="pl-btns">'+
+          '<a class="pl-btn" href="'+filtered[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
+          (filtered[i].baidu?'<a class="pl-btn pl-btn-baidu" href="'+filtered[i].baidu.replace(/&/g,'&amp;')+'" target="_blank">备用下载</a>':'')+
+        '</div>'+
       '</div>'+
-      '<a class="pl-btn" href="'+filtered[i].quark.replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
-      (filtered[i].baidu?'<a class="pl-btn pl-btn-baidu" href="'+filtered[i].baidu.replace(/&/g,'&amp;')+'" target="_blank">备用下载</a>':'')+
     '</div>');
   }
   container.innerHTML=html||'<div style="color:#999;text-align:center;padding:30px">没有匹配的歌单</div>';
 }
+function togglePlName(el){el.classList.toggle('pl-name-open');}
 
 function showDisclaimer(){alert('免责声明\n\n本站所有资源均来自网络公开分享，仅供个人学习交流使用。\n版权归原作者所有，如有侵权请联系 gg318364167@gmail.com');}
 function copyAllLinks(){copySelectedLinks();}
