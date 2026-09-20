@@ -168,8 +168,8 @@ body.dark .icon-btn{background:#232930;color:#6b9aae;border-color:rgba(107,154,1
 .pl-btn{padding:4px 10px;border-radius:7px;border:none;background:linear-gradient(135deg,#8cb0c0,#6b9aae);color:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none;box-shadow:0 2px 6px rgba(107,154,174,.3)}
 .pl-btn-baidu{border:1px solid #c0c8d0;background:rgba(120,130,140,.12);color:#7a8a98;box-shadow:none}
 .pl-btn-baidu:hover{background:rgba(120,130,140,.2);color:#5a6670}
-.pl-name-scroll{text-overflow:clip}
-.pl-name-track{display:inline-block;padding-left:100%;animation:plNameScroll 9s linear infinite}
+.pl-name-scroll{text-overflow:ellipsis}
+.pl-name-track{display:inline-block}
 @keyframes plNameScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 .pl-btn:hover{background:#6b9aae;color:#fff}
 .tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:nowrap}
@@ -257,6 +257,8 @@ body.dark .singer-row-name{color:#d6dee6}
 .singer-row-name{font-size:13px}
 .singer-row-btn{padding:5px 8px;font-size:11px;border-radius:6px}
 .footer-row{flex-direction:column}
+.pl-name-scroll{text-overflow:clip}
+.pl-name-track{padding-left:100%;animation:plNameScroll 9s linear infinite}
 }
 #backTop{position:fixed;bottom:80px;right:16px;z-index:90;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8cb0c0,#6b9aae);color:#fff;border:none;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(107,154,174,.2);display:none;line-height:1.2}
 #backTop:hover{opacity:.85}
