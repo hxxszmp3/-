@@ -1758,7 +1758,7 @@ function batchSearch(){
           }
         }
         // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
-        if(!matched && q.length>=3){
+        if(!matched && q.length>=2){
           for(var k2=0;k2<songs.length;k2++){
             if(cleanStr(songs[k2].name).indexOf(q)===0){
               foundSongs.push({name:songs[k2].name,cover:songs[k2].cover,quark:songs[k2].quark,singer:exactSinger,query:queries[i].original,score:80});matched=true;
@@ -1793,7 +1793,7 @@ function batchSearch(){
         }
       }
       // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
-      if(!matched && q.length>=3){
+      if(!matched && q.length>=2){
         for(var j2=0;j2<singerKeys.length;j2++){
           var singer2=singerKeys[j2];
           var songs2=songDB[singer2];
