@@ -1720,6 +1720,37 @@ var _renderCache = null;
   }
 })();
 
+function _batchSim(a,b){
+  var la=a.length,lb=b.length;
+  if(!la||!lb)return 0;
+  if(la<lb){var t=a;a=b;b=t;t=la;la=lb;lb=t;}
+  var prev=[];for(var j=0;j<=lb;j++)prev[j]=j;
+  for(var i=1;i<=la;i++){
+    var cur=[i];
+    for(var j=1;j<=lb;j++){
+      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    }
+    prev=cur;
+  }
+  return 1-prev[lb]/la;
+}
+function _batchScore(cn,sc,q,sf){
+  var nameScore=0;
+  if(cn===q)nameScore=60;
+  else if(cn.indexOf(q)===0)nameScore=50;
+  else if(cn.indexOf(q)!==-1)nameScore=40;
+  else if(_batchSim(cn,q)>=0.8)nameScore=30;
+  else return -1;
+  if(sf){
+    var singerScore=0;
+    if(sc===sf)singerScore=40;
+    else if(sc.indexOf(sf)!==-1)singerScore=30;
+    else if(_batchSim(sc,sf)>=0.8)singerScore=20;
+    else return -1;
+    return nameScore+singerScore;
+  }
+  return nameScore;
+}
 // ========== 批量搜索 ==========
 function batchSearch(){
   var raw=document.getElementById('batchInput').value.trim();
@@ -1742,70 +1773,25 @@ function batchSearch(){
   function cleanStr(s){return s.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();}
   var singerKeys=Object.keys(songDB);
   for(var i=0;i<queries.length;i++){
-    var q=cleanStr(queries[i].song),sf=queries[i].singer,matched=false;
-    if(sf){
-      // 精确匹配：歌手和歌名都对上才显示（忽略符号）
-      var sfClean=cleanStr(sf);
-      var exactSinger=null;
-      for(var j=0;j<singerKeys.length;j++){
-        if(cleanStr(singerKeys[j])===sfClean){exactSinger=singerKeys[j];break;}
-      }
-      if(exactSinger){
-        var songs=songDB[exactSinger];
-        for(var k=0;k<songs.length;k++){
-          if(cleanStr(songs[k].name)===q){
-            foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:exactSinger,query:queries[i].original,score:100});matched=true;
-          }
-        }
-        // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
-        if(!matched && q.length>=2){
-          for(var k2=0;k2<songs.length;k2++){
-            if(cleanStr(songs[k2].name).indexOf(q)===0){
-              foundSongs.push({name:songs[k2].name,cover:songs[k2].cover,quark:songs[k2].quark,singer:exactSinger,query:queries[i].original,score:80});matched=true;
-            }
-          }
-        }
-      }
-      // 合唱兜底：歌手键含搜索歌手(如"薛之谦&张靓颖"含"薛之谦")
-      if(!matched){
-        for(var j3=0;j3<singerKeys.length;j3++){
-          var singer3=singerKeys[j3];
-          var cs3=cleanStr(singer3);
-          if(cs3===sfClean)continue;
-          if(cs3.indexOf(sfClean)===-1)continue;
-          var songs3=songDB[singer3];
-          for(var k3=0;k3<songs3.length;k3++){
-            if(cleanStr(songs3[k3].name)===q){
-              foundSongs.push({name:songs3[k3].name,cover:songs3[k3].cover,quark:songs3[k3].quark,singer:singer3,query:queries[i].original,score:70});matched=true;
-            }
-          }
-        }
-      }
-    }else{
-      // 只搜歌名：精确匹配（忽略符号）
-      for(var j=0;j<singerKeys.length;j++){
-        var singer=singerKeys[j];
-        var songs=songDB[singer];
-        for(var k=0;k<songs.length;k++){
-          if(cleanStr(songs[k].name)===q){
-            foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
-          }
-        }
-      }
-      // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
-      if(!matched && q.length>=2){
-        for(var j2=0;j2<singerKeys.length;j2++){
-          var singer2=singerKeys[j2];
-          var songs2=songDB[singer2];
-          for(var k2=0;k2<songs2.length;k2++){
-            if(cleanStr(songs2[k2].name).indexOf(q)===0){
-              foundSongs.push({name:songs2[k2].name,cover:songs2[k2].cover,quark:songs2[k2].quark,singer:singer2,query:queries[i].original,score:80});matched=true;
-            }
-          }
-        }
+    var q=cleanStr(queries[i].song),sf=queries[i].singer?cleanStr(queries[i].singer):null;
+    var best=[];
+    for(var j=0;j<singerKeys.length;j++){
+      var singer=singerKeys[j];
+      var sc=cleanStr(singer);
+      var songs=songDB[singer];
+      for(var k=0;k<songs.length;k++){
+        var s=_batchScore(cleanStr(songs[k].name),sc,q,sf);
+        if(s>=0){best.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:s});}
       }
     }
-    if(!matched)notFound.push(queries[i].original);
+    if(best.length===0){notFound.push(queries[i].original);}
+    else{
+      best.sort(function(a,b){return b.score-a.score;});
+      var top=best[0].score;
+      for(var bi=0;bi<best.length;bi++){
+        if(best[bi].score===top)foundSongs.push(best[bi]);else break;
+      }
+    }
   }
   foundSongs.sort(function(a,b){return b.score-a.score;});
   var seen={},unique=[];
