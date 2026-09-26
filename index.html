@@ -2860,9 +2860,17 @@ function doSearch() {
     var singerMatch = null;
     if (qc.length >= 2) {
       var singerKeys = Object.keys(songDB);
+      // 先精确匹配歌手名
       for (var si = 0; si < singerKeys.length; si++) {
         var csk = _singerCleanCache[singerKeys[si]];
-        if (csk === qc || csk === keywords[0] || (keywords[0] && csk.indexOf(keywords[0]) === 0)) { singerMatch = singerKeys[si]; break; }
+        if (csk === qc || csk === keywords[0]) { singerMatch = singerKeys[si]; break; }
+      }
+      // 精确匹配不到再用前缀匹配
+      if (!singerMatch) {
+        for (var si2 = 0; si2 < singerKeys.length; si2++) {
+          var csk2 = _singerCleanCache[singerKeys[si2]];
+          if (keywords[0] && csk2.indexOf(keywords[0]) === 0) { singerMatch = singerKeys[si2]; break; }
+        }
       }
     }
     var results = [];
