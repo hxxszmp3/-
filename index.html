@@ -1726,6 +1726,15 @@ function batchSearch(){
             break;
           }
         }
+        // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
+        if(!matched && q.length>=3){
+          for(var k2=0;k2<songs.length;k2++){
+            if(cleanStr(songs[k2].name).indexOf(q)===0){
+              foundSongs.push({name:songs[k2].name,cover:songs[k2].cover,quark:songs[k2].quark,singer:singer,query:queries[i].original,score:80});matched=true;
+              break;
+            }
+          }
+        }
         break;
       }
     }else{
@@ -1736,6 +1745,18 @@ function batchSearch(){
         for(var k=0;k<songs.length;k++){
           if(cleanStr(songs[k].name)===q){
             foundSongs.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:100});matched=true;
+          }
+        }
+      }
+      // 前缀匹配兜底：歌名带 Live/括号等后缀时也能找到
+      if(!matched && q.length>=3){
+        for(var j2=0;j2<singerKeys.length;j2++){
+          var singer2=singerKeys[j2];
+          var songs2=songDB[singer2];
+          for(var k2=0;k2<songs2.length;k2++){
+            if(cleanStr(songs2[k2].name).indexOf(q)===0){
+              foundSongs.push({name:songs2[k2].name,cover:songs2[k2].cover,quark:songs2[k2].quark,singer:singer2,query:queries[i].original,score:80});matched=true;
+            }
           }
         }
       }
