@@ -2854,37 +2854,33 @@ function doSearch() {
   setTimeout(function() {
     var q = query.toLowerCase();
     var qc = cleanStr(query);
-    var queryIsSinger = false;
+    // 多关键词拆分(空格分隔),类QQ音乐
+    var keywords = qc.split(/\s+/).filter(function(k){ return k.length > 0; });
+    // 判断是否搜歌手:整个词或第一个关键词命中歌手名
+    var singerMatch = null;
     if (qc.length >= 2) {
       var singerKeys = Object.keys(songDB);
       for (var si = 0; si < singerKeys.length; si++) {
         var csk = _singerCleanCache[singerKeys[si]];
-        if (csk.indexOf(qc) !== -1 || csk.indexOf(q) !== -1) { queryIsSinger = true; break; }
+        if (csk === qc || csk === keywords[0] || (keywords[0] && csk.indexOf(keywords[0]) === 0)) { singerMatch = singerKeys[si]; break; }
       }
     }
     var results = [];
     var seen = {};
     for (var i = 0; i < _songFlat.length; i++) {
       var it = _songFlat[i];
-      var hit;
-      if (queryIsSinger) {
-        hit = it.csinger.indexOf(q) !== -1;
-      } else {
-        hit = it.cname.indexOf(q) !== -1
-          || it.cname.indexOf(qc) !== -1
-          || (it.cname + it.csinger).indexOf(qc) !== -1
-          || (it.csinger + it.cname).indexOf(qc) !== -1
-          || (qc.indexOf(it.cname) !== -1 && qc.indexOf(it.csinger) !== -1);
-      }
-      if (hit) {
-        var key = it.singer + '||' + it.name;
-        if (!seen[key]) {
-          seen[key] = true;
-          results.push({ name: it.name, cover: it.cover, quark: it.quark, singer: it.singer });
-        }
+      if (singerMatch && it.csinger !== singerMatch) continue;
+      var score = _scoreSong(it, keywords);
+      if (score < 0) continue;
+      var key = it.singer + '||' + it.name;
+      if (!seen[key]) {
+        seen[key] = true;
+        results.push({ name: it.name, cover: it.cover, quark: it.quark, singer: it.singer, score: score });
       }
     }
+    // 相关度排序:分数降序,同分按歌手热度
     results.sort(function(a, b) {
+      if (a.score !== b.score) return b.score - a.score;
       var pa = singerPopularity[a.singer] || 0, pb = singerPopularity[b.singer] || 0;
       return pa !== pb ? pb - pa : 0;
     });
@@ -2892,6 +2888,22 @@ function doSearch() {
     renderSimilarBar(query);
     addHistory(query, 'single');
   }, 150);
+}
+function _scoreSong(it, keywords) {
+  var total = 0;
+  for (var ki = 0; ki < keywords.length; ki++) {
+    var kw = keywords[ki];
+    var s = 0;
+    if (it.cname === kw) s = 100;
+    else if (it.cname.indexOf(kw) === 0) s = 80;
+    else if (it.cname.indexOf(kw) !== -1) s = 60;
+    else if (it.csinger === kw) s = 90;
+    else if (it.csinger.indexOf(kw) === 0) s = 70;
+    else if (it.csinger.indexOf(kw) !== -1) s = 50;
+    else return -1;
+    total += s;
+  }
+  return total;
 }
 
 function renderResults(results, query) {
