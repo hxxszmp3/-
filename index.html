@@ -2595,7 +2595,7 @@ function singerRowHTML(sn){
   var imgUrl=singerImgs[sn]||'';
   var quark=singerCollection[sn]||'';
   var baidu=singerBaidu[sn]||'';
-  var av = imgUrl ? '<div class="singer-row-avatar" style="background-image:url('+encodeURI(imgUrl)+')"></div>' : '<div class="singer-row-avatar avatar-text" style="background:'+getAvatarColor(sn)+'">'+escHtml(sn[0]||'')+'</div>';
+  var av = imgUrl ? '<div class="singer-row-avatar" style="background-image:url('+imgUrl+')"></div>' : '<div class="singer-row-avatar avatar-text" style="background:'+getAvatarColor(sn)+'">'+escHtml(sn[0]||'')+'</div>';
   return '<div class="singer-row" id="singer-row-'+encodeURIComponent(sn)+'">'+
     av+
     '<div class="singer-row-name">'+escHtml(sn)+'</div>'+
