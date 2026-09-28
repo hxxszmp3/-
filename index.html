@@ -2863,6 +2863,7 @@ function _scoreSong(it, keywords) {
     else if (it.csinger.indexOf(kw) === 0) s = 70;
     else if (it.cname.indexOf(kw) !== -1) s = 60;
     else if (it.csinger.indexOf(kw) !== -1) s = 50;
+    else if (it.csinger && kw.length > it.csinger.length && kw.slice(-it.csinger.length) === it.csinger && it.cname.indexOf(kw.slice(0, kw.length - it.csinger.length)) === 0) s = 75;
     else if (full1.indexOf(kw) !== -1 || full2.indexOf(kw) !== -1) s = 45;
     else return -1;
     total += s;
