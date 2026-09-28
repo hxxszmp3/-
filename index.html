@@ -2812,7 +2812,7 @@ function doSearch() {
     var q = query.toLowerCase();
     var qc = cleanStr(query);
     // 多关键词拆分(空格分隔),类QQ音乐
-    var keywords = qc.split(/\s+/).filter(function(k){ return k.length > 0; });
+    var keywords = query.split(/\s+/).filter(function(k){ return k.length > 0; }).map(function(k){ return cleanStr(k); });
     // 判断是否搜歌手:任意关键词精确匹配歌手名(支持"晴天 周杰伦"顺序)
     var singerMatch = null;
     if (qc.length >= 2) {
