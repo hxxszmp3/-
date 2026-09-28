@@ -398,10 +398,9 @@ body.dark .fav-song-name{color:#c8d0d8}
     <div id="searchLoading" style="text-align:center;padding:20px;color:#888;font-size:14px">曲库加载中，请稍候...</div>
     <div class="search-box" style="display:none" id="searchBoxWrap">
       <input type="text" class="search-input" id="searchInput"
-        placeholder="输入歌手名或歌曲名" style="color:#5c5650"
+        placeholder="输入歌名 或 歌手名 或 歌名+歌手" style="color:#5c5650"
         autocomplete="off"
-        oninput="showSuggestions()"
-        onkeydown="handleSuggestKey(event)" />
+        onkeydown="if(event.key==='Enter'){doSearch();}" />
       <button class="search-btn" onclick="doSearch()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -410,7 +409,6 @@ body.dark .fav-song-name{color:#c8d0d8}
       </button>
     </div>
     <div class="hot-tags" id="hotTags" style="display:none"></div>
-    <div class="suggest-dropdown" id="suggestDropdown" style="display:none"></div>
     <div id="resultsContainer"></div>
   </div>
 
@@ -2800,80 +2798,6 @@ function switchTab(tab){localStorage.setItem('activeTab',tab);window.scrollTo(0,
 }
 
 // ========== 搜索建议 ==========
-function showSuggestions(){
-  var q=document.getElementById('searchInput').value.trim();
-  var dd=document.getElementById('suggestDropdown');
-  if(q.length<1){dd.style.display='none';return;}
-  var matches=[];
-  var singerKeys=Object.keys(songDB);
-  var ql=q.toLowerCase();
-  for(var i=0;i<singerKeys.length;i++){
-    var singer=singerKeys[i];
-    var songs=songDB[singer];
-    for(var j=0;j<songs.length;j++){
-      var sn=songs[j].name;
-      var idx=sn.toLowerCase().indexOf(ql);
-      if(idx>=0) matches.push({song:sn,singer:singer,idx:idx});
-    }
-  }
-  var seen={},unique=[];
-  for(var i=0;i<matches.length;i++){
-    var k=matches[i].song+'||'+matches[i].singer;
-    if(!seen[k]){seen[k]=true;unique.push(matches[i]);}
-  }
-  unique=unique.slice(0,8);
-  if(unique.length===0){dd.style.display='none';return;}
-  var html='';
-  for(var i=0;i<unique.length;i++){
-    var s=unique[i];
-    var pre=s.song.substring(0,s.idx);
-    var match=s.song.substring(s.idx,s.idx+ql.length);
-    var post=s.song.substring(s.idx+ql.length);
-    html+='<div class="suggest-item" onclick="selectSuggestion('+i+')">'+escHtml(pre)+'<span class="match">'+escHtml(match)+'</span>'+escHtml(post)+'</div>';
-  }
-  dd.innerHTML=html+'<button class="suggest-close" onclick="document.getElementById(\'suggestDropdown\').style.display=\'none\';event.stopPropagation()">✕</button>';
-  dd.style.display='block';
-  window._suggestions=unique;
-}
-function selectSuggestion(idx){
-  var s=window._suggestions[idx];
-  if(s){
-    document.getElementById('searchInput').value=s.singer+' '+s.song;
-    document.getElementById('suggestDropdown').style.display='none';
-    doSearch();
-  }
-}
-function handleSuggestKey(e){
-  var dd=document.getElementById('suggestDropdown');
-  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
-    e.preventDefault();
-    if(dd.style.display==='block'){
-      var items=dd.querySelectorAll('.suggest-item');
-      if(items.length===0)return;
-      window._sugIdx=window._sugIdx||0;
-      items[window._sugIdx].style.background='';
-      if(e.key==='ArrowDown')window._sugIdx=(window._sugIdx+1)%items.length;
-      else window._sugIdx=(window._sugIdx-1+items.length)%items.length;
-      items[window._sugIdx].style.background='#f0f5fb';
-    }
-  }else if(e.key==='Enter'){
-    if(dd.style.display==='block'&&window._sugIdx!==undefined){
-      e.preventDefault();
-      selectSuggestion(window._sugIdx);
-      window._sugIdx=undefined;
-    }else{
-      doSearch();
-    }
-  }else if(e.key==='Escape'){
-    dd.style.display='none';
-  }
-}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#searchInput')&&!e.target.closest('#suggestDropdown')){
-    document.getElementById('suggestDropdown').style.display='none';
-  }
-});
-
 function quickSearch(name) {
   document.getElementById('searchInput').value = name;
   doSearch();
@@ -2889,21 +2813,16 @@ function doSearch() {
     var qc = cleanStr(query);
     // 多关键词拆分(空格分隔),类QQ音乐
     var keywords = qc.split(/\s+/).filter(function(k){ return k.length > 0; });
-    // 判断是否搜歌手:整个词或第一个关键词命中歌手名
+    // 判断是否搜歌手:任意关键词精确匹配歌手名(支持"晴天 周杰伦"顺序)
     var singerMatch = null;
     if (qc.length >= 2) {
       var singerKeys = Object.keys(songDB);
-      // 先精确匹配歌手名
       for (var si = 0; si < singerKeys.length; si++) {
         var csk = _singerCleanCache[singerKeys[si]];
-        if (csk === qc || csk === keywords[0]) { singerMatch = singerKeys[si]; break; }
-      }
-      // 精确匹配不到再用前缀匹配
-      if (!singerMatch) {
-        for (var si2 = 0; si2 < singerKeys.length; si2++) {
-          var csk2 = _singerCleanCache[singerKeys[si2]];
-          if (keywords[0] && csk2.indexOf(keywords[0]) === 0) { singerMatch = singerKeys[si2]; break; }
+        for (var ki = 0; ki < keywords.length; ki++) {
+          if (csk === keywords[ki]) { singerMatch = singerKeys[si]; break; }
         }
+        if (singerMatch) break;
       }
     }
     var results = [];
