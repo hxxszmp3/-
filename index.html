@@ -2850,16 +2850,20 @@ function doSearch() {
   }, 150);
 }
 function _scoreSong(it, keywords) {
+  var full1 = it.cname + it.csinger;
+  var full2 = it.csinger + it.cname;
   var total = 0;
   for (var ki = 0; ki < keywords.length; ki++) {
     var kw = keywords[ki];
     var s = 0;
     if (it.cname === kw) s = 100;
-    else if (it.cname.indexOf(kw) === 0) s = 80;
-    else if (it.cname.indexOf(kw) !== -1) s = 60;
     else if (it.csinger === kw) s = 90;
+    else if (full1 === kw || full2 === kw) s = 85;
+    else if (it.cname.indexOf(kw) === 0) s = 80;
     else if (it.csinger.indexOf(kw) === 0) s = 70;
+    else if (it.cname.indexOf(kw) !== -1) s = 60;
     else if (it.csinger.indexOf(kw) !== -1) s = 50;
+    else if (full1.indexOf(kw) !== -1 || full2.indexOf(kw) !== -1) s = 45;
     else return -1;
     total += s;
   }
