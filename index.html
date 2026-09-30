@@ -1904,11 +1904,12 @@ function batchSearch(){
     else{
       var top=results[0].score;
       for(var bi=0;bi<results.length;bi++){
-        if(results[bi].score===top){foundSongs.push({name:results[bi].name,cover:results[bi].cover,quark:results[bi].quark,singer:results[bi].singer,query:line,score:results[bi].score});}else break;
+        if(results[bi].score===top){foundSongs.push({name:results[bi].name,cover:results[bi].cover,quark:results[bi].quark,singer:results[bi].singer,query:line,score:results[bi].score,order:i});}else break;
       }
     }
   }
-  foundSongs.sort(function(a,b){return b.score-a.score;});
+  // 按输入框行顺序排列,同一行内保持相关度(分数)降序
+  foundSongs.sort(function(a,b){return (a.order-b.order)||(b.score-a.score);});
   var seen={},unique=[];
   for(var i=0;i<foundSongs.length;i++){
     var key=foundSongs[i].singer+'||'+foundSongs[i].name;
