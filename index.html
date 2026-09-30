@@ -2935,7 +2935,7 @@ function doSearch() {
         if (singerKeys[si].indexOf('&') !== -1) continue;
         var csk = _singerCleanCache[singerKeys[si]];
         for (var ki = 0; ki < keywords.length; ki++) {
-          if (csk === keywords[ki]) { singerMatch = singerKeys[si]; break; }
+          if (csk === keywords[ki]) { singerMatch = csk; break; }
         }
         if (singerMatch) break;
       }
@@ -2945,7 +2945,7 @@ function doSearch() {
           if (singerKeys[si2].indexOf('&') === -1) continue;
           var csk2 = _singerCleanCache[singerKeys[si2]];
           for (var ki2 = 0; ki2 < keywords.length; ki2++) {
-            if (csk2 === keywords[ki2]) { singerMatch = singerKeys[si2]; break; }
+            if (csk2 === keywords[ki2]) { singerMatch = csk2; break; }
           }
           if (singerMatch) break;
         }
