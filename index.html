@@ -435,7 +435,7 @@ body.dark .fav-song-name{color:#c8d0d8}
 
   <div class="tab-panel" id="tab-singer" style="display:none">
     <div class="singer-toolbar">
-      <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="输入歌手名，回车跳转" onkeydown="if(event.key===&apos;Enter&apos;){event.preventDefault();searchSinger();}"><button class="singer-search-btn" onclick="searchSinger()">跳转</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
+      <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="请输入歌手名" onkeydown="if(event.key===&apos;Enter&apos;){event.preventDefault();searchSinger();}"><button class="singer-search-btn" onclick="searchSinger()">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
       <div class="singer-az-top"><div class="singer-az-side" id="singerAzSide"></div></div>
     </div>
     <div class="singer-grid" id="singerGrid"></div>
@@ -1834,36 +1834,56 @@ var _renderCache = null;
   }
 })();
 
-function _batchSim(a,b){
-  var la=a.length,lb=b.length;
-  if(!la||!lb)return 0;
-  if(la<lb){var t=a;a=b;b=t;t=la;la=lb;lb=t;}
-  var prev=[];for(var j=0;j<=lb;j++)prev[j]=j;
-  for(var i=1;i<=la;i++){
-    var cur=[i];
-    for(var j=1;j<=lb;j++){
-      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+// ===== 通用搜索匹配(单曲搜索 + 批量下载共用同一套规则) =====
+function _matchQuery(query){
+  var qc = cleanStr(query);
+  // 多关键词拆分(空格分隔),类QQ音乐
+  var keywords = query.split(/\s+/).filter(function(k){ return k.length > 0; }).map(function(k){ return cleanStr(k); });
+  // 判断是否搜歌手:任意关键词精确匹配歌手名(支持"晴天 周杰伦"顺序)
+  var singerMatch = null;
+  if (qc.length >= 2) {
+    var singerKeys = Object.keys(songDB);
+    // 优先匹配纯歌手(不含&),避免"EXO"被"EXO&xx"合唱误匹配(韩文/符号被clean掉导致重名)
+    for (var si = 0; si < singerKeys.length; si++) {
+      if (singerKeys[si].indexOf('&') !== -1) continue;
+      var csk = _singerCleanCache[singerKeys[si]];
+      for (var ki = 0; ki < keywords.length; ki++) {
+        if (csk === keywords[ki]) { singerMatch = csk; break; }
+      }
+      if (singerMatch) break;
     }
-    prev=cur;
+    // 再匹配合唱(含&)
+    if (!singerMatch) {
+      for (var si2 = 0; si2 < singerKeys.length; si2++) {
+        if (singerKeys[si2].indexOf('&') === -1) continue;
+        var csk2 = _singerCleanCache[singerKeys[si2]];
+        for (var ki2 = 0; ki2 < keywords.length; ki2++) {
+          if (csk2 === keywords[ki2]) { singerMatch = csk2; break; }
+        }
+        if (singerMatch) break;
+      }
+    }
   }
-  return 1-prev[lb]/la;
-}
-function _batchScore(cn,sc,q,sf){
-  var nameScore=0;
-  if(cn===q)nameScore=60;
-  else if(cn.indexOf(q)===0)nameScore=50;
-  else if(cn.indexOf(q)!==-1)nameScore=40;
-  else if(_batchSim(cn,q)>=0.8)nameScore=30;
-  else return -1;
-  if(sf){
-    var singerScore=0;
-    if(sc===sf)singerScore=40;
-    else if(sc.indexOf(sf)!==-1)singerScore=30;
-    else if(_batchSim(sc,sf)>=0.8)singerScore=20;
-    else return -1;
-    return nameScore+singerScore;
+  var results = [];
+  var seen = {};
+  for (var i = 0; i < _songFlat.length; i++) {
+    var it = _songFlat[i];
+    if (singerMatch && it.csinger !== singerMatch) continue;
+    var score = _scoreSong(it, keywords);
+    if (score < 0) continue;
+    var key = it.singer + '||' + it.name;
+    if (!seen[key]) {
+      seen[key] = true;
+      results.push({ name: it.name, cover: it.cover, quark: it.quark, singer: it.singer, score: score });
+    }
   }
-  return nameScore;
+  // 相关度排序:分数降序,同分按歌手热度
+  results.sort(function(a, b) {
+    if (a.score !== b.score) return b.score - a.score;
+    var pa = singerPopularity[a.singer] || 0, pb = singerPopularity[b.singer] || 0;
+    return pa !== pb ? pb - pa : 0;
+  });
+  return results;
 }
 // ========== 批量搜索 ==========
 function batchSearch(){
@@ -1872,38 +1892,19 @@ function batchSearch(){
   var lines=raw.split('\n').filter(function(n){return n.trim().length>0});
   var container=document.getElementById('batchResults');
   if(lines.length===0){container.innerHTML='';return;}
-  var queries=[];
+  var foundSongs=[],notFound=[];
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();
     // Strip leading number/serial: "1 歌名" "99. 歌名" "123、歌名" -> "歌名"
     line=line.replace(/^\d+[\.\、\s，]+/,'').trim();
-    var songName=line,singerFilter=null;
-    var dashIdx=line.indexOf(' - ');
-    if(dashIdx>0){songName=line.substring(0,dashIdx).trim();singerFilter=line.substring(dashIdx+3).trim();}
-    else{var lastSpace=line.lastIndexOf(' ');if(lastSpace>0){var maybeSinger=line.substring(lastSpace+1).trim();var sKeys=Object.keys(songDB);for(var si=0;si<sKeys.length;si++){if(sKeys[si].toLowerCase()===maybeSinger.toLowerCase()){songName=line.substring(0,lastSpace).trim();singerFilter=maybeSinger;break;}}}}
-    queries.push({song:songName,singer:singerFilter,original:line});
-  }
-  var foundSongs=[],notFound=[];
-  function cleanStr(s){return s.replace(/[^a-z0-9一-鿿]/gi,'').toLowerCase();}
-  var singerKeys=Object.keys(songDB);
-  for(var i=0;i<queries.length;i++){
-    var q=cleanStr(queries[i].song),sf=queries[i].singer?cleanStr(queries[i].singer):null;
-    var best=[];
-    for(var j=0;j<singerKeys.length;j++){
-      var singer=singerKeys[j];
-      var sc=cleanStr(singer);
-      var songs=songDB[singer];
-      for(var k=0;k<songs.length;k++){
-        var s=_batchScore(cleanStr(songs[k].name),sc,q,sf);
-        if(s>=0){best.push({name:songs[k].name,cover:songs[k].cover,quark:songs[k].quark,singer:singer,query:queries[i].original,score:s});}
-      }
-    }
-    if(best.length===0){notFound.push(queries[i].original);}
+    if(!line){notFound.push(lines[i].trim());continue;}
+    // 一行一个,直接用单曲搜索同一套规则匹配(歌名/歌手/歌名+歌手均可)
+    var results=_matchQuery(line);
+    if(results.length===0){notFound.push(line);}
     else{
-      best.sort(function(a,b){return b.score-a.score;});
-      var top=best[0].score;
-      for(var bi=0;bi<best.length;bi++){
-        if(best[bi].score===top)foundSongs.push(best[bi]);else break;
+      var top=results[0].score;
+      for(var bi=0;bi<results.length;bi++){
+        if(results[bi].score===top){foundSongs.push({name:results[bi].name,cover:results[bi].cover,quark:results[bi].quark,singer:results[bi].singer,query:line,score:results[bi].score});}else break;
       }
     }
   }
@@ -2922,54 +2923,7 @@ function doSearch() {
   var container = document.getElementById('resultsContainer');
   container.innerHTML = skeletonHTML();
   setTimeout(function() {
-    var q = query.toLowerCase();
-    var qc = cleanStr(query);
-    // 多关键词拆分(空格分隔),类QQ音乐
-    var keywords = query.split(/\s+/).filter(function(k){ return k.length > 0; }).map(function(k){ return cleanStr(k); });
-    // 判断是否搜歌手:任意关键词精确匹配歌手名(支持"晴天 周杰伦"顺序)
-    var singerMatch = null;
-    if (qc.length >= 2) {
-      var singerKeys = Object.keys(songDB);
-      // 优先匹配纯歌手(不含&),避免"EXO"被"EXO&xx"合唱误匹配(韩文/符号被clean掉导致重名)
-      for (var si = 0; si < singerKeys.length; si++) {
-        if (singerKeys[si].indexOf('&') !== -1) continue;
-        var csk = _singerCleanCache[singerKeys[si]];
-        for (var ki = 0; ki < keywords.length; ki++) {
-          if (csk === keywords[ki]) { singerMatch = csk; break; }
-        }
-        if (singerMatch) break;
-      }
-      // 再匹配合唱(含&)
-      if (!singerMatch) {
-        for (var si2 = 0; si2 < singerKeys.length; si2++) {
-          if (singerKeys[si2].indexOf('&') === -1) continue;
-          var csk2 = _singerCleanCache[singerKeys[si2]];
-          for (var ki2 = 0; ki2 < keywords.length; ki2++) {
-            if (csk2 === keywords[ki2]) { singerMatch = csk2; break; }
-          }
-          if (singerMatch) break;
-        }
-      }
-    }
-    var results = [];
-    var seen = {};
-    for (var i = 0; i < _songFlat.length; i++) {
-      var it = _songFlat[i];
-      if (singerMatch && it.csinger !== singerMatch) continue;
-      var score = _scoreSong(it, keywords);
-      if (score < 0) continue;
-      var key = it.singer + '||' + it.name;
-      if (!seen[key]) {
-        seen[key] = true;
-        results.push({ name: it.name, cover: it.cover, quark: it.quark, singer: it.singer, score: score });
-      }
-    }
-    // 相关度排序:分数降序,同分按歌手热度
-    results.sort(function(a, b) {
-      if (a.score !== b.score) return b.score - a.score;
-      var pa = singerPopularity[a.singer] || 0, pb = singerPopularity[b.singer] || 0;
-      return pa !== pb ? pb - pa : 0;
-    });
+    var results = _matchQuery(query);
     renderResults(results, query);
     renderSimilarBar(query);
     addHistory(query, 'single');
