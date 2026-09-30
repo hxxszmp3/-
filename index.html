@@ -2930,12 +2930,25 @@ function doSearch() {
     var singerMatch = null;
     if (qc.length >= 2) {
       var singerKeys = Object.keys(songDB);
+      // 优先匹配纯歌手(不含&),避免"EXO"被"EXO&xx"合唱误匹配(韩文/符号被clean掉导致重名)
       for (var si = 0; si < singerKeys.length; si++) {
+        if (singerKeys[si].indexOf('&') !== -1) continue;
         var csk = _singerCleanCache[singerKeys[si]];
         for (var ki = 0; ki < keywords.length; ki++) {
           if (csk === keywords[ki]) { singerMatch = singerKeys[si]; break; }
         }
         if (singerMatch) break;
+      }
+      // 再匹配合唱(含&)
+      if (!singerMatch) {
+        for (var si2 = 0; si2 < singerKeys.length; si2++) {
+          if (singerKeys[si2].indexOf('&') === -1) continue;
+          var csk2 = _singerCleanCache[singerKeys[si2]];
+          for (var ki2 = 0; ki2 < keywords.length; ki2++) {
+            if (csk2 === keywords[ki2]) { singerMatch = singerKeys[si2]; break; }
+          }
+          if (singerMatch) break;
+        }
       }
     }
     var results = [];
