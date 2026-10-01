@@ -2730,12 +2730,15 @@ function renderSingerCollection(){
     return;
   }
   singers.sort(function(a,b){
+    var fa=getFL(a),fb=getFL(b);
+    if(fa!==fb)return fa.localeCompare(fb);
+    // 中文名在前，英文名在后(同字母板块内)
+    var ea=/[一-鿿]/.test(a)?0:1, eb=/[一-鿿]/.test(b)?0:1;
+    if(ea!==eb)return ea-eb;
     var pa=singerPopularity[a]||0,pb=singerPopularity[b]||0;
     if(pa!==pb)return pb-pa;
     var ca=singerSongCounts[a]||0,cb=singerSongCounts[b]||0;
     if(ca!==cb)return cb-ca;
-    var fa=getFL(a),fb=getFL(b);
-    if(fa!==fb)return fa.localeCompare(fb);
     return a.localeCompare(b);
   });
   var groups={};
