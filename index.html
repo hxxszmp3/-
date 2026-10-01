@@ -2978,6 +2978,39 @@ function doSearch() {
     addHistory(query, 'single');
   }, 150);
 }
+function _lev(a, b) {
+  var la = a.length, lb = b.length;
+  if (!la) return lb;
+  if (!lb) return la;
+  var prev = [];
+  for (var j = 0; j <= lb; j++) prev[j] = j;
+  for (var i = 1; i <= la; i++) {
+    var cur = [i];
+    for (var j = 1; j <= lb; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[lb];
+}
+function _findSuggestion(q) {
+  var qc = cleanStr(q);
+  if (qc.length < 2) return null;
+  var best = null, bestD = 99;
+  for (var i = 0; i < _songFlat.length; i++) {
+    var it = _songFlat[i];
+    if (Math.abs(it.cname.length - qc.length) <= 3) {
+      var d = _lev(it.cname, qc);
+      if (d < bestD) { bestD = d; best = it.name; }
+    }
+    if (Math.abs(it.csinger.length - qc.length) <= 3) {
+      var d2 = _lev(it.csinger, qc);
+      if (d2 < bestD) { bestD = d2; best = it.singer; }
+    }
+  }
+  if (bestD <= 2 && best && cleanStr(best) !== qc) return best;
+  return null;
+}
 function _scoreSong(it, keywords) {
   var full1 = it.cname + it.csinger;
   var full2 = it.csinger + it.cname;
@@ -2994,7 +3027,16 @@ function _scoreSong(it, keywords) {
     else if (it.csinger.indexOf(kw) !== -1) s = 50;
     else if (it.csinger && kw.length > it.csinger.length && kw.slice(-it.csinger.length) === it.csinger && it.cname.indexOf(kw.slice(0, kw.length - it.csinger.length)) === 0) s = 75;
     else if (full1.indexOf(kw) !== -1 || full2.indexOf(kw) !== -1) s = 45;
-    else return -1;
+    else {
+      // 模糊匹配：容忍个别错别字（编辑距离）
+      var d = 99, dl;
+      if (kw.length >= 2) {
+        if (it.cname.length >= 2 && Math.abs(it.cname.length - kw.length) <= 1) { dl = _lev(it.cname, kw); if (dl < d) d = dl; }
+        if (it.csinger.length >= 2 && Math.abs(it.csinger.length - kw.length) <= 1) { dl = _lev(it.csinger, kw); if (dl < d) d = dl; }
+      }
+      if (d <= (kw.length <= 3 ? 1 : 2)) s = 40 - d * 5;
+      else return -1;
+    }
     total += s;
   }
   return total;
@@ -3004,17 +3046,25 @@ function renderResults(results, query) {
   var container = document.getElementById('resultsContainer');
   _renderShown = 0;
   _renderCache = { results: results, query: query };
+  var suggest = null;
+  if (results.length === 0 || results[0].score <= 40) suggest = _findSuggestion(query);
+  function suggestHTML() {
+    if (!suggest) return '';
+    return '<div style="margin-bottom:10px;padding:8px 12px;background:#f0f6fa;border-radius:8px;font-size:13px;color:#6b9aae;">猜你想搜：<a href="javascript:void(0)" onclick="quickSearch(\'' + escAttr(suggest) + '\')" style="color:#6b9aae;font-weight:700;text-decoration:underline">' + escHtml(suggest) + '</a></div>';
+  }
   if (results.length === 0) {
     container.innerHTML =
       '<div class="empty-state">' +
         '<div class="empty-icon">&#x1F50D;</div>' +
         '<p>未找到「' + escHtml(query) + '」的相关歌曲</p>' +
+        suggestHTML() +
         '<p style="font-size:12px;color:#7a8a98;margin-top:6px;">试试其他关键词，或 <a href="javascript:void(0)" onclick="switchTab(\'singer\')" style="color:#6b9aae;font-weight:600">去歌手合集找 TA →</a></p>' +
       '</div>';
     return;
   }
   var modeLabel = '&#x1F50E; 搜索「' + escHtml(query) + '」';
   container.innerHTML =
+    suggestHTML() +
     '<div class="results-header">' +
       '<span class="results-count">' + modeLabel + ' &middot; 共 <strong>' + results.length + '</strong> 首</span>' +
     '</div>' +
