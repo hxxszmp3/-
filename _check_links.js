@@ -2,13 +2,11 @@
 const fs = require('fs');
 eval(fs.readFileSync('data.js', 'utf8')); // songDB 已拆分到 data.js
 const html = fs.readFileSync('index.html', 'utf8');
-const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-function fakeEl(){return new Proxy({},{
-  get(t,p){if(p==='style')return (t._style||(t._style={}));if(p==='classList')return {add(){},remove(){},toggle(){},contains(){return false}};if(p==='addEventListener'||p==='removeEventListener'||p==='appendChild'||p==='removeChild'||p==='setAttribute'||p==='removeAttribute'||p==='scrollIntoView'||p==='focus'||p==='click'||p==='select'||p==='setSelectionRange')return function(){};if(p==='querySelectorAll'||p==='querySelector'||p==='getElementsByTagName')return function(){return []};if(p==='children')return [];if(p==='parentNode')return null;return t[p];},
-  set(t,p,v){t[p]=v;return true;}
-});}
+const blocks = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+const script = blocks.find(b => b.indexOf('renderSingerCollection') > -1) || blocks[0];
+function fakeEl(){const t={_style:{}};return new Proxy(t,{get(tt,p){if(p==='style')return tt._style;if(p==='classList')return{add(){},remove(){},toggle(){},contains(){return false}};if(['addEventListener','removeEventListener','appendChild','removeChild','setAttribute','removeAttribute','scrollIntoView','focus','click','select','setSelectionRange','insertBefore'].includes(p))return function(){};if(['querySelectorAll','querySelector','getElementsByTagName'].includes(p))return function(){return [fakeEl()]};if(p==='children')return[];if(p==='parentNode'){tt._pn=tt._pn||fakeEl();return tt._pn;}return tt[p];},set(tt,p,v){tt[p]=v;return true;}});}
 const docEls={};
-global.document={getElementById(id){return docEls[id]||(docEls[id]=fakeEl());},querySelectorAll(){return []},querySelector(){return fakeEl()},createElement(){return fakeEl()},addEventListener(){},removeEventListener(){},execCommand(){},body:fakeEl(),documentElement:fakeEl()};
+global.document={getElementById(id){return docEls[id]||(docEls[id]=fakeEl());},querySelectorAll(){return[]},querySelector(){return fakeEl()},createElement(){return fakeEl()},addEventListener(){},removeEventListener(){},execCommand(){},getElementsByTagName(){return[fakeEl()]},body:fakeEl(),documentElement:fakeEl()};
 global.localStorage={getItem(){return null},setItem(){},removeItem(){}};
 global.window=global;global.addEventListener=function(){};global.removeEventListener=function(){};
 global.matchMedia=function(){return {matches:false,addListener(){},removeListener(){},addEventListener(){},removeEventListener(){}}};
@@ -28,6 +26,26 @@ for (const k of Object.keys(songDB)) {
 }
 const links = [...linkMap.keys()];
 console.log('歌曲 quark 链接(去重):', links.length);
+
+// 歌手合集链接(index.html 内 singerCollection): type=collection
+const colMap = new Map(); // link -> singer
+{
+  const cs2 = html.indexOf('var singerCollection = {');
+  const ce2 = html.indexOf('};', cs2);
+  let sc;
+  eval('sc=' + html.slice(cs2, ce2 + 2).replace('var singerCollection = ', '').replace(/;$/, ''));
+  for (const k of Object.keys(sc)) {
+    const v = String(sc[k] || '');
+    if (v.indexOf('pan.quark.cn/s/') !== -1) {
+      const link = v.split('?')[0];
+      colMap.set(link, k);
+      if (!linkMap.has(link)) linkMap.set(link, []);
+      linkMap.get(link).push({ singer: k, name: '(歌手合集入口)', coll: true });
+    }
+  }
+  console.log('歌手合集 quark 链接:', colMap.size);
+}
+const collLinks = new Set(colMap.keys());
 
 async function chk(id, tries) {
   for (let t = 0; t < tries; t++) {
@@ -74,11 +92,15 @@ async function chk(id, tries) {
   await Promise.all(Array.from({ length: CONC }, worker));
 
   fs.writeFileSync('dead-links.json', JSON.stringify({ checkedAt: new Date().toISOString(), total: links.length, alive, locked, dead, unknown, deadList, unknownList }, null, 1));
-  // 生成易读 txt
-  const lines = [`夸克链接检测报告  ${new Date().toLocaleString('zh-CN')}`, `检测总数: ${links.length} (去重)`, `有效: ${alive} | 需提取码: ${locked} | 失效: ${dead} | 未知: ${unknown}`, '', '=== 失效链接 ==='];
-  for (const d of deadList) {
+  // 生成易读 txt（歌曲死链与合集死链分开列出）
+  const deadColl = deadList.filter(d => collLinks.has(d.link));
+  const deadSongs = deadList.filter(d => !collLinks.has(d.link));
+  const lines = [`夸克链接检测报告  ${new Date().toLocaleString('zh-CN')}`, `检测总数: ${links.length} (去重, 含${collLinks.size}个歌手合集入口)`, `有效: ${alive} | 需提取码: ${locked} | 失效: ${dead} (歌曲${deadSongs.length} 合集入口${deadColl.length}) | 未知: ${unknown}`, '', '=== 失效·歌曲链接 ==='];
+  for (const d of deadSongs) {
     lines.push(d.link + '  <- ' + d.songs.map(s => s.singer + '《' + s.name + '》').join('; ').slice(0, 200));
   }
+  lines.push('', '=== 失效·歌手合集入口 ===');
+  for (const d of deadColl) lines.push(d.link + '  <- ' + d.songs.map(s => s.singer).join('; '));
   if (unknownList.length) {
     lines.push('', '=== 未知(网络/限流,建议复测) ===');
     for (const u of unknownList) lines.push(u.link + '  [' + u.code + ']  <- ' + u.songs.map(s => s.singer + '《' + s.name + '》').join('; ').slice(0, 200));
