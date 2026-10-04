@@ -968,7 +968,7 @@ function batchSearch(){
       var s=unique[i];
       html+='<div class="song-card">'+
         (s.quark?'<div class="song-index" style="width:auto;padding:0 4px"><input type="checkbox" class="batch-cb" data-quark="'+escAttr(s.quark)+'" style="accent-color:#c4b0a0;width:16px;height:16px;cursor:pointer"></div>':'<div class="song-index" style="width:auto;padding:0 4px"></div>')+
-        '<div class="song-cover">'+(s.cover?'<img src="'+s.cover+'" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">':'<svg viewBox="0 0 24 24" fill="none" stroke="#b8956a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>')+'</div>'+
+        '<div class="song-cover">'+(s.cover?'<img src="'+s.cover+'" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">':'<svg viewBox="0 0 24 24" fill="none" stroke="#7cc5a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>')+'</div>'+
         '<div class="song-info">'+
           '<div class="song-name">'+escHtml(s.name)+'</div>'+
           '<div class="song-singer">'+escHtml(s.singer)+'</div>'+
@@ -2292,7 +2292,7 @@ function songCardHTML(song, idx, query) {
   var num = idx < 9 ? '0' + (idx + 1) : '' + (idx + 1);
   var coverHtml = song.cover
     ? '<img src="' + escAttr(song.cover) + '" loading="lazy" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="#b8956a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>';
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="#7cc5a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>';
   var fav = isFav(song.name, song.singer);
   return '<div class="song-card">' +
     '<div class="song-index">' + num + '</div>' +
