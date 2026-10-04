@@ -32,9 +32,12 @@ for (const name of Object.keys(singerCollection)) {
   const sub = SUB_NAME[singerMeta[name]] || '歌手';
   const fname = name.replace(/[\\/:*?"<>|]/g, '-');
   const shown = songs.slice(0, 200);
-  const songLis = shown.map(s =>
-    '<li><span class="sn">' + esc(s.name) + '</span><a class="dl" href="' + esc(s.quark) + '" target="_blank" rel="nofollow">夸克下载</a></li>'
-  ).join('\n');
+  const songLis = shown.map(s => {
+    const dl = s.quark
+      ? '<a class="dl" href="' + esc(s.quark) + '" target="_blank" rel="nofollow">夸克下载</a>'
+      : (s.baidu ? '<a class="dl" href="' + esc(s.baidu) + '" target="_blank" rel="nofollow">百度网盘</a>' : '');
+    return '<li><span class="sn">' + esc(s.name) + '</span>' + dl + '</li>';
+  }).join('\n');
   const more = songs.length > shown.length ? '<p class="more">还有 ' + (songs.length - shown.length) + ' 首，请前往 <a href="' + BASE + '/">MusicFind 主站</a> 搜索「' + esc(name) + '」查看全部</p>' : '';
   const noSong = songs.length ? '' : '<p class="more">该歌手的歌曲请在 <a href="' + BASE + '/">MusicFind 主站</a> 中搜索。</p>';
   const page = '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
