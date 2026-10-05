@@ -26,7 +26,18 @@ const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://www.hxxsz666.vip/';
 const LIST_LIMIT = 200;          // 每页最多列出的歌曲数
 const TODAY = new Date().toISOString().slice(0, 10);
-const SPECIAL_KEYS = ['歌单', 'EXO&유재석'];  // 非普通歌手条目：不出静态页
+const SPECIAL_KEYS = ['歌单'];  // 非歌手条目：不出静态页（歌单是「歌单大厅」的数据源）
+// 仅用于单曲搜索、不进入歌手合集体系的条目（合唱组合、单曲收录歌手等）
+// 合唱组合（含 &）会自动排除，无需在此重复列出
+const SINGLE_ONLY_KEYS = ['于春洋'];
+
+/** 是否应为该条目生成静态页 */
+function isPageable(name) {
+  if (SPECIAL_KEYS.includes(name)) return false;
+  if (SINGLE_ONLY_KEYS.includes(name)) return false;
+  if (name.indexOf('&') !== -1) return false;  // 合唱组合：走单曲搜索，不建合集页
+  return true;
+}
 
 // 性别/组合标记 -> 页面标签文案
 const GENDER_LABEL = { m: '男歌手', f: '女歌手', g: '组合/乐队' };
@@ -236,7 +247,7 @@ function main() {
   const shared = loadSharedAssets();
 
   const names = Object.keys(DB)
-    .filter((n) => !SPECIAL_KEYS.includes(n))
+    .filter(isPageable)
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));  // 按歌手名排序，保证输出稳定可复现
 
   const ctx = { IMGS, META, BAIDU, css: shared.css, hmt: shared.hmt };

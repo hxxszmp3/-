@@ -923,6 +923,36 @@ function _matchQuery(query){
       results.push({ name: it.name, cover: it.cover, quark: it.quark, singer: it.singer, score: score });
     }
   }
+  // 回退:命中的是纯歌手但无结果时,扩展匹配包含该歌手的合唱键(如 "画心 张信哲" → "张信哲&黄霄雲")
+  if (singerMatch && results.length === 0) {
+    var matchedSingerNames = [];
+    var allKeys = Object.keys(songDB);
+    for (var mi = 0; mi < allKeys.length; mi++) {
+      if (allKeys[mi].indexOf('&') === -1) continue;
+      var parts = allKeys[mi].split('&');
+      for (var pi = 0; pi < parts.length; pi++) {
+        if (_singerCleanCache[parts[pi]] === singerMatch || cleanStr(parts[pi]) === singerMatch) {
+          matchedSingerNames.push(allKeys[mi]);
+          break;
+        }
+      }
+    }
+    if (matchedSingerNames.length) {
+      var csingerSet = {};
+      for (var msn = 0; msn < matchedSingerNames.length; msn++) csingerSet[_singerCleanCache[matchedSingerNames[msn]]] = true;
+      for (var i2 = 0; i2 < _songFlat.length; i2++) {
+        var it2 = _songFlat[i2];
+        if (!csingerSet[it2.csinger]) continue;
+        var score2 = _scoreSong(it2, keywords);
+        if (score2 < 0) continue;
+        var key2 = it2.singer + '||' + it2.name;
+        if (!seen[key2]) {
+          seen[key2] = true;
+          results.push({ name: it2.name, cover: it2.cover, quark: it2.quark, singer: it2.singer, score: score2 });
+        }
+      }
+    }
+  }
   // 相关度排序:分数降序,同分按歌手热度
   results.sort(function(a, b) {
     if (a.score !== b.score) return b.score - a.score;
