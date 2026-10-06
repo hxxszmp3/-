@@ -29,7 +29,7 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const SPECIAL_KEYS = ['歌单'];  // 非歌手条目：不出静态页（歌单是「歌单大厅」的数据源）
 // 仅用于单曲搜索、不进入歌手合集体系的条目（合唱组合、单曲收录歌手等）
 // 合唱组合（含 &）会自动排除，无需在此重复列出
-const SINGLE_ONLY_KEYS = ['于春洋'];
+const SINGLE_ONLY_KEYS = ['于春洋', 'Tank'];
 
 /** 是否应为该条目生成静态页 */
 function isPageable(name) {
