@@ -232,6 +232,7 @@ body.dark .az-link{color:#8cb0c0}
 .singer-row-btn.baidu{border:1px solid #c0c8d0;background:rgba(120,130,140,.12);color:#7a8a98;box-shadow:none}
 .singer-row-btn.baidu:hover{background:rgba(120,130,140,.2);color:#5a6670}
 .singer-row-btn.disabled{border-color:#d4dce4;background:#f4f6f8;color:#a0a8ae;cursor:not-allowed;pointer-events:none}
+.singer-row-btn .btn-ico{width:16px;height:16px;margin-right:6px;flex-shrink:0;display:block;object-fit:contain}
 body.dark .singer-row{background:#232930;border-color:#333a42}
 body.dark .singer-row-name{color:#d6dee6}
 .singer-block-title{text-align:center;font-size:18px;font-weight:700;color:#6b9aae;margin-bottom:10px;letter-spacing:3px}
@@ -269,6 +270,7 @@ body.dark .singer-sub-title{color:#7e96a6}
 .singer-row-avatar{width:36px;height:36px;font-size:14px}
 .singer-row-name{font-size:13px}
 .singer-row-btn{padding:5px 8px;font-size:11px;border-radius:6px}
+.singer-row-btn .btn-ico{width:14px;height:14px;margin-right:4px}
 .footer-row{flex-direction:column}
 .pl-name-scroll{text-overflow:clip}
 .pl-name-track{padding-left:100%;animation:plNameScroll 9s linear infinite}
@@ -1893,8 +1895,8 @@ function singerRowHTML(sn){
   return '<div class="singer-row" id="singer-row-'+encodeURIComponent(sn)+'">'+
     av+
     '<div class="singer-row-name">'+escHtml(sn)+'</div>'+
-    '<a class="singer-row-btn" href="'+escAttr(quark).replace(/&/g,'&amp;')+'" target="_blank">点击下载</a>'+
-    (baidu ? '<a class="singer-row-btn baidu" href="'+escAttr(baidu).replace(/&/g,'&amp;')+'" target="_blank">备用下载</a>' : '<span class="singer-row-btn disabled">备用暂无</span>')+
+    '<a class="singer-row-btn" href="'+escAttr(quark).replace(/&/g,'&amp;')+'" target="_blank"><img class="btn-ico" src="img/quark.png" alt="" aria-hidden="true">点击下载</a>'+
+    (baidu ? '<a class="singer-row-btn baidu" href="'+escAttr(baidu).replace(/&/g,'&amp;')+'" target="_blank"><img class="btn-ico" src="img/baidu.png" alt="" aria-hidden="true">备用下载</a>' : '<span class="singer-row-btn disabled">备用暂无</span>')+
   '</div>';
 }
 function renderSingerPage(){
