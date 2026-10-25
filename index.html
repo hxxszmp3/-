@@ -867,6 +867,22 @@ var _renderCache = null;
     }
   }
 })();
+// 合唱索引: 规范化的独唱歌手名 → 含该歌手的合唱键列表(搜歌手时合唱曲一并带出)
+var _collabKeysBySinger = {};
+(function buildCollabIndex(){
+  var keys = Object.keys(songDB);
+  for (var i=0;i<keys.length;i++){
+    var k = keys[i];
+    if (k.indexOf('&') === -1) continue;
+    var parts = k.split('&');
+    for (var j=0;j<parts.length;j++){
+      var cp = _singerCleanCache[parts[j]] || cleanStr(parts[j]);
+      if (!cp) continue;
+      if (_collabKeysBySinger[cp] && _collabKeysBySinger[cp].indexOf(k) === -1) _collabKeysBySinger[cp].push(k);
+      else if (!_collabKeysBySinger[cp]) _collabKeysBySinger[cp] = [k];
+    }
+  }
+})();
 
 // ===== 通用搜索匹配(单曲搜索 + 批量下载共用同一套规则) =====
 function _matchQuery(query){
@@ -916,9 +932,13 @@ function _matchQuery(query){
   }
   var results = [];
   var seen = {};
+  // 命中歌手时,含该歌手的合唱键歌曲也一并带出(独唱得分高于合唱,自然排在前面)
+  var allowCollab = singerMatch ? (_collabKeysBySinger[singerMatch] || null) : null;
   for (var i = 0; i < _songFlat.length; i++) {
     var it = _songFlat[i];
-    if (singerMatch && it.csinger !== singerMatch) continue;
+    if (singerMatch && it.csinger !== singerMatch) {
+      if (!(allowCollab && allowCollab.indexOf(it.singer) !== -1)) continue;
+    }
     var score = _scoreSong(it, keywords);
     if (score < 0) continue;
     var key = it.singer + '||' + it.name;
