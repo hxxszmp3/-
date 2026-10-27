@@ -117,14 +117,23 @@ for (const n of NEW) {
   console.log('  ' + (i >= 0 ? '✓' : '✗') + ' ' + n.padEnd(4) + ' 第' + (i + 1) + '位  ' + near);
 }
 
-// 确认这 11 位没有误生成静态页 / 进 sitemap
+// 校验口径：这 11 位歌手已从「纯合集」升级为「合集+单曲」，
+// 因此应当有 songDB 条目、有静态页、进 sitemap。
 const sm = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
-const inSm = NEW.filter(n => sm.indexOf(encodeURIComponent(n)) !== -1);
-const staticPages = NEW.filter(n => fs.existsSync(path.join(ROOT, 'singer', n + '.html')));
-console.log('\n=== 纯合集口径校验 ===');
-console.log('  误入 sitemap 的: ' + (inSm.length ? inSm.join(', ') : '无 ✓'));
-console.log('  误生成静态页的: ' + (staticPages.length ? staticPages.join(', ') : '无 ✓'));
-if (inSm.length || staticPages.length) bad++;
+const cx = {}; vm.createContext(cx);
+vm.runInContext(fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8'), cx);
+console.log('\n=== 合集+单曲口径校验 ===');
+for (const n of NEW) {
+  const hasSongs = cx.songDB[n] && cx.songDB[n].length > 0;
+  const inSm = sm.indexOf(encodeURIComponent(n)) !== -1;
+  const hasPage = fs.existsSync(path.join(ROOT, 'singer', n + '.html'));
+  const ok = hasSongs && inSm && hasPage;
+  if (!ok) bad++;
+  console.log('  ' + (ok ? '✓' : '✗') + ' ' + n.padEnd(4) +
+    ' | 单曲 ' + (cx.songDB[n] ? cx.songDB[n].length + ' 首' : '无') +
+    ' | sitemap ' + (inSm ? '有' : '缺') +
+    ' | 静态页 ' + (hasPage ? '有' : '缺'));
+}
 
 console.log('\n结果: ' + (bad ? bad + ' 项异常' : '全部通过 ✓'));
 process.exit(bad ? 1 : 0);
