@@ -14,3 +14,14 @@ _t.js
 .DS_Store
 Thumbs.db
 _live.html
+
+# 历史备份文件（一次性改动脚本产生的中间快照）
+# 这些是加歌手前后的 index.html / data.js 快照，每个约 1-2MB，
+# 已由 git 历史完整保存，无需继续占用仓库体积。
+tools/_*backup*
+tools/_data_backup_*
+tools/_index_backup_*
+
+# 临时解析中间产物
+tools/_*.raw.txt
+tools/_*_parsed.json

@@ -14,6 +14,9 @@
  *   任何一次修改 data.js 的 songDB，或修改 index.html 中的
  *   singerImgs / singerMeta / singerBaidu / singerSongCounts 之后。
  *   否则 singer/*.html 会与数据源脱节（历史上曾出现 243/345 页计数错误）。
+ *
+ *   本脚本同时会把 index.html 的 meta description 里的「N 位歌手 / N 首歌曲」
+ *   同步为真实值——这个数字过去是手工维护的，每次加歌手都会漂移。
  */
 'use strict';
 
@@ -198,6 +201,36 @@ function renderSitemap(names) {
   return out;
 }
 
+// ---------- 首页统计数字同步 ----------
+// index.html 的 meta description 里写着「N 位歌手、22000+ 首歌曲」，
+// 这两个数字过去靠手工维护，实际已漂移（写着 347，真实 354）。
+// 这里改为从数据源自动推导并回写，让它不可能再失真。
+
+/** 统计首页对外宣称的口径：歌手数取可建页的纯歌手，歌曲数取 songDB 全部条目 */
+function siteStats(DB) {
+  const names = Object.keys(DB).filter(isPageable);
+  let songs = 0;
+  for (const k of Object.keys(DB)) songs += DB[k].length;
+  return { singers: names.length, songs: songs };
+}
+
+/** 歌曲数用「万」为单位的整数表述，避免每次加歌都改文案 */
+function songCountText(songs) {
+  if (songs >= 10000) return Math.floor(songs / 1000) * 1000 + '+';
+  return String(songs);
+}
+
+/** 把 index.html 的 meta description 统计数字替换为真实值 */
+function syncStatsInIndex(indexSrc, stats) {
+  const want = stats.singers + ' 位歌手、' + songCountText(stats.songs) + ' 首歌曲';
+  // 匹配「<数字> 位歌手、<数字> 首歌曲」这段，保留描述文案的其他部分
+  const re = /\d+\s*位歌手、\d+\+?\s*首歌曲/g;
+  if (!re.test(indexSrc)) return null;
+  re.lastIndex = 0;
+  const out = indexSrc.replace(re, want);
+  return out === indexSrc ? null : out;
+}
+
 // ---------- 校验 ----------
 
 function check(names, DB, shared) {
@@ -236,6 +269,14 @@ function check(names, DB, shared) {
   const smLocs = (sm.match(/<loc>[^<]*<\/loc>/g) || []).join('\n');
   const expectLocs = (renderSitemap(names).match(/<loc>[^<]*<\/loc>/g) || []).join('\n');
   if (smLocs !== expectLocs) problems.push('sitemap.xml 的 URL 列表已过期');
+
+  // 首页 meta description 里的统计数字是否与数据源一致
+  const idx = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const st = siteStats(DB);
+  const want = st.singers + ' 位歌手、' + songCountText(st.songs) + ' 首歌曲';
+  const m = /(\d+\s*位歌手、\d+\+?\s*首歌曲)/.exec(idx);
+  if (!m) problems.push('index.html 的 meta description 缺少统计数字');
+  else if (m[1] !== want) problems.push('index.html 统计数字已漂移: 写着「' + m[1] + '」应为「' + want + '」');
 
   return problems;
 }
@@ -298,6 +339,15 @@ function main() {
   }
 
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), renderSitemap(names));
+
+  // 同步首页 meta description 里的统计数字
+  const idxPath = path.join(ROOT, 'index.html');
+  const idxSrc = fs.readFileSync(idxPath, 'utf8');
+  const synced = syncStatsInIndex(idxSrc, siteStats(DB));
+  if (synced) {
+    fs.writeFileSync(idxPath, synced);
+    console.log('  index.html: 已同步统计数字');
+  }
 
   console.log('[build-singers] 完成');
   console.log('  歌手页: 新建 ' + stats.created + ' / 更新 ' + stats.written +
