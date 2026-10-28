@@ -19,6 +19,9 @@ const FILES = [
   ['_raw_wf.txt',  '汪峰'],
   ['_raw_yk.txt',  '杨坤'],
   ['_raw_sn.txt',  '孙楠'],
+  ['_raw_wyf.txt', '吴雨霏'],
+  ['_raw_zxw.txt', '郑秀文'],
+  ['_raw_syy.txt', '宋亚轩'],
 ];
 
 let grand = 0, problems = 0;
