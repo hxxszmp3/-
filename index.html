@@ -98,6 +98,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .footer-box-title{color:#6b9aae!important;font-size:12px;font-weight:600;margin-bottom:4px}
 .footer-box p{color:#6a7a88!important;font-size:11px;line-height:1.7;margin-bottom:2px}
 .site-footer{border-top:1px solid #dce8f0;margin-top:40px;padding:14px 16px 18px;background:transparent}
+.site-footer-copy{color:#9aa8b4;font-size:13px}
+.site-footer-link{color:#6b9aae;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.site-footer-link:hover{opacity:.75}
 .footer-row{max-width:780px;margin:0 auto;display:flex;gap:16px}
 .footer-box .footer-box-content{display:none;margin-top:4px}
 .footer-box.open .footer-box-content{display:block}
@@ -333,6 +336,8 @@ body.dark .toast{background:#232930;color:#c8d0d8;border-color:#333a42}
 body.dark .footer-box{background:#232930!important;border-color:#333a42!important}
 body.dark .footer-box-title,body.dark .footer-box p{color:#c8d0d8!important}
 body.dark .site-footer{border-top-color:#333a42}
+body.dark .site-footer-copy{color:#6b7682}
+body.dark .site-footer-link{color:#8cb0c0}
 body.dark .tab-btn{background:#232930;color:#8a97a3;border-color:#333a42}
 body.dark .tab-btn.active{color:#6b9aae;border-color:#6b9aae;background:#2a3138}
 body.dark .hot-tag{color:#6b9aae;background:rgba(107,154,174,.14);border-color:rgba(107,154,174,.25)}
@@ -425,6 +430,8 @@ body.dark.theme-violet .toast{background:#251b3d;color:#d7ceeb;border-color:#362
 body.dark.theme-violet .footer-box{background:#251b3d!important;border-color:#362a52!important}
 body.dark.theme-violet .footer-box-title, body.dark.theme-violet .footer-box p{color:#d7ceeb!important}
 body.dark.theme-violet .site-footer{border-top-color:#362a52}
+body.dark.theme-violet .site-footer-copy{color:#8b85b0}
+body.dark.theme-violet .site-footer-link{color:#c4b5fd}
 body.dark.theme-violet .tab-btn{background:#251b3d;color:#9482bd;border-color:#362a52}
 body.dark.theme-violet .tab-btn.active{color:#784ddc;border-color:#784ddc;background:#2c2147}
 body.dark.theme-violet .hot-tag{color:#784ddc;background:rgba(120,77,220,.14);border-color:rgba(120,77,220,.25)}
@@ -530,6 +537,8 @@ body.theme-paper .footer-box{background:#fff!important;border:1px solid #c3eee5!
 body.theme-paper .footer-box-title{color:#41c7ac!important;font-size:12px;font-weight:600;margin-bottom:4px}
 body.theme-paper .footer-box p{color:#579b8d!important;font-size:11px;line-height:1.7;margin-bottom:2px}
 body.theme-paper .site-footer{border-top:1px solid #c3eee5;margin-top:40px;padding:14px 16px 18px;background:transparent}
+body.theme-paper .site-footer-copy{color:#9c9080}
+body.theme-paper .site-footer-link{color:#a88b5c}
 body.theme-paper .footer-row{max-width:780px;margin:0 auto;display:flex;gap:16px}
 body.theme-paper .footer-box .footer-box-content{display:none;margin-top:4px}
 body.theme-paper .footer-box.open .footer-box-content{display:block}
@@ -780,7 +789,6 @@ body.theme-paper .fav-badge{font-size:10px;color:#41c7ac}
       </div>
       <div class="top-actions">
         <a class="icon-btn" href="https://qun.qq.com/universal-share/share?ac=1&authKey=xewN0LjkUHW7ry5A40LuUPVBL3zYtVZ3%2FrBRtLorm%2F0Ab6Yu9ru4zsPrV8bEq5OZ&busi_data=eyJncm91cENvZGUiOiIxMTA3NTc5NjkwIiwidG9rZW4iOiI2QU5iNEJYWXpZQTg5TWpmTmRTcGYzZWVkMUNXU0g0UjUrcENmb3FtVnFvNHlLY1JNSnBVc2txc0dnRlB1dWVuIiwidWluIjoiMzE4MzY0MTY3In0%3D&data=k79_pOGRZTDBz9UCcr-ESdsAZYhVemyqga3fOp4gGXmppQtukxy0PnOflbCs5yKdF1Ev-jEMu4ceQF6vEqmW9Q&svctype=4&tempid=h5_group_info" target="_blank" title="加QQ群">👥</a>
-        <button class="icon-btn" onclick="showDisclaimer()" title="免责声明">📜</button>
         <button class="icon-btn" id="darkToggle" onclick="toggleTheme()" title="切换网站风格（循环：浅色/暗夜/极光紫/奶油纸）">🌙</button>
       </div>
     </div>
@@ -880,6 +888,13 @@ body.theme-paper .disclaimer-note{color:#9c9080}</style>
   <p class="disclaimer-item"><span class="disclaimer-key">7. 隐私保护</span>本站不使用账号体系，不收集您的个人信息，访问数据仅用于站点自身的统计与运行。</p>
   <p class="disclaimer-contact">侵权投诉 / 联系邮箱：<a href="mailto:gg318364167@gmail.com">gg318364167@gmail.com</a></p>
   <p class="disclaimer-note">本声明可能随站点运营情况更新，恕不另行通知。再次访问本站即视为接受更新后的声明。</p>
+</div>
+<div class="site-footer">
+  <div class="footer-row" style="justify-content:center;align-items:center;gap:14px;flex-wrap:wrap">
+    <span class="site-footer-copy">&copy; 2026 MusicFind</span>
+    <a class="site-footer-link" href="#disclaimer">免责声明</a>
+    <a class="site-footer-link" href="mailto:gg318364167@gmail.com">联系我们</a>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1145,7 +1160,6 @@ function filterPlaylists(){
 }
 function togglePlName(el){el.classList.toggle('pl-name-open');}
 
-function showDisclaimer(){var el=document.getElementById('disclaimer');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});}}
 function copyAllLinks(){copySelectedLinks();}
 function toggleSelectAll(el){
   setTimeout(function(){

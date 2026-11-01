@@ -56,6 +56,18 @@ const CSS = [
   'body.theme-paper .disclaimer-contact{background:#fdfaf3;border-color:#e0d5c2}',
   'body.theme-paper .disclaimer-contact a{color:#a88b5c}',
   'body.theme-paper .disclaimer-note{color:#9c9080}',
+  // 底部版权行（主站复用已有 .site-footer/.footer-row；歌手页需自带结构样式）
+  '.site-footer{margin-top:26px;padding:14px 16px 18px;border-top:1px solid #e3edf2;text-align:center}',
+  '.site-footer .footer-row{max-width:none;margin:0;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}',
+  '.site-footer-copy{color:#9aa8b4;font-size:13px}',
+  '.site-footer-link{color:#6b9aae;font-size:13px;text-decoration:underline;text-underline-offset:3px}',
+  '.site-footer-link:hover{opacity:.75}',
+  'body.dark .site-footer-copy{color:#6b7682}',
+  'body.dark .site-footer-link{color:#8cb0c0}',
+  'body.dark.theme-violet .site-footer-copy{color:#8b85b0}',
+  'body.dark.theme-violet .site-footer-link{color:#c4b5fd}',
+  'body.theme-paper .site-footer-copy{color:#9c9080}',
+  'body.theme-paper .site-footer-link{color:#a88b5c}',
 ].join('\n');
 
 /* ---------- 区块（自带 style，主站与歌手页共用同一份） ---------- */
@@ -69,6 +81,14 @@ const DISCLAIMER_HTML = [
   '  <p class="disclaimer-contact">侵权投诉 / 联系邮箱：<a href="mailto:' + EMAIL + '">' + EMAIL + '</a></p>',
   '  <p class="disclaimer-note">本声明可能随站点运营情况更新，恕不另行通知。再次访问本站即视为接受更新后的声明。</p>',
   '</div>',
+  // 版权行：© 2026 + 免责声明链接 + 联系我们链接
+  '<div class="site-footer">',
+  '  <div class="footer-row" style="justify-content:center;align-items:center;gap:14px;flex-wrap:wrap">',
+  '    <span class="site-footer-copy">&copy; 2026 MusicFind</span>',
+  '    <a class="site-footer-link" href="#disclaimer">免责声明</a>',
+  '    <a class="site-footer-link" href="mailto:' + EMAIL + '">联系我们</a>',
+  '  </div>',
+  '</div>',
 ].join('\n');
 
 // ================= 主站 =================
@@ -81,11 +101,12 @@ if (html.indexOf('id="disclaimer"') === -1) {
   if (mainEnd === -1) { console.error('✗ 未找到 </main>'); process.exit(1); }
   html = html.slice(0, mainEnd + 7) + '\n' + DISCLAIMER_HTML + '\n' + html.slice(mainEnd + 7);
 
-  // 原弹窗改为滚动定位到底部声明
-  const oldFn = "function showDisclaimer(){alert('免责声明\\n\\n本站所有资源均来自网络公开分享，仅供个人学习交流使用。\\n版权归原作者所有，如有侵权请联系 gg318364167@gmail.com');}";
-  html = html.replace(oldFn,
-    "function showDisclaimer(){var el=document.getElementById('disclaimer');" +
-    "if(el){el.scrollIntoView({behavior:'smooth',block:'center'});}}");
+  // 删除顶部 📜 免责声明按钮（改为底部版权行里的「免责声明」链接）
+  const oldBtn = /\s*<button class="icon-btn" onclick="showDisclaimer\(\)" title="免责声明">[^<]*<\/button>/;
+  if (oldBtn.test(html)) {
+    html = html.replace(oldBtn, '');
+    console.log('  ✓ index.html：已删除顶部 📜 免责声明按钮');
+  }
 
   fs.writeFileSync(HP, html, 'utf8');
   console.log('  ✓ index.html：免责声明已插入底部，📜 按钮改为滚动定位');
