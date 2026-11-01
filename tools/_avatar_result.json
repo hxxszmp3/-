@@ -1,27 +1,5 @@
 {
- "resolved": {
-  "宋亚轩": {
-   "current": "",
-   "action": "replace",
-   "url": "https://p1.music.126.net/qc2jXqS4-hyr1VdEWJjn0w==/109951172230235750.jpg?param=300y300",
-   "source": "宋亚轩 (id=12316085)",
-   "old": ""
-  },
-  "郑秀文": {
-   "current": "",
-   "action": "replace",
-   "url": "https://p2.music.126.net/WQXkUr5I-Top7A26UXInzw==/109951168608663012.jpg?param=300y300",
-   "source": "郑秀文 (id=10571)",
-   "old": ""
-  },
-  "吴雨霏": {
-   "current": "",
-   "action": "replace",
-   "url": "https://p1.music.126.net/zqNAFzYA9ZY3ilpB3Hk27g==/109951165575039506.jpg?param=300y300",
-   "source": "吴雨霏 (id=9615)",
-   "old": ""
-  }
- },
+ "resolved": {},
  "unchanged": {},
  "failed": {}
 }
