@@ -19,7 +19,7 @@ const LIST = [
   {
     key: 'LBI利比',
     quark: 'https://pan.quark.cn/s/60cacd9b1c4d',
-    baidu: 'https://pan.baidu.com/s/1PtUhRUwsuAPLB5TEdsdHow?pwd=ab5m',
+    baidu: 'https://pan.baidu.com/s/1-wWWam260Dvux-ah4tO7Gg?pwd=cwee',
     gender: 'm', pop: 72,
     img: 'https://p1.music.126.net/Ykd5K_gklG5P090hiKMing==/109951167304936804.jpg?param=300y300',
     aliases: [['时柏尘', 'LBI利比'], ['LBI', 'LBI利比']],
@@ -28,7 +28,7 @@ const LIST = [
   {
     key: '时代少年团',
     quark: 'https://pan.quark.cn/s/02bcc25e38f5',
-    baidu: 'https://pan.baidu.com/s/1hVGLs-bPBXPlMLihM7trwA?pwd=ab5m',
+    baidu: 'https://pan.baidu.com/s/1kgoYAf8_MB7HmM0EFs-j3A?pwd=cwee',
     gender: 'm', pop: 78,
     img: 'https://p1.music.126.net/zfX5bzdzPBSflfDMA2o0TA==/109951173207132556.jpg?param=300y300',
     aliases: [['Teens in Times', '时代少年团'], ['TNT', '时代少年团']],
