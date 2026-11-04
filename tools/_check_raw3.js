@@ -8,7 +8,7 @@ const path = require('path');
 const vm = require('vm');
 const ROOT = path.resolve(__dirname, '..');
 
-const FILES = [['_raw_lbi.txt', 'LBI利比'], ['_raw_tnt.txt', '时代少年团']];
+const FILES = [['_raw_zyy.txt', '张震岳'], ['_raw_sr.txt', '苏芮'], ['_raw_lwz.txt', '刘文正']];
 
 // 现有库的全部 quark 链接
 const cx = {}; vm.createContext(cx);

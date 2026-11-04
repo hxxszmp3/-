@@ -61,7 +61,7 @@ const check = (label, cond, extra) => {
 
 console.log('=== 单曲搜索命中 ===');
 const m = ctx._matchQuery;
-[['LBI利比', '主名'], ['时柏尘', '本名别名'], ['LBI', '英文别名'],
+[['张震岳', '主名'], ['阿岳', '别名'], ['苏芮', '主名'], ['Julie Su', '英文别名'], ['刘文正', '主名'], ['Steven Liu', '英文别名'],
  ['时代少年团', '主名'], ['TNT', '英文别名'], ['Teens in Times', '全称别名'], ['MC Cheung', '英文别名(带空格)'], ['MC 张天赋', '带空格别名'],
  ['跳楼机', '歌名'], ['少年时代', '歌名'], ['登顶', '歌名']].forEach(([q, label]) => {
   const r = m(q);
@@ -83,7 +83,7 @@ ctx.renderSingerCollection();
 
 console.log('\n=== 目录位置与分组 ===');
 const all = ctx._allSingers.map(x => x.singer);
-[['LBI利比', 'L'], ['时代少年团', 'S']].forEach(([n, g]) => {
+[['张震岳', 'Z'], ['苏芮', 'S'], ['刘文正', 'L']].forEach(([n, g]) => {
   const i = all.indexOf(n);
   const got = i >= 0 ? ctx.getFL(n) : '?';
   check(n + ' 在目录中（第 ' + (i + 1) + ' 位，分组 ' + got + '）', i >= 0 && got === g,
@@ -91,7 +91,7 @@ const all = ctx._allSingers.map(x => x.singer);
 });
 
 console.log('\n=== 静态页与链接 ===');
-['LBI利比', '时代少年团'].forEach(n => {
+['张震岳', '苏芮', '刘文正'].forEach(n => {
   const f = path.join(ROOT, 'singer', n + '.html');
   const ok = fs.existsSync(f);
   let cnt = 0, hasQuark = false;
