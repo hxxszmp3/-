@@ -66,6 +66,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#4a6474;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 .download-btn:hover .tooltip{opacity:1}
 .empty-state{text-align:center;padding:60px 20px;color:#7a8a98}
+.no-result-hint{text-align:center;font-size:12px;color:#8a97a3;margin-top:10px}
+body.dark .no-result-hint{color:#6b7682}
+body.dark .no-result-hint .feedback-link{color:#8cb0c0;border-bottom-color:rgba(140,176,192,.45)}
+body.dark .no-result-hint .feedback-link:hover{color:#a8ccd8;border-bottom-color:#a8ccd8}
+body.dark.theme-violet .no-result-hint{color:#8b85b0}
+body.dark.theme-violet .no-result-hint .feedback-link{color:#c4b5fd;border-bottom-color:rgba(196,181,253,.45)}
+body.dark.theme-violet .no-result-hint .feedback-link:hover{color:#ddd6fe;border-bottom-color:#ddd6fe}
+.no-result-hint .feedback-link{color:#6b9aae;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(107,154,174,.45);padding-bottom:1px}
+.no-result-hint .feedback-link:hover{color:#4a7f96;border-bottom-color:#4a7f96}
 .empty-state .empty-icon{font-size:64px;margin-bottom:14px;opacity:.35}
 .empty-state p{font-size:14px}
 .loading-wrap{text-align:center;padding:40px}
@@ -501,6 +510,9 @@ body.theme-paper .download-btn svg{width:18px;height:18px}
 body.theme-paper .download-btn .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#676257;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 body.theme-paper .download-btn:hover .tooltip{opacity:1}
 body.theme-paper .empty-state{text-align:center;padding:60px 20px;color:#5da596}
+body.theme-paper .no-result-hint{color:#7d9a92}
+body.theme-paper .no-result-hint .feedback-link{color:#41a893;border-bottom-color:rgba(65,168,147,.45)}
+body.theme-paper .no-result-hint .feedback-link:hover{color:#2f8d79;border-bottom-color:#2f8d79}
 body.theme-paper .empty-state .empty-icon{font-size:64px;margin-bottom:14px;opacity:.35}
 body.theme-paper .empty-state p{font-size:14px}
 body.theme-paper .loading-wrap{text-align:center;padding:40px}
@@ -1140,6 +1152,10 @@ function batchSearch(){
     if(!seen[key]){seen[key]=true;unique.push(foundSongs[i]);}
   }
   var html='<div style="margin-bottom:12px;font-size:13px;color:#999"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="flex:1">共 <b>'+lines.length+'</b> 条，匹配 <b style="color:#27ae60">'+unique.length+'</b> 首</span><button class="copy-all-btn" onclick="copySelectedLinks()">📥 批量下载（一次最多100首）</button>，<b style="color:#e74c3c">'+notFound.length+'</b> 条未找到</div><label id="selectAllWrap" style="cursor:pointer;font-size:13px;color:#d4b888;display:flex;align-items:center;gap:6px"><input type="checkbox" id="selectAllBatch" style="accent-color:#c4b0a0"> 全选 / 取消全选</label></div>';
+  if(unique.length===0){
+    // 一首都没匹配上 → 给出反馈入口
+    html+='<div class="empty-state" style="padding:40px 20px"><div class="empty-icon">&#x1F50D;</div><p>没有匹配到任何歌曲</p>'+feedbackHint()+'</div>';
+  }
   if(unique.length>0){
     html+='<div class="song-list">';
     for(var i=0;i<unique.length;i++){
@@ -1162,7 +1178,7 @@ function batchSearch(){
   if(notFound.length>0){
     html+='<div style="margin-top:16px;padding:12px;background:#fdedec;border-radius:10px;border:1px solid #f5b7b1"><div style="font-size:13px;font-weight:600;color:#e74c3c;margin-bottom:8px">暂未收录：</div><div style="display:flex;flex-wrap:wrap;gap:6px">';
     for(var i=0;i<notFound.length;i++)html+='<span style="padding:4px 10px;background:#fff;border-radius:6px;font-size:12px;color:#e74c3c">'+escHtml(notFound[i])+'</span>';
-    html+='</div></div>';
+    html+='</div>'+feedbackHint()+'</div>';
   }
   container.innerHTML=html;
   // Bind: clicking the select-all label toggles ALL checkboxes
@@ -1217,7 +1233,7 @@ function filterPlaylists(){
       '</div>'+
     '</div>');
   }
-  container.innerHTML=html||'<div style="color:#999;text-align:center;padding:30px">没有匹配的歌单</div>';
+  container.innerHTML=html||('<div class="empty-state" style="padding:40px 20px"><div class="empty-icon">&#x1F3B5;</div><p>没有匹配的歌单</p>'+feedbackHint()+'</div>');
 }
 function togglePlName(el){el.classList.toggle('pl-name-open');}
 
@@ -1662,6 +1678,13 @@ var singerImgs = {
   'EXO&유재석': 'https://y.gtimg.cn/music/photo_new/T001R300x300M000001QVwtq3l8cKC.jpg',
   '歌单': 'https://y.gtimg.cn/music/photo_new/T002R300x300M000000g5cRu1VNAt6.jpg',
 };
+
+// ===== 反馈入口：群链接（顶部 👥 按钮与各板块「点此反馈」共用同一常量） =====
+var QQ_GROUP_URL='https://qun.qq.com/universal-share/share?ac=1&authKey=xewN0LjkUHW7ry5A40LuUPVBL3zYtVZ3%2FrBRtLorm%2F0Ab6Yu9ru4zsPrV8bEq5OZ&busi_data=eyJncm91cENvZGUiOiIxMTA3NTc5NjkwIiwidG9rZW4iOiI2QU5iNEJYWXpZQTg5TWpmTmRTcGYzZWVkMUNXU0g0UjUrcENmb3FtVnFvNHlLY1JNSnBVc2txc0dnRlB1dWVuIiwidWluIjoiMzE4MzY0MTY3In0%3D&data=k79_pOGRZTDBz9UCcr-ESdsAZYhVemyqga3fOp4gGXmppQtukxy0PnOflbCs5yKdF1Ev-jEMu4ceQF6vEqmW9Q&svctype=4&tempid=h5_group_info';
+// 无结果时的小字提示，「点此反馈」四个字内嵌群链接
+function feedbackHint(){
+  return '<div class="no-result-hint">没有想要的歌曲？<a href="'+QQ_GROUP_URL+'" target="_blank" rel="noopener" class="feedback-link">点此反馈</a></div>';
+}
 
 var singerCollection = {
   '刘文正': 'https://pan.quark.cn/s/c0854807bf62',
@@ -2479,14 +2502,14 @@ function searchSinger(){
         el.classList.add('singer-row-flash');
         setTimeout(function(){el.classList.remove('singer-row-flash');},2400);
       }
-    }else{r.textContent='未找到该歌手位置';}
+    }else{r.innerHTML='未找到该歌手位置'+feedbackHint();}
   }else{
     var sug=suggestSinger(q);
     if(sug){
       window._singerSuggest=sug;
       r.innerHTML='未找到「'+escHtml(q)+'」，猜你想搜：<a href="javascript:void(0)" onclick="_pickGuess()">'+escHtml(sug)+'</a>';
     }else{
-      r.textContent='未找到该歌手';
+      r.innerHTML='未找到该歌手'+feedbackHint();
     }
   }
 }
@@ -2601,6 +2624,7 @@ function renderResults(results, query) {
         '<p>未找到「' + escHtml(query) + '」的相关歌曲</p>' +
         suggestHTML() +
         '<p style="font-size:12px;color:#7a8a98;margin-top:6px;">试试其他关键词，或 <a href="javascript:void(0)" onclick="switchTab(\'singer\')" style="color:#6b9aae;font-weight:600">去歌手合集找 TA →</a></p>' +
+        feedbackHint() +
       '</div>';
     return;
   }
@@ -2963,10 +2987,17 @@ renderPlaylists();
     b.classList.remove('active');
     if(b.textContent.indexOf(st==='single'?'单曲':st==='batch'?'批量':st==='singer'?'歌手':'歌单')!==-1)b.classList.add('active');
   });});
-var tutImgs=['tutorial/1.png','tutorial/2.png','tutorial/3.png','tutorial/4.png','tutorial/5.png'];var tutIdx=0;
+var tutImgs=['tutorial/1.png','tutorial/2.png','tutorial/3.png'];var tutIdx=0;
 function tutOpen(){tutIdx=0;tutShow();document.getElementById('tutOverlay').classList.add('show');}
 function tutClose(){document.getElementById('tutOverlay').classList.remove('show');}
-function tutShow(){document.getElementById('tutImg').src=tutImgs[tutIdx];document.getElementById('tutStep').textContent=(tutIdx+1)+' / '+tutImgs.length;document.getElementById('tutPrev').disabled=tutIdx===0;document.getElementById('tutNext').disabled=tutIdx===tutImgs.length-1;var dots=document.querySelectorAll('.tut-dot');for(var i=0;i<dots.length;i++)dots[i].classList.toggle('active',i===tutIdx);}
+function _tutDots(){
+  var box=document.getElementById('tutDots');
+  if(box.children.length!==tutImgs.length){
+    box.innerHTML=tutImgs.map(function(_,i){return '<span class="tut-dot'+(i===tutIdx?' active':'')+'" onclick="tutGo('+i+')" style="cursor:pointer"></span>';}).join('');
+  }
+}
+function tutGo(i){tutIdx=i;tutShow();}
+function tutShow(){_tutDots();document.getElementById('tutImg').src=tutImgs[tutIdx];document.getElementById('tutStep').textContent=(tutIdx+1)+' / '+tutImgs.length;document.getElementById('tutPrev').disabled=tutIdx===0;document.getElementById('tutNext').disabled=tutIdx===tutImgs.length-1;var dots=document.querySelectorAll('.tut-dot');for(var i=0;i<dots.length;i++)dots[i].classList.toggle('active',i===tutIdx);}
 function tutPrev(){if(tutIdx>0){tutIdx--;tutShow();}}
 function tutNext(){if(tutIdx<tutImgs.length-1){tutIdx++;tutShow();}}
 </script>
@@ -2979,9 +3010,7 @@ function tutNext(){if(tutIdx<tutImgs.length-1){tutIdx++;tutShow();}}
     <span style="color:#fff;font-size:13px" id="tutStep">1 / 5</span>
     <button id="tutNext" onclick="tutNext()">下一步 ▶</button>
   </div>
-  <div class="tut-dots" id="tutDots">
-    <span class="tut-dot active"></span><span class="tut-dot"></span><span class="tut-dot"></span><span class="tut-dot"></span><span class="tut-dot"></span>
-  </div>
+  <div class="tut-dots" id="tutDots"></div>
 </div>
 <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
 </body>
