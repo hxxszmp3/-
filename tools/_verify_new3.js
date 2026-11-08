@@ -83,7 +83,7 @@ ctx.renderSingerCollection();
 
 console.log('\n=== 目录位置与分组 ===');
 const all = ctx._allSingers.map(x => x.singer);
-[['张震岳', 'Z'], ['苏芮', 'S'], ['刘文正', 'L']].forEach(([n, g]) => {
+[['罗志祥', 'L'], ['TOP登陆少年', 'T']].forEach(([n, g]) => {
   const i = all.indexOf(n);
   const got = i >= 0 ? ctx.getFL(n) : '?';
   check(n + ' 在目录中（第 ' + (i + 1) + ' 位，分组 ' + got + '）', i >= 0 && got === g,
@@ -91,7 +91,7 @@ const all = ctx._allSingers.map(x => x.singer);
 });
 
 console.log('\n=== 静态页与链接 ===');
-['张震岳', '苏芮', '刘文正'].forEach(n => {
+['罗志祥', 'TOP登陆少年'].forEach(n => {
   const f = path.join(ROOT, 'singer', n + '.html');
   const ok = fs.existsSync(f);
   let cnt = 0, hasQuark = false;
