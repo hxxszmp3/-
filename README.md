@@ -64,7 +64,8 @@ node tools/build-singers.js --verbose  # 打印每个歌手的变化明细
 
 ## 已知事项
 
-- **远程用 SSH**：`origin` 为 `git@github.com:hxxszmp3/-.git`，依赖本机 `~/.ssh/id_ed25519`。历史上曾把 PAT 内嵌在 remote URL 里（明文存于 `.git/config`），已于 2026-11 移除，**不要再改回带令牌的 HTTPS 地址**；本机也配了 Git Credential Manager，需要 HTTPS 时走它即可。
+- **远程地址不带令牌**：`origin` 为 `https://github.com/hxxszmp3/-.git`，明文 PAT 已从 `.git/config` 移除，**不要再改回 `https://<user>:<token>@...` 的形式**。
+- **本机目前没有可写凭据**：`~/.ssh/id_ed25519` 是只读部署密钥（`toolbox-deploy@workbuddy`），HTTPS 只做匿名读（仓库公开），Git Credential Manager 未登录。想推送需二选一：去仓库 Settings → Deploy keys 给该密钥勾上 write access，或 `git credential-manager login` 授权后走 HTTPS。
 - **令牌曾泄露过**：该 PAT 曾在公开仓库的提交历史中出现过（提交 `aebaed5` / `b20a605` 中移除，但历史仍可读到）。**必须到 GitHub Settings → Developer settings → Tokens 撤销该令牌**，此操作只能在网页端完成。
 - **`tools/` 已清理**：约 120 个一次性脚本、原始 txt 与 19MB 的 `_*backup*` 快照已移除，只保留 `build-singers.js`、`README.md` 和两个示例脚本。历史版本仍可从 git 中取回（`git show <commit>:tools/_xxx.js`），清理前的完整快照存在仓库外。
 - **头像走外链**：来自 `y.gtimg.cn` 等第三方 CDN，站点本身不托管图片资源。外链失效会导致头像挂掉。
