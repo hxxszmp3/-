@@ -16,11 +16,12 @@
 | `tools/build-singers.js` | 构建脚本：生成歌手页 + sitemap + 同步首页统计数字 |
 | `tools/README.md` | 构建脚本的详细说明 |
 
-### 数据规模（2026-10）
+### 数据规模（2026-11）
 
-- 354 位歌手有静态合集页（另有 2 位仅作单曲收录：`于春洋`、`Tank`）
-- 22,820 首歌曲，26 个合唱组合条目，69 个歌单
+- 383 位歌手有静态合集页（另有 1 位仅作单曲收录：`于春洋`）
+- 25,187 首歌曲，51 个含 `&` 的合唱组合条目，69 个歌单
 - 歌曲链接统一指向夸克网盘，部分歌手另有百度网盘备用链接
+- 首页 meta 里的「N 位歌手、N 首歌曲」由构建脚本自动回写，**勿手改**；数字以 `--check` 结果为准
 
 ## 关键约定
 
@@ -63,8 +64,9 @@ node tools/build-singers.js --verbose  # 打印每个歌手的变化明细
 
 ## 已知事项
 
-- **仓库里有 GitHub PAT**：`origin` 远程地址里内嵌了访问令牌（`https://<user>:<token>@github.com/...`）。令牌未进入任何被追踪的文件，但明文存于 `.git/config`。**建议改用 SSH 或 credential helper，并轮换该令牌。**
-- **`tools/` 目录有历史备份文件**：约 19MB 的 `_*backup*` 快照已从版本控制移除（由 `.gitignore` 拦截），但本地文件仍在磁盘上，可随时删除。
+- **远程用 SSH**：`origin` 为 `git@github.com:hxxszmp3/-.git`，依赖本机 `~/.ssh/id_ed25519`。历史上曾把 PAT 内嵌在 remote URL 里（明文存于 `.git/config`），已于 2026-11 移除，**不要再改回带令牌的 HTTPS 地址**；本机也配了 Git Credential Manager，需要 HTTPS 时走它即可。
+- **令牌曾泄露过**：该 PAT 曾在公开仓库的提交历史中出现过（提交 `aebaed5` / `b20a605` 中移除，但历史仍可读到）。**必须到 GitHub Settings → Developer settings → Tokens 撤销该令牌**，此操作只能在网页端完成。
+- **`tools/` 已清理**：约 120 个一次性脚本、原始 txt 与 19MB 的 `_*backup*` 快照已移除，只保留 `build-singers.js`、`README.md` 和两个示例脚本。历史版本仍可从 git 中取回（`git show <commit>:tools/_xxx.js`），清理前的完整快照存在仓库外。
 - **头像走外链**：来自 `y.gtimg.cn` 等第三方 CDN，站点本身不托管图片资源。外链失效会导致头像挂掉。
 - **无 CI**：目前靠人工跑 `--check`。建议加 GitHub Actions 在 PR 时自动校验。
-- **无 favicon / og:image**：已补齐（`img/favicon.svg`）。
+- **favicon / og:image**：已补齐（`img/favicon.svg`）。
