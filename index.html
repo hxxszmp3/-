@@ -280,7 +280,6 @@ body.dark .singer-sub-title{color:#7e96a6}
 .song-cover svg{width:20px;height:20px}
 .song-name{font-size:14px}
 .download-btn{width:44px;height:44px}
-.fav-btn{display:none}
 .main{padding:20px 12px 32px}
 .tab-bar{gap:4px;justify-content:space-evenly}
 .tab-btn{padding:8px 6px;font-size:13px;white-space:nowrap;flex:1;text-align:center}
@@ -316,6 +315,28 @@ body.dark .singer-sub-title{color:#7e96a6}
 .hot-tag:hover{background:#6b9aae;color:#fff}
 .sh-del{display:inline-block;margin-left:4px;color:#c0c8cc;font-size:10px;cursor:pointer;padding:0 2px;border-radius:3px}
 .sh-del:hover{color:#c07070;background:rgba(192,112,112,.1)}
+.history-bar{display:none;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:0 2px}
+.sh-label{font-size:12px;color:#7a8a98;font-weight:600;margin-right:2px;flex-shrink:0}
+.sh-item{font-size:12px;color:#5b7a8c;background:#fff;border:1px solid #dce8f0;padding:3px 10px;border-radius:14px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;max-width:230px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sh-item:hover{background:#f4f8fa;border-color:#b8d4e0;color:#6b9aae}
+.sh-clear{font-size:12px;color:#9aa8b4;cursor:pointer;padding:2px 8px;border-radius:8px;flex-shrink:0}
+.sh-clear:hover{color:#c07070;background:rgba(192,112,112,.08)}
+body.dark .sh-item{background:#232930;border-color:#333a42;color:#c8d0d8}
+body.dark .sh-item:hover{background:#2a3138;border-color:#4a5560;color:#a8ccd8}
+body.dark .sh-label{color:#8a97a3}
+body.dark .sh-clear{color:#6b7682}
+body.dark .sh-del{color:#5a636b}
+body.dark .sh-del:hover{color:#d08a8a;background:rgba(192,112,112,.15)}
+body.dark.theme-violet .sh-item{background:#251b3d;border-color:#362a52;color:#d7ceeb}
+body.dark.theme-violet .sh-item:hover{background:#2c2147;border-color:#4a3a6e;color:#ddd6fe}
+body.dark.theme-violet .sh-label{color:#8b85b0}
+body.dark.theme-violet .sh-clear{color:#6f6a92}
+body.dark.theme-violet .sh-del{color:#6b6590}
+body.theme-paper .sh-item{background:#fff;border-color:#c3eee5;color:#43a491}
+body.theme-paper .sh-item:hover{background:#eefaf7;border-color:#8fd9cb}
+body.theme-paper .sh-label{color:#5da596}
+body.theme-paper .sh-clear{color:#89b1a9}
+body.theme-paper .sh-del{color:#a8c4bd}
 body.dark .fb-inline{background:#232930;color:#6b9aae;border-color:rgba(107,154,174,.3)}
 .skeleton-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:12px;padding:12px 16px;border:1px solid #dce8f0;margin-bottom:6px}
 .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e6e6e6 37%,#f0f0f0 63%);background-size:400% 100%;animation:sk 1.2s ease infinite;border-radius:6px}
@@ -353,52 +374,11 @@ body.dark .hot-tag{color:#6b9aae;background:rgba(107,154,174,.14);border-color:r
 body.dark .skeleton-card{background:#232930;border-color:#333a42}
 body.dark .skeleton{background:linear-gradient(90deg,#2a3138 25%,#333a42 37%,#2a3138 63%);background-size:400% 100%}
 body.dark .song-cover{background:linear-gradient(135deg,#2a3138,#333a42)}
-.fav-btn{flex-shrink:0;width:32px;height:32px;border-radius:8px;background:rgba(107,154,174,.06);border:1px solid rgba(107,154,174,.2);color:#c0a878;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s;font-weight:700}
-.fav-btn:hover{background:rgba(192,168,120,.18)}
-.fav-btn.fav-on{color:#e8a13a}
 .similar-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:10px 14px;background:#fff;border:1px solid #dce8f0;border-radius:12px}
 .similar-label{font-size:12px;color:#7a8a98;font-weight:600}
 .similar-tag{font-size:12px;color:#6b9aae;background:rgba(107,154,174,.08);border:1px solid rgba(107,154,174,.18);padding:3px 12px;border-radius:14px;cursor:pointer;transition:all .2s}
 .similar-tag:hover{background:#6b9aae;color:#fff}
 body.dark .similar-bar{background:#232930;border-color:#333a42}
-.fpmask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:999;display:flex;align-items:center;justify-content:center}
-.fppanel{background:#fff;border-radius:14px;padding:16px;width:280px;max-width:90vw;max-height:70vh;overflow-y:auto}
-.fptitle{font-size:15px;font-weight:700;color:#4a5568;margin-bottom:12px;text-align:center}
-.fpitem{padding:10px 12px;border-radius:8px;cursor:pointer;color:#4a5568;font-size:14px;display:flex;justify-content:space-between;align-items:center}
-.fpitem:hover{background:#f4f8fa}
-.fpcount{font-size:11px;color:#7a8a98}
-.fpnew{padding:10px 12px;border-radius:8px;cursor:pointer;color:#6b9aae;font-size:14px;font-weight:600;text-align:center;border:1px dashed #6b9aae;margin-top:8px}
-.fpnew:hover{background:rgba(107,154,174,.08)}
-.fpcancel{text-align:center;padding:8px;color:#7a8a98;font-size:13px;cursor:pointer;margin-top:8px}
-.fpcancel:hover{color:#c07070}
-body.dark .fppanel{background:#232930}
-body.dark .fptitle,body.dark .fpitem{color:#c8d0d8}
-body.dark .fpitem:hover{background:#2a3138}
-.fav-mgr{max-width:780px;margin:0 auto}
-.fav-mgr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.fav-mgr-title{font-size:16px;font-weight:700;color:#4a5568}
-.fav-new-btn{padding:6px 14px;border-radius:8px;border:1px solid #6b9aae;background:rgba(107,154,174,.06);color:#6b9aae;font-size:13px;font-weight:600;cursor:pointer}
-.fav-new-btn:hover{background:#6b9aae;color:#fff}
-.fav-folder{background:#fff;border:1px solid #dce8f0;border-radius:12px;margin-bottom:10px;overflow:hidden}
-.fav-folder-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
-.fav-folder-name{flex:1;font-size:14px;font-weight:600;color:#4a5568;cursor:pointer}
-.fav-folder-count{font-size:12px;color:#7a8a98}
-.fav-folder-del{font-size:12px;color:#c07070;cursor:pointer;padding:2px 6px}
-.fav-folder-del:hover{background:rgba(192,112,112,.1);border-radius:4px}
-.fav-folder-body{padding:0 16px 12px}
-.fav-song{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f0f2f4}
-.fav-song-info{flex:1;min-width:0}
-.fav-song-name{font-size:14px;font-weight:600;color:#5b7a8c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fav-song-singer{font-size:12px;color:#7a8a98}
-.fav-song-del{width:28px;height:28px;border-radius:6px;border:1px solid rgba(192,112,112,.3);background:transparent;color:#c07070;cursor:pointer;font-size:12px;flex-shrink:0}
-.fav-song-del:hover{background:#c07070;color:#fff}
-.fav-empty{color:#a0a8ae;font-size:13px;text-align:center;padding:12px}
-body.dark .fav-mgr-title{color:#d6dee6}
-body.dark .fav-folder{background:#232930;border-color:#333a42}
-body.dark .fav-folder-name{color:#d6dee6}
-body.dark .fav-song{border-top-color:#2a3138}
-body.dark .fav-song-name{color:#c8d0d8}
-.fav-badge{font-size:10px;color:#6b9aae}
 
 
 
@@ -448,14 +428,6 @@ body.dark.theme-violet .skeleton-card{background:#251b3d;border-color:#362a52}
 body.dark.theme-violet .skeleton{background:linear-gradient(90deg,#2c2147 25%,#362a52 37%,#2c2147 63%);background-size:400% 100%}
 body.dark.theme-violet .song-cover{background:linear-gradient(135deg,#2c2147,#362a52)}
 body.dark.theme-violet .similar-bar{background:#251b3d;border-color:#362a52}
-body.dark.theme-violet .fppanel{background:#251b3d}
-body.dark.theme-violet .fptitle, body.dark.theme-violet .fpitem{color:#d7ceeb}
-body.dark.theme-violet .fpitem:hover{background:#2c2147}
-body.dark.theme-violet .fav-mgr-title{color:#e7e0f7}
-body.dark.theme-violet .fav-folder{background:#251b3d;border-color:#362a52}
-body.dark.theme-violet .fav-folder-name{color:#e7e0f7}
-body.dark.theme-violet .fav-song{border-top-color:#2c2147}
-body.dark.theme-violet .fav-song-name{color:#d7ceeb}
 /*END_PATCH*/
 
 /*THEME_PATCH:paper*/
@@ -706,7 +678,6 @@ body.theme-paper .song-cover{width:38px;height:38px}
 body.theme-paper .song-cover svg{width:20px;height:20px}
 body.theme-paper .song-name{font-size:14px}
 body.theme-paper .download-btn{width:44px;height:44px}
-body.theme-paper .fav-btn{display:none}
 body.theme-paper .main{padding:20px 12px 32px}
 body.theme-paper .tab-bar{gap:4px;justify-content:space-evenly}
 body.theme-paper .tab-btn{padding:8px 6px;font-size:13px;white-space:nowrap;flex:1;text-align:center}
@@ -748,43 +719,10 @@ body.theme-paper .sk-line{height:12px;margin-bottom:6px}
 body.theme-paper .sk-title{width:50%}
 body.theme-paper .sk-singer{width:30%;height:10px}
 body.theme-paper .sk-btn{width:38px;height:38px;border-radius:9px;flex-shrink:0}
-body.theme-paper .fav-btn{flex-shrink:0;width:32px;height:32px;border-radius:8px;background:rgba(65,199,172,.06);border:1px solid rgba(65,199,172,.2);color:#c0a878;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s;font-weight:700}
-body.theme-paper .fav-btn:hover{background:rgba(192,168,120,.18)}
-body.theme-paper .fav-btn.fav-on{color:#e8a13a}
 body.theme-paper .similar-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:10px 14px;background:#fff;border:1px solid #c3eee5;border-radius:12px}
 body.theme-paper .similar-label{font-size:12px;color:#5da596;font-weight:600}
 body.theme-paper .similar-tag{font-size:12px;color:#41c7ac;background:rgba(65,199,172,.08);border:1px solid rgba(65,199,172,.18);padding:3px 12px;border-radius:14px;cursor:pointer;transition:all .2s}
 body.theme-paper .similar-tag:hover{background:#41c7ac;color:#fff}
-body.theme-paper .fpmask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:999;display:flex;align-items:center;justify-content:center}
-body.theme-paper .fppanel{background:#fff;border-radius:14px;padding:16px;width:280px;max-width:90vw;max-height:70vh;overflow-y:auto}
-body.theme-paper .fptitle{font-size:15px;font-weight:700;color:#605c52;margin-bottom:12px;text-align:center}
-body.theme-paper .fpitem{padding:10px 12px;border-radius:8px;cursor:pointer;color:#605c52;font-size:14px;display:flex;justify-content:space-between;align-items:center}
-body.theme-paper .fpitem:hover{background:#dcf5f0}
-body.theme-paper .fpcount{font-size:11px;color:#5da596}
-body.theme-paper .fpnew{padding:10px 12px;border-radius:8px;cursor:pointer;color:#41c7ac;font-size:14px;font-weight:600;text-align:center;border:1px dashed #41c7ac;margin-top:8px}
-body.theme-paper .fpnew:hover{background:rgba(65,199,172,.08)}
-body.theme-paper .fpcancel{text-align:center;padding:8px;color:#5da596;font-size:13px;cursor:pointer;margin-top:8px}
-body.theme-paper .fpcancel:hover{color:#c07070}
-body.theme-paper .fav-mgr{max-width:780px;margin:0 auto}
-body.theme-paper .fav-mgr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-body.theme-paper .fav-mgr-title{font-size:16px;font-weight:700;color:#605c52}
-body.theme-paper .fav-new-btn{padding:6px 14px;border-radius:8px;border:1px solid #41c7ac;background:rgba(65,199,172,.06);color:#41c7ac;font-size:13px;font-weight:600;cursor:pointer}
-body.theme-paper .fav-new-btn:hover{background:#41c7ac;color:#fff}
-body.theme-paper .fav-folder{background:#fff;border:1px solid #c3eee5;border-radius:12px;margin-bottom:10px;overflow:hidden}
-body.theme-paper .fav-folder-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
-body.theme-paper .fav-folder-name{flex:1;font-size:14px;font-weight:600;color:#605c52;cursor:pointer}
-body.theme-paper .fav-folder-count{font-size:12px;color:#5da596}
-body.theme-paper .fav-folder-del{font-size:12px;color:#c07070;cursor:pointer;padding:2px 6px}
-body.theme-paper .fav-folder-del:hover{background:rgba(192,112,112,.1);border-radius:4px}
-body.theme-paper .fav-folder-body{padding:0 16px 12px}
-body.theme-paper .fav-song{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f4f3f0}
-body.theme-paper .fav-song-info{flex:1;min-width:0}
-body.theme-paper .fav-song-name{font-size:14px;font-weight:600;color:#43a491;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-body.theme-paper .fav-song-singer{font-size:12px;color:#5da596}
-body.theme-paper .fav-song-del{width:28px;height:28px;border-radius:6px;border:1px solid rgba(192,112,112,.3);background:transparent;color:#c07070;cursor:pointer;font-size:12px;flex-shrink:0}
-body.theme-paper .fav-song-del:hover{background:#c07070;color:#fff}
-body.theme-paper .fav-empty{color:#89b1a9;font-size:13px;text-align:center;padding:12px}
-body.theme-paper .fav-badge{font-size:10px;color:#41c7ac}
 /*END_PATCH*/
 </style>
 <!-- 百度统计 -->
@@ -829,6 +767,7 @@ body.theme-paper .fav-badge{font-size:10px;color:#41c7ac}
         搜索
       </button>
     </div>
+    <div class="history-bar" id="historySingle"></div>
     <div class="hot-tags" id="hotTags" style="display:none"></div>
     <div id="resultsContainer"></div>
   </div>
@@ -859,6 +798,7 @@ body.theme-paper .fav-badge{font-size:10px;color:#41c7ac}
       <div class="singer-search-wrap"><input class="singer-search-in" id="singerSearchIn" placeholder="请输入歌手名" onkeydown="if(event.key===&apos;Enter&apos;){event.preventDefault();searchSinger();}"><button class="singer-search-btn" onclick="searchSinger()">搜索</button></div><span class="singer-search-msg" id="singerSearchMsg"></span>
       <div class="singer-az-top"><div class="singer-az-side" id="singerAzSide"></div></div>
     </div>
+    <div class="history-bar" id="historySinger"></div>
     <div class="singer-grid" id="singerGrid"></div>
   </div>
 
@@ -2161,7 +2101,7 @@ var singerSongCounts={
   '林子祥': 86,
   '那英': 76,
   '刘欢': 85,
-  '罗大佑': 51,'乔洋':88,'鹿晗':66,'隔壁老樊':58,'银临':78,'许巍':109,'李玉刚':54,'曲肖冰':96,'任然':110,'Beyond':50,'威仔':71,'Avril Lavigne':42,'金莎':32,'莫文蔚':127,'苏晗':3,'王睿卓':10,'弦子':4,'小贱':3,'宋冬野':18,'孙子涵':8,'周林枫':65,'吴青峰':7,'王靖雯':77,'龚琳娜':2,'陈柏宇':4,'郭峰':3,'郭富城':8,'范玮琪':25,'海鸣威':6,'何炅':2,'郁可唯':59,'蒋雪儿':26,'潘美辰':69,'李荣浩':49,'孙燕姿':98,'云朵':57,'Taylor Swift':60,'阿宝':5,'钟镇涛':3,'郑钧':7,'郑中基':10,'迟志强':27,'赵雷':40,'至上励合':2,'臧天朔':2,'纵贯线':9,'窦靖童':5,'段奥娟':21,'杜德伟':3,'指南针乐队':23,'打扰一下乐团':9,'张韶涵':139,'张靓颖':35,'张雨生':16,'张远':5,'张碧晨':28,'张敬轩':48,'张惠妹':117,'张悬':7,'张宇':131,'张学友':98,'张含韵':4,'张信哲':96,'张也':4,'庄心妍':23,'大张伟':14,'周迅':2,'周慧敏':17,'动力火车':131,'丁当':8,'Ella陈嘉桦':16,'周杰伦':194,'阿梨粤':64,'王力宏':196,'Alan Walker':64,'BEAST':20,'BY2':36,'EXO&유재석':48,'GAI周延':116,'丁世光':48,'丢火车乐队':10,'二手玫瑰':3,'于适':33,'五月天':179,'侃侃':55,'侯泽润':40,'六哲':28,'冯提莫':16,'凤凰传奇':114,'刘德华':517,'刘惜君':88,'刘耀文':33,'十个勤天':34,'半吨兄弟':58,'华晨宇':45,'卓依婷':264,'单依纯':36,'古巨基':30,'叶炫清':54,'吉克隽逸':55,'后弦':58,'呆呆破':53,'周传雄':161,'周深':121,'周笔畅':34,'安又琪':2,'宝石gem':43,'小虎队':23,'崔健':55,'崔子格':89,'布衣乐队':4,'张杰':86,'张艺兴':56,'徐良':167,'成龙':85,'戴佩妮':144,'方大同':58,'曹格':38,'本兮':85,'林俊杰':197,'柯柯柯啊':35,'格子兮':51,'梁博':34,'梁咏琪':41,'欢子':69,'歌单':69,'段千寻':40,'毕夏':2,'毛不易':116,'汪晨蕊':53,'汪苏泷':185,'河图':62,'海伦':39,'海来阿木':38,'温岚':43,'炎亚纶':61,'王嘉尔':50,'王识贤':54,'王铮亮':55,'玖月奇迹':33,'白举纲':3,'白安':9,'白鹿':40,'程响':33,'窦唯':13,'筷子兄弟':29,'胡夏':50,'胡彦斌':54,'艾怡良':2,'艾热':3,'艾福杰尼':2,'艾辰':169,'苍狼':83,'草东没有派对':21,'葛东琪':52,'蔡依林':42,'蔡健雅':46,'蔡国庆':2,'蔡徐坤':41,'蔡淳佳':7,'薛之谦':151,'虎二':42,'蛋堡':4,'许嵩':296,'谢安琪':49,'费玉清':14,'迪克牛仔':19,'邓丽君':257,'邓紫棋':101,'郑源':67,'郭静':51,'郭顶':42,'金海心':42,'金润吉':53,'阚立文':51,'阿YueYue':117,'阿冗':12,'阿悠悠':87,'阿木':3,'阿朵':2,'阿杜':85,'阿桑':38,'陆虎':33,'陈小春':100,'陈慧娴':39,'陈慧琳':351,'陈楚生':48,'陈百强':92,'陈粒':57,'陈绮贞':52,'鞠婧祎':53,'韩宝仪':43,'韩庚':70,'韩红':48,'飞轮海':48,'高胜美':55,'黄静美':50,'龙飘飘':53,'龚玥':55,'冷漠':138,'颜人中':73,'戚薇':64,'裘海正':69,'齐秦':113,'谭咏麟':174,'TFBOYS':46,'乔任梁':58,'邝美云':198,'祁隆':83,'徐佳莹':120,'裘德':82,'柒玥':25,'秦海清':14,'田馥甄':47,'牛奶咖啡':54,'好妹妹乐队':54,'常超凡':97,'赵传':40,'瞿颖':55,'齐豫':89,'祁汉':16,'权振东':41,'邱振哲':12,'戚小恋':10,'祁紫檀':49,'曲婉婷':26,'屈楚萧':4,'乔杉':6,'邱淑贞':3,'毛宁':96,'马旭东':62,'任重':9,'马思唯':169,'任家萱':23,'梅艳芳':108,'马健涛':126,'任素汐':30,'马天宇':53,'任贤齐':195,'SHE':126,'马嘉祺':48,'容祖儿':119,'房东的猫':55,'飞儿乐团':43,'陶喆':65,'陈淑桦':56,'陈奕迅':208,'郑智化':69,'梁静茹':63,'林忆莲':68,'李宗盛':70,'王杰':46,'王心凌':148,'王俊凯':79,'潘越云':82,'梦然':62,'林宥嘉':98,'杨宗纬':53,'杨丞琳':78,'朴树':36,'苏打绿':54,'蔡琴':53,'王菲':110,'王源':78,'张国荣':51,'庾澄庆':40,'光良':33,'伍佰':36,'叶倩文':102,'卫兰':7,'刘若英':70,'信乐团':68,'潘玮柏':94,'庞龙':68,'曾沛慈':81,'李玖哲':80,'A-LIN':162,'于冬然':54,'2NE1':38,'gareth.t':42,'EXO':51,'付豪':52,'刀郎':192,'任夏':70,'卢广仲':82,'周蕙':46,'孙露':84,'安琥':4,'宋祖儿':28,'小阿枫':78,'曹轩宾':31,'李健':68,'李玲玉':78,'阿兰':8,'阿悄':225,'阿肆':80,'陈雪凝':9,'陈鸿宇':37,'马頔':54,'黄霄雲':128,'龙千里':71,'龙梅子':51,'BIGBANG':30,'OneRepublic':28,'Seventeen':91,'苏见信':64,'宋祖英':8,'TAEYANG':66,'唐汉霄':45,'檀健次':130,'谭明':33,'韦礼安':72,'谢军':39,'小凌':51,'希林娜依高':75,'小沈阳':51,'小野来了':57,'余佳运':74,'杨钰莹':66,'周柏豪':69,'郑润泽':69,'周兴哲':82,'리쌍（leessang）':347,'(G)I-DLE':69,'aespa':67,'BLACKPINK':48,'DJ散人':51,'范茹':77,'回春丹乐队':54,'IN-K-sadden':22,'Justin Bieber':114,'科尔沁夫':83,'LE SSERAFIM':52,'棱镜乐队':15,'Mariah Carey':62,'NCT DREAM':108,'NewJeans':46,'Lil Ghost':49,'宋雨琦':19,'安儿陈':262,'刺猬乐队':38,'低苦艾乐队':3,'朴彩英':72,'权志龙':247,'王琪':45,'王蓉':57,'邓寓君':43,'袁娅维':50};
+  '罗大佑': 51,'乔洋':88,'鹿晗':66,'隔壁老樊':58,'银临':78,'许巍':109,'李玉刚':54,'曲肖冰':96,'任然':110,'Beyond':50,'威仔':71,'Avril Lavigne':42,'金莎':32,'莫文蔚':127,'苏晗':3,'王睿卓':10,'弦子':4,'小贱':3,'宋冬野':18,'孙子涵':8,'周林枫':65,'吴青峰':7,'王靖雯':77,'龚琳娜':2,'陈柏宇':4,'郭峰':3,'郭富城':8,'范玮琪':25,'海鸣威':6,'何炅':2,'郁可唯':59,'蒋雪儿':26,'潘美辰':69,'李荣浩':49,'孙燕姿':98,'云朵':57,'Taylor Swift':60,'阿宝':5,'钟镇涛':3,'郑钧':7,'郑中基':10,'迟志强':27,'赵雷':40,'至上励合':2,'臧天朔':2,'纵贯线':9,'窦靖童':5,'段奥娟':21,'杜德伟':3,'指南针乐队':23,'打扰一下乐团':9,'张韶涵':139,'张靓颖':35,'张雨生':16,'张远':5,'张碧晨':28,'张敬轩':48,'张惠妹':117,'张悬':7,'张宇':131,'张学友':98,'张含韵':4,'张信哲':96,'张也':4,'庄心妍':23,'大张伟':14,'周迅':2,'周慧敏':17,'动力火车':131,'丁当':8,'Ella陈嘉桦':16,'周杰伦':194,'阿梨粤':64,'王力宏':196,'Alan Walker':64,'BEAST':20,'BY2':36,'EXO&유재석':48,'GAI周延':116,'丁世光':48,'丢火车乐队':10,'二手玫瑰':3,'于适':33,'五月天':179,'侃侃':55,'侯泽润':40,'六哲':28,'冯提莫':16,'凤凰传奇':114,'刘德华':517,'刘惜君':88,'刘耀文':33,'十个勤天':34,'半吨兄弟':58,'华晨宇':45,'卓依婷':264,'单依纯':36,'古巨基':30,'叶炫清':54,'吉克隽逸':55,'后弦':58,'呆呆破':53,'周传雄':161,'周深':121,'周笔畅':34,'安又琪':2,'宝石gem':43,'小虎队':23,'崔健':55,'崔子格':89,'布衣乐队':4,'张杰':86,'张艺兴':56,'徐良':167,'成龙':85,'戴佩妮':144,'方大同':58,'曹格':38,'本兮':85,'林俊杰':197,'柯柯柯啊':35,'格子兮':51,'梁博':34,'梁咏琪':41,'欢子':69,'歌单':69,'段千寻':40,'毕夏':2,'毛不易':116,'汪晨蕊':53,'汪苏泷':185,'河图':62,'海伦':39,'海来阿木':38,'温岚':43,'炎亚纶':61,'王嘉尔':50,'王识贤':54,'王铮亮':55,'玖月奇迹':33,'白举纲':3,'白安':9,'白鹿':40,'程响':33,'窦唯':13,'筷子兄弟':29,'胡夏':50,'胡彦斌':54,'艾怡良':2,'艾热':3,'艾福杰尼':2,'艾辰':169,'苍狼':83,'草东没有派对':21,'葛东琪':52,'蔡依林':42,'蔡健雅':46,'蔡国庆':2,'蔡徐坤':41,'蔡淳佳':7,'薛之谦':151,'虎二':42,'蛋堡':4,'许嵩':296,'谢安琪':49,'费玉清':14,'迪克牛仔':19,'邓丽君':257,'邓紫棋':101,'郑源':67,'郭静':51,'郭顶':42,'金海心':42,'金润吉':53,'阚立文':51,'阿YueYue':117,'阿冗':12,'阿悠悠':87,'阿木':3,'阿朵':2,'阿杜':85,'阿桑':38,'陆虎':33,'陈小春':100,'陈慧娴':39,'陈慧琳':351,'陈楚生':48,'陈百强':92,'陈粒':57,'陈绮贞':52,'鞠婧祎':53,'韩宝仪':43,'韩庚':70,'韩红':48,'飞轮海':48,'高胜美':55,'黄静美':50,'龙飘飘':53,'龚玥':55,'冷漠':138,'颜人中':73,'戚薇':64,'裘海正':69,'齐秦':113,'谭咏麟':174,'TFBOYS':46,'乔任梁':58,'邝美云':198,'祁隆':83,'徐佳莹':120,'裘德':82,'柒玥':25,'秦海清':14,'田馥甄':47,'牛奶咖啡':54,'好妹妹乐队':54,'常超凡':97,'赵传':40,'瞿颖':55,'齐豫':89,'祁汉':16,'权振东':41,'邱振哲':12,'戚小恋':10,'祁紫檀':49,'曲婉婷':26,'屈楚萧':4,'乔杉':6,'邱淑贞':3,'毛宁':96,'马旭东':62,'任重':9,'马思唯':169,'任家萱':23,'梅艳芳':108,'马健涛':126,'任素汐':30,'马天宇':53,'任贤齐':195,'SHE':126,'马嘉祺':48,'容祖儿':119,'房东的猫':55,'飞儿乐团':43,'陶喆':65,'陈淑桦':56,'陈奕迅':208,'郑智化':69,'梁静茹':63,'林忆莲':68,'李宗盛':70,'王杰':46,'王心凌':148,'王俊凯':79,'潘越云':82,'梦然':62,'林宥嘉':98,'杨宗纬':53,'杨丞琳':78,'朴树':36,'苏打绿':54,'蔡琴':53,'王菲':111,'王源':78,'张国荣':51,'庾澄庆':40,'光良':33,'伍佰':36,'叶倩文':102,'卫兰':7,'刘若英':70,'信乐团':68,'潘玮柏':94,'庞龙':68,'曾沛慈':81,'李玖哲':80,'A-LIN':162,'于冬然':54,'2NE1':38,'gareth.t':42,'EXO':51,'付豪':52,'刀郎':192,'任夏':70,'卢广仲':82,'周蕙':46,'孙露':84,'安琥':4,'宋祖儿':28,'小阿枫':78,'曹轩宾':31,'李健':68,'李玲玉':78,'阿兰':8,'阿悄':225,'阿肆':80,'陈雪凝':9,'陈鸿宇':37,'马頔':54,'黄霄雲':128,'龙千里':71,'龙梅子':51,'BIGBANG':30,'OneRepublic':28,'Seventeen':91,'苏见信':64,'宋祖英':8,'TAEYANG':66,'唐汉霄':45,'檀健次':130,'谭明':33,'韦礼安':72,'谢军':39,'小凌':51,'希林娜依高':75,'小沈阳':51,'小野来了':57,'余佳运':74,'杨钰莹':66,'周柏豪':69,'郑润泽':69,'周兴哲':82,'리쌍（leessang）':347,'(G)I-DLE':69,'aespa':67,'BLACKPINK':48,'DJ散人':51,'范茹':77,'回春丹乐队':54,'IN-K-sadden':22,'Justin Bieber':114,'科尔沁夫':83,'LE SSERAFIM':52,'棱镜乐队':15,'Mariah Carey':62,'NCT DREAM':108,'NewJeans':46,'Lil Ghost':49,'宋雨琦':19,'安儿陈':262,'刺猬乐队':38,'低苦艾乐队':3,'朴彩英':72,'权志龙':247,'王琪':45,'王蓉':57,'邓寓君':43,'袁娅维':50};
 var _allSingers = [];
 var _allLetters = [];
 var _curLetter = '';
@@ -2357,6 +2297,7 @@ function getSubRank(s){
   return t==='s'?0:(t==='g'?1:2);
 }
 var searchHistory=[];
+try{var _sh=JSON.parse(localStorage.getItem('searchHistory')||'[]');if(Object.prototype.toString.call(_sh)==='[object Array]')searchHistory=_sh;}catch(e){searchHistory=[];}
 function addHistory(q,type){
   if(!q||q.length<1)return;
   searchHistory=searchHistory.filter(function(h){return h.q!==q;});
@@ -2371,7 +2312,7 @@ function renderHistory(){
     var el=document.getElementById(types[t]);
     if(!el)continue;
     var filtered=searchHistory.filter(function(h){return h.t===t;});
-    if(filtered.length===0){el.style.display='none';continue;}
+    if(filtered.length===0){el.style.display='none';el.innerHTML='';continue;}
     var html='<span class="sh-label">最近搜索</span>';
     for(var i=0;i<Math.min(filtered.length,8);i++){
       var hq=filtered[i].q;
@@ -2379,6 +2320,7 @@ function renderHistory(){
     }
     html+='<span class="sh-clear" onclick="clearHistory(\''+t+'\')">清空</span>';
     el.innerHTML=html;
+    el.style.display='flex';
   }
 }
 function removeHistory(q,type){
@@ -2394,10 +2336,8 @@ function renderHotTags(){
   for(var i=0;i<hotSearches.length;i++){
     html+='<span class="hot-tag" onclick="quickSearch(\''+escAttr(hotSearches[i])+'\')">'+escHtml(hotSearches[i])+'</span>';
   }
-  html+='<span class="hot-tag fav-entry" onclick="renderFavs()">⭐ 我的收藏<span id="favBadge" class="fav-badge"></span></span>';
   el.innerHTML=html;
   el.style.display='flex';
-  renderFavBadge();
 }
 function useHistory(q,type){
   if(type==='single'){document.getElementById('searchInput').value=q;doSearch();}
@@ -2409,36 +2349,7 @@ function clearHistory(type){
   localStorage.setItem('searchHistory',JSON.stringify(searchHistory));
   renderHistory();
 }
-// Show history on focus
-document.addEventListener('focusin',function(e){
-  var t=e.target;
-  if(t.id==='searchInput'||t.id==='batchInput'||t.id==='singerSearchIn'){
-    renderHistory();
-    var type=t.id==='searchInput'?'single':t.id==='batchInput'?'batch':'singer';
-    var el=document.getElementById('history'+type.charAt(0).toUpperCase()+type.slice(1));
-    if(el&&el.textContent.trim().length>0)el.style.display='block';
-  }
-  return;
-  var t=e.target;
-  var type=null;
-  if(t.id==='searchInput')type='single';
-  else if(t.id==='batchInput')type='batch';
-  else if(t.id==='singerSearchIn')type='singer';
-  if(type){
-    if(searchHistory.some(function(h){return h.t===type;})){
-      document.getElementById('history'+type.charAt(0).toUpperCase()+type.slice(1)).style.display='block';
-    }
-    renderHistory();
-  }
-});
-document.addEventListener('focusout',function(e){
-  setTimeout(function(){
-    ['Single','Batch','Singer'].forEach(function(t){
-      var el=document.getElementById('history'+t);
-      if(el)el.style.display='none';
-    });
-  },200);
-});
+// 历史记录常驻显示，由 renderHistory() 统一控制显隐
 // ===== 猜你想搜：编辑距离模糊匹配（打错字容错） =====
 function _normName(s){return (s||'').toLowerCase().normalize('NFKC').replace(/[\s\p{P}\p{S}]+/gu,'');}
 function _lev(a,b,max){
@@ -2483,6 +2394,7 @@ function searchSinger(){
   var q=document.getElementById('singerSearchIn').value.trim();
   var r=document.getElementById('singerSearchMsg');
   if(!q){r.textContent='';return;}
+  addHistory(q,'singer');
   var singers=Object.keys(singerCollection);
   // 别名映射：中文名→规范名(如 黄丽玲→A-LIN)
   var aliasKeys=Object.keys(singerAlias);
@@ -2684,7 +2596,6 @@ function songCardHTML(song, idx, query) {
   var coverHtml = song.cover
     ? '<img src="' + escAttr(song.cover) + '" loading="lazy" style="width:100%;height:100%;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">'
     : '<svg viewBox="0 0 24 24" fill="none" stroke="#7cc5a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="3"/><circle cx="17" cy="16" r="2.5"/><path d="M11 18V3l9-2v13"/></svg>';
-  var fav = isFav(song.name, song.singer);
   return '<div class="song-card">' +
     '<div class="song-index">' + num + '</div>' +
     '<div class="song-cover">' + coverHtml + '</div>' +
@@ -2692,7 +2603,6 @@ function songCardHTML(song, idx, query) {
       '<div class="song-name">' + highlight(song.name, query) + '</div>' +
       '<div class="song-singer">' + highlight(song.singer, query) + '</div>' +
     '</div>' +
-    '<button class="fav-btn' + (fav ? ' fav-on' : '') + '" data-k="' + encodeURIComponent(song.name + '||' + song.singer) + '" onclick="toggleFav(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark || '') + '\',\'' + escAttr(song.cover) + '\',this)" title="收藏">' + (fav ? '★' : '☆') + '</button>' +
     (song.quark ? '<button class="download-btn" data-quark="' + escAttr(song.quark) + '" data-name="' + escAttr(song.name) + ' - ' + escAttr(song.singer) + '" onclick="doDownload(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\')">' +
       '<span class="tooltip">夸克网盘下载</span>' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
@@ -2748,179 +2658,6 @@ function skeletonHTML(){
   }
   return h;
 }
-var favFolders = [];
-var _pendingFav = null;
-function loadFolders(){
-  var saved = null;
-  try{ saved = JSON.parse(localStorage.getItem('favFolders')||'null'); }catch(e){ saved = null; }
-  if(saved && saved.length){ favFolders = saved; }
-  else {
-    var old = [];
-    try{ old = JSON.parse(localStorage.getItem('favList')||'[]'); }catch(e){ old = []; }
-    favFolders = [{name:'我的收藏', songs: old}];
-    saveFolders();
-  }
-}
-function saveFolders(){ localStorage.setItem('favFolders', JSON.stringify(favFolders)); }
-function isFav(name, singer){
-  for(var i=0;i<favFolders.length;i++){
-    for(var j=0;j<favFolders[i].songs.length;j++){
-      var s = favFolders[i].songs[j];
-      if(s.name===name && s.singer===singer) return true;
-    }
-  }
-  return false;
-}
-function removeFromAllFolders(name, singer){
-  for(var i=0;i<favFolders.length;i++){
-    favFolders[i].songs = favFolders[i].songs.filter(function(s){ return !(s.name===name && s.singer===singer); });
-  }
-  saveFolders();
-}
-function addToFolder(idx, name, singer, quark, cover){
-  if(!favFolders[idx]) return;
-  favFolders[idx].songs.unshift({name:name, singer:singer, quark:quark, cover:cover});
-  saveFolders();
-}
-function refreshFavButtons(){
-  var btns = document.querySelectorAll('.fav-btn');
-  for(var i=0;i<btns.length;i++){
-    var b = btns[i];
-    var k = b.getAttribute('data-k');
-    if(!k) continue;
-    var parts = decodeURIComponent(k).split('||');
-    var f = isFav(parts[0], parts[1]);
-    b.textContent = f ? '★' : '☆';
-    b.classList.toggle('fav-on', f);
-  }
-}
-function toggleFav(name, singer, quark, cover, btn){
-  if(isFav(name, singer)){
-    removeFromAllFolders(name, singer);
-    showToast('已取消收藏');
-    refreshFavButtons();
-    renderFavBadge();
-    return;
-  }
-  _pendingFav = {name:name, singer:singer, quark:quark, cover:cover};
-  if(favFolders.length === 1){
-    addToFolder(0, name, singer, quark, cover);
-    showToast('⭐ 已收藏到「' + favFolders[0].name + '」');
-    refreshFavButtons();
-    renderFavBadge();
-    return;
-  }
-  showFolderPicker();
-}
-function showFolderPicker(){
-  var html = '<div class="fpmask" onclick="closeFolderPicker()"><div class="fppanel" onclick="event.stopPropagation()">';
-  html += '<div class="fptitle">选择收藏夹</div>';
-  for(var i=0;i<favFolders.length;i++){
-    html += '<div class="fpitem" onclick="pickFolder('+i+')"><span>'+escHtml(favFolders[i].name)+'</span><span class="fpcount">'+favFolders[i].songs.length+' 首</span></div>';
-  }
-  html += '<div class="fpnew" onclick="promptNewFolder()">＋ 新建收藏夹</div>';
-  html += '<div class="fpcancel" onclick="closeFolderPicker()">取消</div>';
-  html += '</div></div>';
-  document.body.insertAdjacentHTML('beforeend', html);
-}
-function closeFolderPicker(){
-  var m = document.querySelector('.fpmask');
-  if(m) m.remove();
-}
-function pickFolder(idx){
-  if(_pendingFav){
-    addToFolder(idx, _pendingFav.name, _pendingFav.singer, _pendingFav.quark, _pendingFav.cover);
-    showToast('⭐ 已收藏到「' + favFolders[idx].name + '」');
-    _pendingFav = null;
-  }
-  closeFolderPicker();
-  refreshFavButtons();
-  renderFavBadge();
-}
-function promptNewFolder(){
-  var name = prompt('请输入新收藏夹名称：');
-  if(!name || !name.trim()){ closeFolderPicker(); return; }
-  name = name.trim();
-  favFolders.push({name:name, songs:[]});
-  saveFolders();
-  if(_pendingFav){
-    addToFolder(favFolders.length-1, _pendingFav.name, _pendingFav.singer, _pendingFav.quark, _pendingFav.cover);
-    showToast('⭐ 已收藏到「' + name + '」');
-    _pendingFav = null;
-  }
-  closeFolderPicker();
-  refreshFavButtons();
-  renderFavBadge();
-}
-function renderFavBadge(){
-  var total = 0;
-  for(var i=0;i<favFolders.length;i++) total += favFolders[i].songs.length;
-  var el = document.getElementById('favBadge');
-  if(el) el.textContent = total > 0 ? '（' + total + '）' : '';
-}
-function renderFavs(){
-  var container = document.getElementById('resultsContainer');
-  var html = '<div class="fav-mgr">';
-  html += '<div class="fav-mgr-head"><span class="fav-mgr-title">⭐ 我的收藏夹</span><button class="fav-new-btn" onclick="createFolder()">＋ 新建收藏夹</button></div>';
-  if(favFolders.length === 0){
-    html += '<div class="empty-state"><div class="empty-icon">⭐</div><p>还没有收藏夹，点「＋ 新建收藏夹」创建</p></div>';
-  }
-  for(var i=0;i<favFolders.length;i++){
-    var f = favFolders[i];
-    html += '<div class="fav-folder"><div class="fav-folder-head" onclick="toggleFolder('+i+')">';
-    html += '<span class="fav-folder-name">📁 ' + escHtml(f.name) + '</span>';
-    html += '<span class="fav-folder-count">' + f.songs.length + ' 首</span>';
-    if(i>0) html += '<span class="fav-folder-del" onclick="event.stopPropagation();deleteFolder('+i+')">删除</span>';
-    html += '</div>';
-    html += '<div class="fav-folder-body" id="favFolderBody'+i+'" style="display:none">';
-    if(f.songs.length === 0){
-      html += '<p class="fav-empty">暂无歌曲，去搜索里点 ☆ 收藏进来吧</p>';
-    } else {
-      for(var j=0;j<f.songs.length;j++){
-        html += songRowHTML(f.songs[j], i, j);
-      }
-    }
-    html += '</div></div>';
-  }
-  html += '</div>';
-  container.innerHTML = html;
-}
-function songRowHTML(song, fi, si){
-  return '<div class="fav-song">' +
-    '<div class="fav-song-info"><div class="fav-song-name">' + escHtml(song.name) + '</div><div class="fav-song-singer">' + escHtml(song.singer) + '</div></div>' +
-    '<button class="download-btn" onclick="doDownload(\'' + escAttr(song.name) + '\',\'' + escAttr(song.singer) + '\',\'' + escAttr(song.quark) + '\')" title="下载">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
-    '</button>' +
-    '<button class="fav-song-del" onclick="removeFromFolder('+fi+','+si+')" title="移除">✕</button>' +
-  '</div>';
-}
-function toggleFolder(i){
-  var b = document.getElementById('favFolderBody'+i);
-  if(b) b.style.display = b.style.display === 'none' ? 'block' : 'none';
-}
-function createFolder(){
-  var name = prompt('请输入新收藏夹名称：');
-  if(!name || !name.trim()) return;
-  favFolders.push({name:name.trim(), songs:[]});
-  saveFolders();
-  renderFavs();
-  renderFavBadge();
-}
-function deleteFolder(i){
-  if(!confirm('确定删除收藏夹「' + favFolders[i].name + '」及其中的 ' + favFolders[i].songs.length + ' 首歌吗？')) return;
-  favFolders.splice(i,1);
-  saveFolders();
-  renderFavs();
-  renderFavBadge();
-}
-function removeFromFolder(fi, si){
-  favFolders[fi].songs.splice(si,1);
-  saveFolders();
-  renderFavs();
-  renderFavBadge();
-  refreshFavButtons();
-}
-loadFolders();
 
 function similarSingers(query){
   var qc = cleanStr(query);
@@ -2995,6 +2732,7 @@ renderPlaylists();
   document.getElementById('tab-'+st).style.display='block';
   try{document.getElementById('searchLoading').style.display='none';document.getElementById('searchBoxWrap').style.display='flex';}catch(e){}
   renderHotTags();
+  renderHistory();
   initDark();
   var now=new Date();
   var td=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
@@ -3028,6 +2766,7 @@ function tutNext(){if(tutIdx<tutImgs.length-1){tutIdx++;tutShow();}}
   </div>
   <div class="tut-dots" id="tutDots"></div>
 </div>
+<div class="toast" id="toast"></div>
 <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
 </body>
 </html>
